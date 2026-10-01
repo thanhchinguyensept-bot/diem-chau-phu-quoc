@@ -1111,18 +1111,6 @@ Check-in từ <span class="font-bold text-primary">12:00</span> ngày đặt ph�
     }
   }
 
-  // SePAY Real-time Transaction Listening & Auto Smart Pass Activation
-  let sepayPollingInterval = null;
-  let isPaymentProcessed = false;
-
-  function getCurrentTotalAmount() {
-    if (bookingState.stayType === 'overnight') {
-      return (bookingState.nights || 1) * (bookingState.pricePerNight || 200000);
-    } else {
-      return (bookingState.hourlyPrices && bookingState.hourlyPrices[bookingState.hourlyDuration]) || 80000;
-    }
-  }
-
   // Helper chuyển đổi chuỗi ngày giờ Việt Nam (UTC+7) sang epoch timestamp chính xác
   function parseVNTimeToTimestamp(dateStr) {
     if (!dateStr) return 0;
@@ -1426,77 +1414,6 @@ Check-in từ <span class="font-bold text-primary">12:00</span> ngày đặt ph�
         statusText.innerHTML = 'Đã tạm dừng kiểm tra tự động. Quý khách có thể bấm nút bên dưới để kiểm tra lại.';
       }
     }, 180000);
-  }
-
-  // Sync Room Availability with Admin State
-  const DEFAULT_ROOMS_STATE = {
-    101: { name: 'PHÒNG 101 (Deluxe Queen)', short: 'PHÒNG 101', status: 'available' },
-    102: { name: 'PHÒNG 102 (Deluxe Queen)', short: 'PHÒNG 102', status: 'available' },
-    103: { name: 'PHÒNG 103 (VIP King Window)', short: 'PHÒNG 103', status: 'available' },
-    104: { name: 'PHÒNG 104 (Balcony Studio)', short: 'PHÒNG 104', status: 'available' }
-  };
-
-  function syncRoomsAvailability() {
-    let rooms = null;
-    try {
-      const stored = localStorage.getItem('diemchau_rooms_state');
-      if (stored) rooms = JSON.parse(stored);
-    } catch(e){}
-
-    if (!rooms) {
-      rooms = DEFAULT_ROOMS_STATE;
-    }
-
-    let availableCount = 0;
-    let lockedCount = 0;
-
-    [101, 102, 103, 104].forEach(id => {
-      const card = document.getElementById(`room-card-${id}`);
-      const r = rooms[id];
-      const isLocked = r && (r.status === 'locked' || r.status === 'occupied');
-
-      if (isLocked) {
-        lockedCount++;
-        if (card) card.dataset.available = 'false';
-      } else {
-        availableCount++;
-        if (card) card.dataset.available = 'true';
-      }
-    });
-
-    const isEn = (localStorage.getItem('diemchau_language') || 'vi') === 'en';
-    const availLabel = isEn ? 'Available' : 'Trống';
-    const lockedLabel = isEn ? 'Locked' : 'Đã Khóa';
-
-    const availEl = document.getElementById('available-rooms-count');
-    if (availEl) {
-      availEl.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-tertiary-container"></span> <span data-i18n="room_status_available">${availLabel}</span> (${availableCount})`;
-    }
-
-    const lockedEl = document.getElementById('locked-rooms-count');
-    if (lockedEl) {
-      if (lockedCount > 0) {
-        lockedEl.classList.remove('hidden');
-        lockedEl.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-status-danger"></span> <span data-i18n="room_status_locked">${lockedLabel}</span> (${lockedCount})`;
-      } else {
-        lockedEl.classList.add('hidden');
-      }
-    }
-
-    // Auto-switch selected room if currently selected room is locked
-    const currentCard = document.getElementById(`room-card-${bookingState.roomId}`);
-    if (currentCard && currentCard.dataset.available === 'false') {
-      const firstAvail = [101, 102, 103, 104].find(id => {
-        const c = document.getElementById(`room-card-${id}`);
-        return c && c.dataset.available !== 'false';
-      });
-      if (firstAvail) {
-        const nextCard = document.getElementById(`room-card-${firstAvail}`);
-        bookingState.roomId = String(firstAvail);
-        bookingState.roomName = nextCard.dataset.roomName;
-        bookingState.roomShort = nextCard.dataset.roomTitle;
-      }
-    }
   }
 
   document.addEventListener('DOMContentLoaded', () => {
