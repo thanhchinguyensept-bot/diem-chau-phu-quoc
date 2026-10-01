@@ -46,7 +46,22 @@ module.exports = async (req, res) => {
     }
 
     const data = await response.json();
-    const transactions = data.data || data.messages || data.transactions || [];
+    let transactions = [];
+    if (Array.isArray(data)) {
+      transactions = data;
+    } else if (data && Array.isArray(data.data)) {
+      transactions = data.data;
+    } else if (data && Array.isArray(data.transactions)) {
+      transactions = data.transactions;
+    } else if (data && Array.isArray(data.messages)) {
+      transactions = data.messages;
+    } else {
+      return res.status(200).json({
+        success: false,
+        message: 'Định dạng dữ liệu SePAY không chứa mảng giao dịch',
+        rawResponse: data
+      });
+    }
 
     const expectedAmount = parseInt(amount, 10);
     const cleanMemo = (memo || '').toString().replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
