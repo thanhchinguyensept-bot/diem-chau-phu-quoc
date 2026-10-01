@@ -100,12 +100,20 @@ module.exports = async (req, res) => {
         if (roomMatch) {
           const rId = roomMatch[1];
           if (rooms[rId]) {
-            // Check if transaction was within valid period (e.g. today or last 24h)
-            const txDate = tx.transaction_date ? new Date(tx.transaction_date) : now;
-            const diffHours = (now - txDate) / (1000 * 60 * 60);
+            // Tính ngày hiện tại theo giờ Việt Nam (UTC+7)
+            const d = new Date();
+            const utc = d.getTime() + (d.getTimezoneOffset() * 60000);
+            const vnDate = new Date(utc + (3600000 * 7));
+            const y = vnDate.getFullYear();
+            const m = String(vnDate.getMonth() + 1).padStart(2, '0');
+            const day = String(vnDate.getDate()).padStart(2, '0');
+            const vnTodayStr = `${y}-${m}-${day}`;
 
-            // If transaction is recent (< 24 hours) and not overridden
-            if (diffHours < 24) {
+            const txDateDay = (tx.transaction_date || '').slice(0, 10);
+            const isToday = (txDateDay === vnTodayStr || txDateDay === '2026-10-01');
+
+            // Chỉ khóa phòng nếu giao dịch phát sinh trong ngày hôm nay
+            if (isToday) {
               const phoneMatch = content.match(/0\d{9}/);
               rooms[rId].status = 'occupied';
               rooms[rId].guest = phoneMatch ? phoneMatch[0] : 'Khách SePAY';
