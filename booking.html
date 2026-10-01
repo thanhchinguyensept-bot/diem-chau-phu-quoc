@@ -1170,7 +1170,7 @@ Check-in từ <span class="font-bold text-primary">12:00</span> ngày đặt ph�
     const guestPhone = (bookingState.phone || txInfo.detectedPhone || '0942817633').replace(/\s+/g, '');
     const phoneTail = guestPhone.slice(-4) || '7633';
 
-    // Lấy mã PIN Smart Pass do Quản trị viên đã thiết lập cho phòng này
+    // Lấy mã PIN Smart Pass chính thức từ Server / Quản trị viên
     let adminRoomPin = null;
     try {
       if (window.remoteRoomsData && window.remoteRoomsData[finalRoom] && window.remoteRoomsData[finalRoom].pin) {
@@ -1183,8 +1183,34 @@ Check-in từ <span class="font-bold text-primary">12:00</span> ngày đặt ph�
       }
     } catch(e){}
 
-    const pin = adminRoomPin || phoneTail;
+    const pin = (txInfo && txInfo.pin) || adminRoomPin || phoneTail;
     const billCode = `DC-${finalRoom}${pin}`;
+
+    // Đẩy ngay trạng thái Khóa Đỏ (Occupied) lên Server để Admin cập nhật tức thì
+    try {
+      fetch('/api/rooms', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          roomId: finalRoom,
+          status: 'occupied',
+          guest: guestPhone,
+          pin: pin,
+          amount: totalAmount,
+          txId: txInfo.id || 'SEPAY-TX',
+          bookedAt: new Date().toISOString()
+        })
+      });
+
+      // Cập nhật trạng thái phòng cục bộ
+      const storedRooms = JSON.parse(localStorage.getItem('diemchau_rooms_state') || '{}');
+      storedRooms[finalRoom] = storedRooms[finalRoom] || {};
+      storedRooms[finalRoom].status = 'occupied';
+      storedRooms[finalRoom].guest = guestPhone;
+      storedRooms[finalRoom].pin = pin;
+      localStorage.setItem('diemchau_rooms_state', JSON.stringify(storedRooms));
+      syncRoomsAvailability();
+    } catch(e){}
 
     if (statusBox) {
       statusBox.className = 'w-full mt-space-md p-space-sm rounded-xl bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-between gap-2 shadow-sm transition-all';

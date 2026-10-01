@@ -51,21 +51,27 @@ module.exports = async (req, res) => {
     const roomId = (body && body.roomId) || req.query.roomId;
     const status = (body && body.status) || req.query.status; // 'available', 'locked', 'occupied'
     const pin = (body && body.pin) || req.query.pin;
+    const guest = (body && body.guest) || req.query.guest;
+    const amount = (body && body.amount) || req.query.amount;
+    const txId = (body && body.txId) || req.query.txId;
+    const bookedAt = (body && body.bookedAt) || req.query.bookedAt;
 
     if (roomId) {
       overrides[roomId] = overrides[roomId] || {};
-      if (status) {
-        overrides[roomId].status = status;
-      }
-      if (pin) {
-        overrides[roomId].pin = String(pin).trim();
-      }
+      if (status) overrides[roomId].status = status;
+      if (pin) overrides[roomId].pin = String(pin).trim();
+      if (guest) overrides[roomId].guest = guest;
+      if (amount) overrides[roomId].amount = amount;
+      if (txId) overrides[roomId].txId = txId;
+      if (bookedAt) overrides[roomId].bookedAt = bookedAt;
       overrides[roomId].updatedAt = new Date().toISOString();
 
       // If admin explicitly marked available, also record cleared transaction ID if provided
       if (body && body.clearedTxId) {
         overrides.clearedTxs = overrides.clearedTxs || [];
-        overrides.clearedTxs.push(body.clearedTxId);
+        if (!overrides.clearedTxs.includes(body.clearedTxId)) {
+          overrides.clearedTxs.push(body.clearedTxId);
+        }
       }
       writeOverrides(overrides);
       return res.status(200).json({ 
@@ -142,18 +148,34 @@ module.exports = async (req, res) => {
     console.warn('SePAY fetch error in /api/rooms:', err);
   }
 
-  // 2. Apply Admin Overrides (takes highest priority)
+  // 2. Apply Admin Overrides (takes highest priority for admin actions)
+  const clearedTxs = overrides.clearedTxs || [];
   [101, 102, 103, 104].forEach(id => {
     if (overrides[id]) {
-      if (overrides[id].status) {
-        rooms[id].status = overrides[id].status;
-        if (overrides[id].status === 'available') {
-          rooms[id].guest = null;
-          rooms[id].bookedAt = null;
-        }
-      }
       if (overrides[id].pin) {
         rooms[id].pin = overrides[id].pin;
+      }
+      if (overrides[id].status === 'available') {
+        const bookedTime = rooms[id].bookedAt ? new Date(rooms[id].bookedAt).getTime() : 0;
+        const overrideTime = overrides[id].updatedAt ? new Date(overrides[id].updatedAt).getTime() : 0;
+        const isSpecificallyCleared = rooms[id].txId && clearedTxs.includes(rooms[id].txId);
+        const isOverrideNewer = overrideTime > (bookedTime + 5000);
+
+        // Giao dịch mới phát sinh chưa được Admin chủ động mở khóa sẽ giữ phòng Occupied (Đỏ)
+        if (rooms[id].status === 'occupied' && !isSpecificallyCleared && !isOverrideNewer) {
+          // Giữ nguyên occupied
+        } else {
+          rooms[id].status = 'available';
+          rooms[id].guest = null;
+          rooms[id].bookedAt = null;
+          rooms[id].txId = null;
+        }
+      } else if (overrides[id].status) {
+        rooms[id].status = overrides[id].status;
+        if (overrides[id].guest) rooms[id].guest = overrides[id].guest;
+        if (overrides[id].bookedAt) rooms[id].bookedAt = overrides[id].bookedAt;
+        if (overrides[id].amount) rooms[id].amount = overrides[id].amount;
+        if (overrides[id].txId) rooms[id].txId = overrides[id].txId;
       }
     }
   });

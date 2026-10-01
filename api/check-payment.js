@@ -149,24 +149,44 @@ module.exports = async (req, res) => {
     });
 
     if (matched) {
-      // Tự động ghi nhớ ID giao dịch đã khớp vào danh sách đã claim để tránh trùng lặp
+      // Trích xuất số điện thoại và phòng từ nội dung giao dịch nếu có
+      const content = matched.transaction_content || matched.description || '';
+      const phoneMatch = content.match(/0\d{9}/);
+      const roomMatch = content.match(/P(\d{3})/i) || content.match(/PHONG(\d{3})/i) || content.match(/(101|102|103|104)/);
+      const finalRoom = (roomMatch ? roomMatch[1] : null) || roomStr || '104';
+
+      const DEFAULT_PINS = { '101': '7633', '102': '8192', '103': '3321', '104': '4529' };
+      let officialPin = DEFAULT_PINS[finalRoom] || '7633';
+
+      // Tự động ghi nhớ ID giao dịch đã khớp và cập nhật phòng sang occupied
       try {
         const fs = require('fs');
         let ov = {};
         if (fs.existsSync('/tmp/admin_room_overrides.json')) {
           ov = JSON.parse(fs.readFileSync('/tmp/admin_room_overrides.json', 'utf8'));
         }
-        ov.clearedTxs = ov.clearedTxs || [];
-        if (!ov.clearedTxs.includes(matched.id)) {
-          ov.clearedTxs.push(matched.id);
-          fs.writeFileSync('/tmp/admin_room_overrides.json', JSON.stringify(ov), 'utf8');
+        ov.claimedTxs = ov.claimedTxs || [];
+        if (!ov.claimedTxs.includes(matched.id)) {
+          ov.claimedTxs.push(matched.id);
         }
-      } catch(e) {}
 
-      // Trích xuất số điện thoại và phòng từ nội dung giao dịch nếu có
-      const content = matched.transaction_content || matched.description || '';
-      const phoneMatch = content.match(/0\d{9}/);
-      const roomMatch = content.match(/P(\d{3})/i);
+        // Lấy mã PIN đã cấu hình trong admin nếu có
+        if (ov[finalRoom] && ov[finalRoom].pin) {
+          officialPin = ov[finalRoom].pin;
+        }
+
+        // Đánh dấu phòng Occupied trên server ngay lập tức
+        ov[finalRoom] = ov[finalRoom] || {};
+        ov[finalRoom].status = 'occupied';
+        ov[finalRoom].guest = phoneMatch ? phoneMatch[0] : cleanPhone;
+        ov[finalRoom].bookedAt = matched.transaction_date;
+        ov[finalRoom].amount = matched.amount_in || matched.amount;
+        ov[finalRoom].txId = matched.id;
+        ov[finalRoom].pin = officialPin;
+        ov[finalRoom].updatedAt = new Date().toISOString();
+
+        fs.writeFileSync('/tmp/admin_room_overrides.json', JSON.stringify(ov), 'utf8');
+      } catch(e) {}
 
       return res.status(200).json({
         success: true,
@@ -177,8 +197,9 @@ module.exports = async (req, res) => {
           content: content,
           date: matched.transaction_date,
           bankAccount: matched.account_number || matched.bank_account_id,
-          detectedPhone: phoneMatch ? phoneMatch[0] : null,
-          detectedRoom: roomMatch ? roomMatch[1] : null
+          detectedPhone: phoneMatch ? phoneMatch[0] : cleanPhone,
+          detectedRoom: finalRoom,
+          pin: officialPin
         }
       });
     } else {

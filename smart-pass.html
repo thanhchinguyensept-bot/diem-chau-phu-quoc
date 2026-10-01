@@ -703,7 +703,7 @@
     if (smartpassRoomTitle) smartpassRoomTitle.textContent = bookingState.roomShort;
 
     const smartpassPinCode = document.getElementById('smartpass-pin-code');
-    if (smartpassPinCode) smartpassPinCode.textContent = phoneTail;
+    if (smartpassPinCode) smartpassPinCode.textContent = bookingState.pin || phoneTail;
 
     const smartpassCheckinTime = document.getElementById('smartpass-checkin-time');
     if (smartpassCheckinTime) smartpassCheckinTime.textContent = timeInfo.start;
@@ -937,10 +937,12 @@
         bookingState.roomShort = `PHÒNG ${urlRoom}`;
       }
 
+      const activePin = urlPin || (savedPass && savedPass.pin) || '7633';
+      bookingState.pin = activePin;
+
       // Initial render with updated data
       updateBookingView();
 
-      const activePin = urlPin || (savedPass && savedPass.pin) || '7633';
       const pinEl = document.getElementById('smartpass-pin-code');
       if (pinEl) pinEl.textContent = activePin;
 
@@ -950,6 +952,8 @@
       if (urlCode || (savedPass && savedPass.billCode)) {
         const badge = document.getElementById('bill-code-badge');
         if (badge) badge.textContent = `MÃ: ${urlCode || savedPass.billCode}`;
+      }
+
       if (urlPin || urlCode) {
         const modal = document.getElementById('smartpass-modal-backdrop');
         if (modal) modal.style.display = 'flex';
