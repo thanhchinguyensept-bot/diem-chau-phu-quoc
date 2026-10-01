@@ -1183,7 +1183,7 @@ Check-in từ <span class="font-bold text-primary">12:00</span> ngày đặt ph�
       }
     } catch(e){}
 
-    const pin = (txInfo && txInfo.pin) || adminRoomPin || phoneTail;
+    const pin = adminRoomPin || (txInfo && txInfo.pin) || phoneTail;
     const billCode = `DC-${finalRoom}${pin}`;
 
     // Đẩy ngay trạng thái Khóa Đỏ (Occupied) lên Server để Admin cập nhật tức thì
