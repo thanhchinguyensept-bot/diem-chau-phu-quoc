@@ -1,3 +1,17 @@
+// Safely parse Vietnam timezone string to epoch millisecond
+function parseVNTimeToTimestamp(dateStr) {
+  if (!dateStr) return 0;
+  let s = String(dateStr).trim();
+  if (s.includes(' ')) {
+    s = s.replace(' ', 'T');
+  }
+  if (!s.includes('+') && !s.includes('Z')) {
+    s += '+07:00';
+  }
+  const t = new Date(s).getTime();
+  return isNaN(t) ? 0 : t;
+}
+
 // Vercel Serverless Function: Check SePAY Transactions Real-Time (API v2)
 module.exports = async (req, res) => {
   // Set CORS headers
@@ -94,7 +108,8 @@ module.exports = async (req, res) => {
     // Smart Match: Tìm giao dịch khớp số tiền VÀ thông tin đặt phòng
     const matched = transactions.find(tx => {
       // Bỏ qua giao dịch đã dùng hoặc bị loại trừ
-      if (excludedList.includes(tx.id)) return false;
+      const txIdStr = String(tx.id);
+      if (excludedList.map(String).includes(txIdStr)) return false;
 
       // Chỉ kiểm tra giao dịch tiền vào
       const txAmount = parseInt(tx.amount_in || tx.amount || 0, 10);
@@ -104,12 +119,12 @@ module.exports = async (req, res) => {
       const isAmountMatch = Math.abs(txAmount - expectedAmount) < 1000;
       if (!isAmountMatch) return false;
 
-      // 2. Kiểm tra mốc thời gian: Giao dịch phải phát sinh sau thời điểm khách tạo phiên
+      // 2. Kiểm tra mốc thời gian: Giao dịch phải phát sinh sau thời điểm khách tạo phiên (Giờ VN UTC+7)
       if (after && tx.transaction_date) {
-        const txTime = new Date(tx.transaction_date).getTime();
-        const minTime = new Date(after).getTime();
-        // Cho phép dung sai 60 giây do lệch đồng hồ server
-        if (txTime < minTime - 60000) {
+        const txTime = parseVNTimeToTimestamp(tx.transaction_date);
+        const minTime = parseVNTimeToTimestamp(after);
+        // Bắt buộc giao dịch phải mới hơn mốc khách vào phiên (dung sai tối đa 15s)
+        if (txTime < minTime - 15000) {
           return false;
         }
       }
@@ -134,6 +149,20 @@ module.exports = async (req, res) => {
     });
 
     if (matched) {
+      // Tự động ghi nhớ ID giao dịch đã khớp vào danh sách đã claim để tránh trùng lặp
+      try {
+        const fs = require('fs');
+        let ov = {};
+        if (fs.existsSync('/tmp/admin_room_overrides.json')) {
+          ov = JSON.parse(fs.readFileSync('/tmp/admin_room_overrides.json', 'utf8'));
+        }
+        ov.clearedTxs = ov.clearedTxs || [];
+        if (!ov.clearedTxs.includes(matched.id)) {
+          ov.clearedTxs.push(matched.id);
+          fs.writeFileSync('/tmp/admin_room_overrides.json', JSON.stringify(ov), 'utf8');
+        }
+      } catch(e) {}
+
       // Trích xuất số điện thoại và phòng từ nội dung giao dịch nếu có
       const content = matched.transaction_content || matched.description || '';
       const phoneMatch = content.match(/0\d{9}/);

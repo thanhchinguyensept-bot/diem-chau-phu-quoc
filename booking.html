@@ -532,17 +532,16 @@ Check-in từ <span class="font-bold text-primary">12:00</span> ngày đặt ph�
 <div class="w-full mt-space-md p-space-sm rounded-xl bg-primary text-on-primary flex items-center justify-between gap-2 shadow-sm transition-all border border-outline-variant/30" id="sepay-status-box">
   <div class="flex items-center gap-2">
     <span class="relative flex h-3 w-3 shrink-0">
-      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary-container opacity-75"></span>
-      <span class="relative inline-flex rounded-full h-3 w-3 bg-secondary-container"></span>
+      <span class="relative inline-flex rounded-full h-3 w-3 bg-secondary-container" id="sepay-status-dot"></span>
     </span>
-    <span class="font-label-sm text-label-sm text-secondary-container font-semibold animate-pulse" id="sepay-status-text" data-i18n="sepay_status_listening">
-      Cổng SePAY đang tự động kiểm tra giao dịch (2.5s)...
+    <span class="font-label-sm text-label-sm text-secondary-container font-semibold" id="sepay-status-text" data-i18n="sepay_status_idle">
+      Quý khách chuyển khoản theo VietQR rồi bấm nút bên dưới để nhận phòng tức thì.
     </span>
   </div>
-  <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-primary-container text-secondary-container border border-outline-variant/30 hidden sm:inline-block" id="sepay-poll-badge">SePAY 24/7</span>
+  <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-primary-container text-secondary-container border border-outline-variant/30 hidden sm:inline-block" id="sepay-poll-badge">VietQR SePAY</span>
 </div>
-<button id="btn-manual-verify" onclick="checkSePayNow(true)" class="w-full mt-2 py-2.5 px-3 rounded-lg bg-secondary-container hover:bg-accent-hover text-on-secondary-container font-label-md text-label-md font-bold flex items-center justify-center gap-1.5 transition-colors cursor-pointer shadow-sm active:scale-[0.99]" type="button">
-  <span class="material-symbols-outlined text-[18px]">sync</span>
+<button id="btn-manual-verify" onclick="triggerPaymentVerification()" class="w-full mt-2 py-2.5 px-3 rounded-lg bg-secondary-container hover:bg-accent-hover text-on-secondary-container font-label-md text-label-md font-bold flex items-center justify-center gap-1.5 transition-colors cursor-pointer shadow-sm active:scale-[0.99]" type="button">
+  <span class="material-symbols-outlined text-[18px]">verified</span>
   <span data-i18n="btn_manual_verify">Tôi Đã Chuyển Tiền - Kiểm Tra Ngay</span>
 </button>
 <div class="hidden p-space-sm rounded-lg bg-tertiary-fixed text-on-tertiary-fixed text-center font-label-sm text-label-sm font-bold items-center justify-center gap-1.5 animate-pulse mt-space-xs w-full shadow-sm" id="payment-success-toast">
@@ -1124,10 +1123,51 @@ Check-in từ <span class="font-bold text-primary">12:00</span> ngày đặt ph�
     }
   }
 
+  // Helper chuyển đổi chuỗi ngày giờ Việt Nam (UTC+7) sang epoch timestamp chính xác
+  function parseVNTimeToTimestamp(dateStr) {
+    if (!dateStr) return 0;
+    let s = String(dateStr).trim();
+    if (s.includes(' ')) s = s.replace(' ', 'T');
+    if (!s.includes('+') && !s.includes('Z')) s += '+07:00';
+    const t = new Date(s).getTime();
+    return isNaN(t) ? 0 : t;
+  }
+
+  // SePAY Real-time Transaction Listening & Auto Smart Pass Activation
+  let sepayPollingInterval = null;
+  let pollingTimeoutTimer = null;
+  let isPaymentProcessed = false;
+
+  function getCurrentTotalAmount() {
+    if (bookingState.stayType === 'overnight') {
+      return (bookingState.nights || 1) * (bookingState.pricePerNight || 200000);
+    } else {
+      return (bookingState.hourlyPrices && bookingState.hourlyPrices[bookingState.hourlyDuration]) || 80000;
+    }
+  }
+
   function handlePaymentSuccess(txInfo = {}) {
     if (isPaymentProcessed) return;
     isPaymentProcessed = true;
-    if (sepayPollingInterval) clearInterval(sepayPollingInterval);
+    if (sepayPollingInterval) {
+      clearInterval(sepayPollingInterval);
+      sepayPollingInterval = null;
+    }
+    if (pollingTimeoutTimer) {
+      clearTimeout(pollingTimeoutTimer);
+      pollingTimeoutTimer = null;
+    }
+
+    // Ghi nhớ ID giao dịch đã xử lý vào danh sách claimed để không bao giờ nhận lại giao dịch cũ
+    if (txInfo && txInfo.id) {
+      try {
+        let claimed = JSON.parse(localStorage.getItem('diemchau_claimed_tx_ids') || '[]');
+        if (!claimed.map(String).includes(String(txInfo.id))) {
+          claimed.push(String(txInfo.id));
+          localStorage.setItem('diemchau_claimed_tx_ids', JSON.stringify(claimed.slice(-50)));
+        }
+      } catch(e) {}
+    }
 
     const toast = document.getElementById('payment-success-toast');
     const smartPass = document.getElementById('smart-pass-section');
@@ -1234,20 +1274,51 @@ Check-in từ <span class="font-bold text-primary">12:00</span> ngày đặt ph�
     handlePaymentSuccess({ id: 'SIMULATED-' + Date.now(), amount: getCurrentTotalAmount() });
   }
 
+  // Khởi động đối soát thanh toán khi khách chủ động bấm "Tôi Đã Chuyển Tiền"
+  function triggerPaymentVerification() {
+    const cleanPhone = (bookingState.phone || '').replace(/\s+/g, '');
+    const isEn = (localStorage.getItem('diemchau_language') || 'vi') === 'en';
+
+    if (cleanPhone.length < 10) {
+      alert(isEn 
+        ? 'Please enter your 10-digit phone number in Step 4 before verifying payment.' 
+        : 'Quý khách vui lòng nhập đầy đủ 10 số điện thoại ở Bước 4 trước khi kiểm tra chuyển khoản.');
+      const pInput = document.getElementById('customer-phone-input');
+      if (pInput) {
+        pInput.focus();
+        pInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+      return;
+    }
+
+    // Cập nhật mốc thời gian bắt đầu kiểm tra giao dịch: Khách phải chuyển khoản sau thời điểm này
+    bookingState.sessionStartedAt = new Date().toISOString();
+
+    const statusText = document.getElementById('sepay-status-text');
+    if (statusText) {
+      statusText.innerHTML = isEn 
+        ? `Connecting to SePAY to verify payment for ${cleanPhone}...`
+        : `Đang kết nối SePAY để đối soát chuyển khoản số ${cleanPhone}...`;
+    }
+
+    checkSePayNow(true);
+    startSePayPolling();
+  }
+
   // Real-time SePAY Polling Engine (V2 API + Vercel Serverless)
   async function checkSePayNow(isManual = false) {
     if (isPaymentProcessed) return;
 
     const cleanPhone = (bookingState.phone || '').replace(/\s+/g, '');
-    if (cleanPhone.length < 10) {
-      if (isManual) {
-        alert('Quý khách vui lòng nhập đầy đủ 10 số điện thoại để hệ thống đối soát giao dịch chuyển khoản.');
-      }
-      return;
-    }
+    if (cleanPhone.length < 10) return;
 
     const totalAmount = getCurrentTotalAmount();
     const memoCode = `DIEMCHAU P${bookingState.roomId} ${cleanPhone}`;
+
+    let claimedIds = [];
+    try {
+      claimedIds = JSON.parse(localStorage.getItem('diemchau_claimed_tx_ids') || '[]');
+    } catch(e) {}
 
     const manualBtn = document.getElementById('btn-manual-verify');
     if (isManual && manualBtn) {
@@ -1257,7 +1328,10 @@ Check-in từ <span class="font-bold text-primary">12:00</span> ngày đặt ph�
 
     try {
       // 1. Call Vercel Serverless API with strict phone, room and session time check
-      const apiUrl = `/api/check-payment?amount=${totalAmount}&memo=${encodeURIComponent(memoCode)}&room=${bookingState.roomId}&phone=${cleanPhone}&after=${encodeURIComponent(bookingState.sessionStartedAt || '')}`;
+      const afterParam = encodeURIComponent(bookingState.sessionStartedAt || new Date().toISOString());
+      const excludeParam = encodeURIComponent(claimedIds.join(','));
+      const apiUrl = `/api/check-payment?amount=${totalAmount}&memo=${encodeURIComponent(memoCode)}&room=${bookingState.roomId}&phone=${cleanPhone}&after=${afterParam}&exclude=${excludeParam}`;
+      
       const res = await fetch(apiUrl);
       if (res.ok) {
         const data = await res.json();
@@ -1279,16 +1353,19 @@ Check-in từ <span class="font-bold text-primary">12:00</span> ngày đặt ph�
         const directData = await directRes.json();
         const txs = directData.data || [];
         const matched = txs.find(t => {
+          // Bỏ qua giao dịch đã dùng
+          if (claimedIds.map(String).includes(String(t.id))) return false;
+
           const amt = parseInt(t.amount_in || t.amount || 0, 10);
           if (amt <= 0) return false;
           const isAmtMatch = Math.abs(amt - totalAmount) < 1000;
           if (!isAmtMatch) return false;
 
-          // Check transaction time vs session start time
+          // Check transaction time vs session start time (Chuẩn múi giờ VN UTC+7)
           if (bookingState.sessionStartedAt && t.transaction_date) {
-            const txTime = new Date(t.transaction_date).getTime();
-            const minTime = new Date(bookingState.sessionStartedAt).getTime();
-            if (txTime < minTime - 60000) return false;
+            const txTime = parseVNTimeToTimestamp(t.transaction_date);
+            const minTime = parseVNTimeToTimestamp(bookingState.sessionStartedAt);
+            if (txTime < minTime - 15000) return false;
           }
 
           const cnt = (t.transaction_content || t.description || '').replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
@@ -1316,32 +1393,39 @@ Check-in từ <span class="font-bold text-primary">12:00</span> ngày đặt ph�
       }
 
       if (isManual) {
-        alert('Chưa thấy biến động số dư khớp với đơn phòng hiện tại. Quý khách vui lòng đợi trong giây lát hoặc kiểm tra lại thông tin chuyển khoản.');
+        alert('Hệ thống chưa tìm thấy giao dịch chuyển khoản mới khớp với đơn phòng này. Quý khách vui lòng kiểm tra xem tài khoản đã trừ tiền chưa hoặc đợi thêm 10-20 giây.');
       }
     } catch (err) {
       console.warn('Lỗi kiểm tra SePAY:', err);
     } finally {
       if (isManual && manualBtn && !isPaymentProcessed) {
         manualBtn.disabled = false;
-        manualBtn.innerHTML = `<span class="material-symbols-outlined text-[18px]">sync</span> <span data-i18n="btn_manual_verify">Tôi Đã Chuyển Tiền - Kiểm Tra Ngay</span>`;
+        manualBtn.innerHTML = `<span class="material-symbols-outlined text-[18px]">verified</span> <span data-i18n="btn_manual_verify">Tôi Đã Chuyển Tiền - Kiểm Tra Ngay</span>`;
       }
     }
   }
 
   function startSePayPolling() {
-    const cleanPhone = (bookingState.phone || '').replace(/\s+/g, '');
-    if (cleanPhone.length < 10) {
+    if (isPaymentProcessed) return;
+    if (sepayPollingInterval) clearInterval(sepayPollingInterval);
+    if (pollingTimeoutTimer) clearTimeout(pollingTimeoutTimer);
+
+    // Quét mỗi 3s một lần
+    sepayPollingInterval = setInterval(() => {
+      checkSePayNow(false);
+    }, 3000);
+
+    // Tự động dừng polling sau 3 phút nếu chưa có thanh toán
+    pollingTimeoutTimer = setTimeout(() => {
       if (sepayPollingInterval) {
         clearInterval(sepayPollingInterval);
         sepayPollingInterval = null;
       }
-      return;
-    }
-    if (sepayPollingInterval) clearInterval(sepayPollingInterval);
-    checkSePayNow(false);
-    sepayPollingInterval = setInterval(() => {
-      checkSePayNow(false);
-    }, 3000);
+      const statusText = document.getElementById('sepay-status-text');
+      if (statusText && !isPaymentProcessed) {
+        statusText.innerHTML = 'Đã tạm dừng kiểm tra tự động. Quý khách có thể bấm nút bên dưới để kiểm tra lại.';
+      }
+    }, 180000);
   }
 
   // Sync Room Availability with Admin State
@@ -1607,20 +1691,11 @@ Check-in từ <span class="font-bold text-primary">12:00</span> ngày đặt ph�
       });
     });
 
-    // Phone input
+    // Phone input (Chỉ cập nhật số điện thoại và giao diện, KHÔNG tự động quét SePAY khi đang gõ)
     if (phoneInput) {
       phoneInput.addEventListener('input', (e) => {
         bookingState.phone = e.target.value;
         updateBookingView();
-        const clean = (bookingState.phone || '').replace(/\s+/g, '');
-        if (clean.length >= 10) {
-          startSePayPolling();
-        } else {
-          if (sepayPollingInterval) {
-            clearInterval(sepayPollingInterval);
-            sepayPollingInterval = null;
-          }
-        }
       });
     }
 
