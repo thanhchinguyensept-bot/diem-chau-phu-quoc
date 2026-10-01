@@ -35,20 +35,20 @@
 <!-- Quick Room Availability Tracker Bar -->
 <div class="mt-space-xl pt-space-md grid grid-cols-2 sm:grid-cols-4 gap-space-sm bg-primary/30 p-space-sm rounded-xl backdrop-blur-sm">
 <div class="flex items-center gap-space-xs px-space-sm py-space-xs">
-<span class="w-2.5 h-2.5 rounded-full bg-[#10B981] animate-pulse"></span>
-<span class="font-label-sm text-label-sm text-on-primary">P.101: Sẵn sàng</span>
+<span id="tracker-dot-101" class="w-2.5 h-2.5 rounded-full bg-[#10B981] animate-pulse"></span>
+<span id="tracker-text-101" class="font-label-sm text-label-sm text-on-primary">P.101: Sẵn sàng</span>
 </div>
 <div class="flex items-center gap-space-xs px-space-sm py-space-xs">
-<span class="w-2.5 h-2.5 rounded-full bg-[#10B981] animate-pulse"></span>
-<span class="font-label-sm text-label-sm text-on-primary">P.102: Sẵn sàng</span>
+<span id="tracker-dot-102" class="w-2.5 h-2.5 rounded-full bg-[#10B981] animate-pulse"></span>
+<span id="tracker-text-102" class="font-label-sm text-label-sm text-on-primary">P.102: Sẵn sàng</span>
 </div>
 <div class="flex items-center gap-space-xs px-space-sm py-space-xs">
-<span class="w-2.5 h-2.5 rounded-full bg-status-danger"></span>
-<span class="font-label-sm text-label-sm text-on-primary-container">P.103: Đang phục vụ</span>
+<span id="tracker-dot-103" class="w-2.5 h-2.5 rounded-full bg-[#10B981] animate-pulse"></span>
+<span id="tracker-text-103" class="font-label-sm text-label-sm text-on-primary">P.103: Sẵn sàng</span>
 </div>
 <div class="flex items-center gap-space-xs px-space-sm py-space-xs">
-<span class="w-2.5 h-2.5 rounded-full bg-[#10B981] animate-pulse"></span>
-<span class="font-label-sm text-label-sm text-on-primary">P.104: Sẵn sàng</span>
+<span id="tracker-dot-104" class="w-2.5 h-2.5 rounded-full bg-[#10B981] animate-pulse"></span>
+<span id="tracker-text-104" class="font-label-sm text-label-sm text-on-primary">P.104: Sẵn sàng</span>
 </div>
 </div>
 </div>
@@ -168,7 +168,7 @@
 <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Quiet and pristine boutique motel bedroom in Phu Quoc with deep blue feature wall, crisp white bedding, ambient wall sconces, modern clean floor, modern smart lock on entryway, spotless and hygienic hospitality standard." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCThMSe9tdlm1XFbDmiA12KMnyl6Koe1BFBil-gZJRP35UUO5-Mibpa32fbxcaR2aFfPiU3XSpETBR4LxcPcEtGZUJtLDLUYd-L2-QBuV5DpxvVWSkXGDWh6LcJmeh1cSsKoLeen22a4gXItN_6tZnTLX2xTDmlz80dmm6lAH911noENt7mIXmhW6oyCJOCreUj-812A3EpI6qiPlaO1mi527HQXHkF-RB2JXM_B1fPHJDiC5ZnlIOs"/>
 <div class="absolute inset-0 bg-gradient-to-t from-primary-container/70 via-transparent to-transparent lg:hidden"></div>
 <!-- Status Badge -->
-<div class="absolute top-space-md left-space-md flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#10B981] text-on-primary shadow-sm">
+<div id="room-catalog-badge-102" class="absolute top-space-md left-space-md flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#10B981] text-on-primary shadow-sm transition-all">
 <span class="w-2 h-2 rounded-full bg-white animate-ping"></span>
 <span class="font-label-sm text-label-sm font-semibold tracking-wide">Phòng Trống</span>
 </div>
@@ -254,7 +254,7 @@
 <span class="material-symbols-outlined text-[18px] text-[#10B981]">verified</span>
 <span class="font-body-sm text-body-sm">Khóa số thông minh nhận phòng ngay</span>
 </div>
-<a class="room-booking-btn w-full sm:w-auto inline-flex items-center justify-center gap-2 h-12 px-space-xl rounded-xl bg-secondary-container hover:bg-accent-hover text-on-secondary-container hover:text-on-primary font-label-md text-label-md transition-all shadow-[0_4px_12px_rgba(253,205,116,0.35)]" href="booking.html?room=102">
+<a id="room-catalog-btn-102" class="room-booking-btn w-full sm:w-auto inline-flex items-center justify-center gap-2 h-12 px-space-xl rounded-xl bg-secondary-container hover:bg-accent-hover text-on-secondary-container hover:text-on-primary font-label-md text-label-md transition-all shadow-[0_4px_12px_rgba(253,205,116,0.35)] cursor-pointer" href="booking.html?room=102">
 <span class="material-symbols-outlined text-[20px]">meeting_room</span>
                   ĐẶT PHÒNG NÀY
                 </a>
@@ -263,20 +263,20 @@
 </div>
 </div>
 </article>
-<!-- ROOM CARD 3: PHÒNG 103 (Đang Sử Dụng) -->
+<!-- ROOM CARD 3: PHÒNG 103 -->
 <article class="bg-surface-container-lowest rounded-2xl shadow-[0_12px_28px_-4px_rgba(27,58,75,0.08)] overflow-hidden transition-all duration-300 hover:shadow-[0_20px_35px_-4px_rgba(27,58,75,0.12)]">
 <div class="grid grid-cols-1 lg:grid-cols-12 min-h-[460px]">
 <!-- Visual Column -->
 <div class="lg:col-span-5 relative min-h-[260px] lg:min-h-full overflow-hidden group">
 <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Cozy boutique motel room in Duong Dong Phu Quoc with comfortable queen size bed, plush duvet, warmly illuminated reading lamps, spotless tiled bathroom visible through open door, soft private ambiance." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBk04Us1WeGDHlkRr44B0QJL488OVmkCCtZVhQZ3BreqT6Mz0uGHPjvuMcjpBAgjJ1V_2k4FCVYNf5cAHFuLxFqN-d2PfQIS0DNHKjLaOALQM8uyZUynI6Ss4pg4_78eeLp1pZBLdqXVAcYX5iuXkUopij1tVdFgUn4Y6f2JjdcAXFuAn_GTcfEWZs5YIfD8_HzKIKLFziO-0_sLvur_Mn9LcOe99SfqhXEVqVimeAiQGnuhAOzoCL1"/>
-<div class="absolute inset-0 bg-primary-container/40"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-primary-container/70 via-transparent to-transparent lg:hidden"></div>
 <!-- Status Badge: Room 103 -->
-<div id="room-catalog-badge-103" class="absolute top-space-md left-space-md flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-secondary-container text-on-secondary-container shadow-sm transition-all">
-<span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
-<span class="font-label-sm text-label-sm font-semibold tracking-wide">Đang Dọn Dẹp (Buffer 2h)</span>
+<div id="room-catalog-badge-103" class="absolute top-space-md left-space-md flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#10B981] text-on-primary shadow-sm transition-all">
+<span class="w-2 h-2 rounded-full bg-white animate-ping"></span>
+<span class="font-label-sm text-label-sm font-semibold tracking-wide">Phòng Trống</span>
 </div>
 <div class="absolute bottom-space-md left-space-md lg:bottom-space-lg lg:left-space-lg px-2.5 py-1 rounded-lg bg-primary-container/80 backdrop-blur-md text-on-primary font-label-sm text-label-sm">
-              Tầng Trệt • Dự kiến trống lúc 14:00
+              Tầng Trệt • Cửa khóa điện tử
             </div>
 </div>
 <!-- Content Column -->
@@ -354,11 +354,11 @@
 </div>
 <div class="flex flex-col sm:flex-row items-center justify-between gap-space-sm">
 <div class="flex items-center gap-space-xs text-text-muted">
-<span class="material-symbols-outlined text-[18px] text-secondary">schedule</span>
-<span class="font-body-sm text-body-sm">Có thể đặt trước cho khung giờ sau</span>
+<span class="material-symbols-outlined text-[18px] text-[#10B981]">verified</span>
+<span class="font-body-sm text-body-sm">Khóa số thông minh nhận phòng ngay</span>
 </div>
-<a id="room-catalog-btn-103" class="room-booking-btn w-full sm:w-auto inline-flex items-center justify-center gap-2 h-12 px-space-xl rounded-xl bg-secondary-container hover:bg-accent-hover text-on-secondary-container hover:text-on-primary font-label-md text-label-md transition-all shadow-[0_4px_12px_rgba(253,205,116,0.35)]" href="booking.html?room=103">
-<span class="material-symbols-outlined text-[20px]">calendar_month</span>
+<a id="room-catalog-btn-103" class="room-booking-btn w-full sm:w-auto inline-flex items-center justify-center gap-2 h-12 px-space-xl rounded-xl bg-secondary-container hover:bg-accent-hover text-on-secondary-container hover:text-on-primary font-label-md text-label-md transition-all shadow-[0_4px_12px_rgba(253,205,116,0.35)] cursor-pointer" href="booking.html?room=103">
+<span class="material-symbols-outlined text-[20px]">meeting_room</span>
                   ĐẶT PHÒNG NÀY
                 </a>
 </div>
@@ -374,7 +374,7 @@
 <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Wide angle shot of modern clean boutique hotel bedroom in Phu Quoc showing a spotless double queen bed, warm wooden nightstands with bottles of fresh water, subtle recessed ceiling lighting, private bathroom door, quiet peaceful atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD3pbYvpLHv2bi1W9_KEq5KrOy9ZHHMaiGWBy5J2SjK0bKh6DpA4wn610gIwb-Qc6jTJQpR77ZsKG_kZEkRzLLTMIj0rEzGXeqql7DVFJXbbZACXJcOb-1gP4xXp-5UwFRpuP-mTsSnftvSm1_0H_glLQ5Y5hYu95xgFgZKSfrV8KJCRTPWe8Y3r1Fgog_IC-f1vI9JA3KRyRjvcFBLZuqCRN-xe4L6fs48ldbi6ZajUUaOHuVyBEAC"/>
 <div class="absolute inset-0 bg-gradient-to-t from-primary-container/70 via-transparent to-transparent lg:hidden"></div>
 <!-- Status Badge -->
-<div class="absolute top-space-md left-space-md flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#10B981] text-on-primary shadow-sm">
+<div id="room-catalog-badge-104" class="absolute top-space-md left-space-md flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#10B981] text-on-primary shadow-sm transition-all">
 <span class="w-2 h-2 rounded-full bg-white animate-ping"></span>
 <span class="font-label-sm text-label-sm font-semibold tracking-wide">Phòng Trống</span>
 </div>
@@ -460,7 +460,7 @@
 <span class="material-symbols-outlined text-[18px] text-[#10B981]">verified</span>
 <span class="font-body-sm text-body-sm">Khóa số thông minh nhận phòng ngay</span>
 </div>
-<a class="room-booking-btn w-full sm:w-auto inline-flex items-center justify-center gap-2 h-12 px-space-xl rounded-xl bg-secondary-container hover:bg-accent-hover text-on-secondary-container hover:text-on-primary font-label-md text-label-md transition-all shadow-[0_4px_12px_rgba(253,205,116,0.35)]" href="booking.html?room=104">
+<a id="room-catalog-btn-104" class="room-booking-btn w-full sm:w-auto inline-flex items-center justify-center gap-2 h-12 px-space-xl rounded-xl bg-secondary-container hover:bg-accent-hover text-on-secondary-container hover:text-on-primary font-label-md text-label-md transition-all shadow-[0_4px_12px_rgba(253,205,116,0.35)] cursor-pointer" href="booking.html?room=104">
 <span class="material-symbols-outlined text-[20px]">meeting_room</span>
                   ĐẶT PHÒNG NÀY
                 </a>
@@ -556,71 +556,64 @@
       if (stored) rooms = JSON.parse(stored);
     } catch(e) { console.error(e); }
 
-    if (!rooms) return;
+    const isEn = (localStorage.getItem('diemchau_language') || 'vi') === 'en';
 
-    // Room 101
-    const badge101 = document.getElementById('room-catalog-badge-101');
-    const btn101 = document.getElementById('room-catalog-btn-101');
-    const r101 = rooms[101];
-    if (r101) {
-      if (r101.status === 'locked') {
-        if (badge101) {
-          badge101.className = 'absolute top-space-md left-space-md flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-status-danger text-on-primary shadow-sm';
-          badge101.innerHTML = '<span class="material-symbols-outlined text-[14px]">lock</span><span class="font-label-sm text-label-sm font-semibold tracking-wide">Đang Tạm Khóa</span>';
+    [101, 102, 103, 104].forEach(id => {
+      const badge = document.getElementById(`room-catalog-badge-${id}`);
+      const btn = document.getElementById(`room-catalog-btn-${id}`);
+      const trackerDot = document.getElementById(`tracker-dot-${id}`);
+      const trackerText = document.getElementById(`tracker-text-${id}`);
+      const r = rooms ? rooms[id] : null;
+      const isLocked = r && (r.status === 'locked' || r.status === 'occupied');
+
+      if (isLocked) {
+        if (badge) {
+          badge.className = 'absolute top-space-md left-space-md flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-status-danger text-on-primary shadow-sm transition-all';
+          badge.innerHTML = `<span class="material-symbols-outlined text-[14px]">lock</span><span class="font-label-sm text-label-sm font-semibold tracking-wide">${isEn ? 'Locked' : 'Đang Tạm Khóa'}</span>`;
         }
-        if (btn101) {
-          btn101.className = 'room-booking-btn w-full sm:w-auto inline-flex items-center justify-center gap-2 h-12 px-space-xl rounded-xl bg-surface-container text-text-muted font-label-md text-label-md transition-all cursor-not-allowed';
-          btn101.innerHTML = '<span class="material-symbols-outlined text-[20px]">lock</span> TẠM KHÓA';
-          btn101.href = 'javascript:void(0)';
+        if (btn) {
+          btn.className = 'room-booking-btn w-full sm:w-auto inline-flex items-center justify-center gap-2 h-12 px-space-xl rounded-xl bg-surface-container text-text-muted font-label-md text-label-md transition-all cursor-not-allowed';
+          btn.innerHTML = `<span class="material-symbols-outlined text-[20px]">lock</span> ${isEn ? 'LOCKED' : 'TẠM KHÓA'}`;
+          btn.href = 'javascript:void(0)';
+          btn.onclick = () => alert(isEn ? `Room ${id} is temporarily locked by administrator.` : `Phòng ${id} hiện đang được quản trị viên tạm khóa.`);
+        }
+        if (trackerDot) {
+          trackerDot.className = 'w-2.5 h-2.5 rounded-full bg-status-danger';
+        }
+        if (trackerText) {
+          trackerText.className = 'font-label-sm text-label-sm text-on-primary-container';
+          trackerText.textContent = `P.${id}: ${isEn ? 'Locked' : 'Đã khóa'}`;
         }
       } else {
-        if (badge101) {
-          badge101.className = 'absolute top-space-md left-space-md flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#10B981] text-on-primary shadow-sm';
-          badge101.innerHTML = '<span class="w-2 h-2 rounded-full bg-white animate-ping"></span><span class="font-label-sm text-label-sm font-semibold tracking-wide">Phòng Trống</span>';
+        if (badge) {
+          badge.className = 'absolute top-space-md left-space-md flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#10B981] text-on-primary shadow-sm transition-all';
+          badge.innerHTML = `<span class="w-2 h-2 rounded-full bg-white animate-ping"></span><span class="font-label-sm text-label-sm font-semibold tracking-wide">${isEn ? 'Available' : 'Phòng Trống'}</span>`;
         }
-        if (btn101) {
-          btn101.className = 'room-booking-btn w-full sm:w-auto inline-flex items-center justify-center gap-2 h-12 px-space-xl rounded-xl bg-secondary-container hover:bg-accent-hover text-on-secondary-container hover:text-on-primary font-label-md text-label-md transition-all shadow-[0_4px_12px_rgba(253,205,116,0.35)] cursor-pointer';
-          btn101.innerHTML = '<span class="material-symbols-outlined text-[20px]">meeting_room</span> ĐẶT PHÒNG NÀY';
-          btn101.href = 'booking.html?room=101';
+        if (btn) {
+          btn.className = 'room-booking-btn w-full sm:w-auto inline-flex items-center justify-center gap-2 h-12 px-space-xl rounded-xl bg-secondary-container hover:bg-accent-hover text-on-secondary-container hover:text-on-primary font-label-md text-label-md transition-all shadow-[0_4px_12px_rgba(253,205,116,0.35)] cursor-pointer';
+          btn.innerHTML = `<span class="material-symbols-outlined text-[20px]">meeting_room</span> ${isEn ? 'BOOK THIS ROOM' : 'ĐẶT PHÒNG NÀY'}`;
+          btn.href = `booking.html?room=${id}`;
+          btn.onclick = null;
         }
-      }
-    }
-
-    // Room 103
-    const badge103 = document.getElementById('room-catalog-badge-103');
-    const btn103 = document.getElementById('room-catalog-btn-103');
-    const r103 = rooms[103];
-    if (r103) {
-      if (r103.status === 'available') {
-        if (badge103) {
-          badge103.className = 'absolute top-space-md left-space-md flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#10B981] text-on-primary shadow-sm';
-          badge103.innerHTML = '<span class="w-2 h-2 rounded-full bg-white animate-ping"></span><span class="font-label-sm text-label-sm font-semibold tracking-wide">Phòng Trống</span>';
+        if (trackerDot) {
+          trackerDot.className = 'w-2.5 h-2.5 rounded-full bg-[#10B981] animate-pulse';
         }
-        if (btn103) {
-          btn103.className = 'room-booking-btn w-full sm:w-auto inline-flex items-center justify-center gap-2 h-12 px-space-xl rounded-xl bg-secondary-container hover:bg-accent-hover text-on-secondary-container hover:text-on-primary font-label-md text-label-md transition-all shadow-[0_4px_12px_rgba(253,205,116,0.35)] cursor-pointer';
-          btn103.innerHTML = '<span class="material-symbols-outlined text-[20px]">meeting_room</span> ĐẶT PHÒNG NÀY';
-          btn103.href = 'booking.html?room=103';
-        }
-      } else {
-        if (badge103) {
-          badge103.className = 'absolute top-space-md left-space-md flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-secondary-container text-on-secondary-container shadow-sm';
-          badge103.innerHTML = `<span class="material-symbols-outlined text-[14px]">sanitizer</span><span class="font-label-sm text-label-sm font-semibold tracking-wide">Dọn UV (${r103.cleaningUntil || '2h'})</span>`;
-        }
-        if (btn103) {
-          btn103.className = 'room-booking-btn w-full sm:w-auto inline-flex items-center justify-center gap-2 h-12 px-space-xl rounded-xl bg-secondary-container/60 hover:bg-secondary-container text-on-secondary-container font-label-md text-label-md transition-all cursor-pointer';
-          btn103.innerHTML = '<span class="material-symbols-outlined text-[20px]">calendar_month</span> ĐẶT TRƯỚC GIỜ SAU';
-          btn103.href = 'booking.html?room=103';
+        if (trackerText) {
+          trackerText.className = 'font-label-sm text-label-sm text-on-primary';
+          trackerText.textContent = `P.${id}: ${isEn ? 'Available' : 'Sẵn sàng'}`;
         }
       }
-    }
+    });
   }
 
+  window.addEventListener('languageChanged', syncRoomsPage);
   window.addEventListener('storage', (e) => {
-    if (e.key === 'diemchau_rooms_state') syncRoomsPage();
+    if (e.key === 'diemchau_rooms_state' || e.key === 'diemchau_language') syncRoomsPage();
   });
   window.addEventListener('message', (e) => {
     if (e.data && e.data.type === 'ROOMS_STATE_UPDATED') syncRoomsPage();
   });
+  setInterval(syncRoomsPage, 1500);
   document.addEventListener('DOMContentLoaded', syncRoomsPage);
 })();
 </script>

@@ -121,8 +121,8 @@
         1. Tổng Quan &amp; KPI
       </button>
 <button class="admin-tab-btn flex items-center gap-2 px-space-md py-2.5 rounded-xl font-label-md text-label-md text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all" id="nav-tab-rooms" onclick="switchTab('tab-rooms')">
-<span class="material-symbols-outlined text-[20px]">meeting_room</span>
-        2. Quản Lý Phòng (101-104)
+<span class="material-symbols-outlined text-[20px]">admin_panel_settings</span>
+        2. Quản Trị Cấp Cao (Khóa &amp; Mở 4 Phòng)
       </button>
 <button class="admin-tab-btn flex items-center gap-2 px-space-md py-2.5 rounded-xl font-label-md text-label-md text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all" id="nav-tab-sepay" onclick="switchTab('tab-sepay')">
 <span class="material-symbols-outlined text-[20px]">sync_alt</span>
@@ -294,40 +294,40 @@
 <div class="p-space-sm bg-surface-container-low rounded-xl flex flex-col justify-between">
 <div class="flex items-center justify-between">
 <span class="font-label-md text-label-md font-bold text-primary">P.101</span>
-<span id="overview-mini-dot-101" class="w-2 h-2 rounded-full bg-status-danger"></span>
+<span id="overview-mini-dot-101" class="w-2 h-2 rounded-full bg-[#10B981]"></span>
 </div>
 <div class="mt-2">
-<span id="overview-mini-badge-101" class="inline-block bg-status-danger/10 text-status-danger font-label-sm text-label-sm font-semibold px-2 py-0.5 rounded-md">Đang ở</span>
-<p class="font-code-ticket text-[18px] text-primary mt-1">PIN: 7633</p>
+<span id="overview-mini-badge-101" class="inline-block bg-[#10B981]/10 text-[#10B981] font-label-sm text-label-sm font-semibold px-2 py-0.5 rounded-md">Phòng trống</span>
+<p class="font-code-ticket text-[18px] text-text-muted mt-1">Chờ: 7633</p>
 </div>
 </div>
 <div class="p-space-sm bg-surface-container-low rounded-xl flex flex-col justify-between">
 <div class="flex items-center justify-between">
 <span class="font-label-md text-label-md font-bold text-primary">P.102</span>
-<span class="w-2 h-2 rounded-full bg-on-tertiary-container"></span>
+<span id="overview-mini-dot-102" class="w-2 h-2 rounded-full bg-[#10B981]"></span>
 </div>
 <div class="mt-2">
-<span class="inline-block bg-tertiary-container/20 text-on-tertiary-container font-label-sm text-label-sm font-semibold px-2 py-0.5 rounded-md">Phòng trống</span>
+<span id="overview-mini-badge-102" class="inline-block bg-[#10B981]/10 text-[#10B981] font-label-sm text-label-sm font-semibold px-2 py-0.5 rounded-md">Phòng trống</span>
 <p class="font-code-ticket text-[18px] text-text-muted mt-1">Chờ: 8192</p>
 </div>
 </div>
 <div class="p-space-sm bg-surface-container-low rounded-xl flex flex-col justify-between">
 <div class="flex items-center justify-between">
 <span class="font-label-md text-label-md font-bold text-primary">P.103</span>
-<span id="overview-mini-dot-103" class="w-2 h-2 rounded-full bg-secondary"></span>
+<span id="overview-mini-dot-103" class="w-2 h-2 rounded-full bg-[#10B981]"></span>
 </div>
 <div class="mt-2">
-<span id="overview-mini-badge-103" class="inline-block bg-secondary-fixed/50 text-secondary font-label-sm text-label-sm font-semibold px-2 py-0.5 rounded-md">Đang dọn UV</span>
-<p class="font-label-sm text-label-sm text-text-muted mt-1">Buffer: 18:30</p>
+<span id="overview-mini-badge-103" class="inline-block bg-[#10B981]/10 text-[#10B981] font-label-sm text-label-sm font-semibold px-2 py-0.5 rounded-md">Phòng trống</span>
+<p class="font-code-ticket text-[18px] text-text-muted mt-1">Chờ: 3819</p>
 </div>
 </div>
 <div class="p-space-sm bg-surface-container-low rounded-xl flex flex-col justify-between">
 <div class="flex items-center justify-between">
 <span class="font-label-md text-label-md font-bold text-primary">P.104</span>
-<span class="w-2 h-2 rounded-full bg-on-tertiary-container"></span>
+<span id="overview-mini-dot-104" class="w-2 h-2 rounded-full bg-[#10B981]"></span>
 </div>
 <div class="mt-2">
-<span class="inline-block bg-tertiary-container/20 text-on-tertiary-container font-label-sm text-label-sm font-semibold px-2 py-0.5 rounded-md">Phòng trống</span>
+<span id="overview-mini-badge-104" class="inline-block bg-[#10B981]/10 text-[#10B981] font-label-sm text-label-sm font-semibold px-2 py-0.5 rounded-md">Phòng trống</span>
 <p class="font-code-ticket text-[18px] text-text-muted mt-1">Chờ: 4529</p>
 </div>
 </div>
@@ -339,12 +339,12 @@
 </div>
 </div>
 </div>
-<!-- TAB 2: QUẢN LÝ 4 PHÒNG (101 - 104) -->
+<!-- TAB 2: QUẢN TRỊ CẤP CAO (QUẢN LÝ & KHÓA 4 PHÒNG) -->
 <div class="admin-tab-pane hidden flex flex-col gap-space-lg" id="tab-rooms">
 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm">
 <div>
-<h2 class="font-headline-md text-headline-md text-primary">Bảng Điều Khiển Cụm 4 Phòng Thông Minh</h2>
-<p class="font-body-sm text-body-sm text-text-muted">Kiểm soát mã PIN TTLock trực tiếp, trạng thái dọn buồng phòng và ngắt nguồn khẩn cấp</p>
+<h2 class="font-headline-md text-headline-md text-primary">Bảng Điều Khiển Quản Trị Cấp Cao (4 Phòng Thông Minh)</h2>
+<p class="font-body-sm text-body-sm text-text-muted">Kiểm soát trực tiếp ổ khóa 4 phòng (Khóa đỏ = Dừng đón khách • Khóa xanh = Mở đón khách) đồng bộ thời gian thực với trang đặt phòng</p>
 </div>
 <div class="flex flex-wrap items-center gap-2">
   <button onclick="openTelegramModal()" type="button" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-primary text-secondary-container hover:bg-primary-container text-label-sm font-label-sm font-semibold transition-all shadow-sm cursor-pointer border border-secondary-container/40">
@@ -360,43 +360,42 @@
   </span>
 </div>
 </div>
-<!-- Grid 4 Card Phòng Theo Spec mục 3 -->
+
+<!-- Grid 4 Card Phòng Quản Trị Cấp Cao -->
 <div class="grid grid-cols-1 md:grid-cols-2 gap-space-md">
-<!-- PHÒNG 101: Tương Tác Khóa & Trạng Thái -->
+<!-- PHÒNG 101 -->
 <div id="admin-card-101" class="bg-surface-container-lowest rounded-2xl p-space-lg shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow relative overflow-hidden">
 <div class="flex items-start justify-between">
 <div class="flex items-center gap-space-sm">
-<div id="room-101-num-badge" class="w-12 h-12 rounded-xl bg-status-danger/10 text-status-danger flex items-center justify-center font-bold text-headline-sm transition-all">
-              101
-            </div>
+<div id="room-101-num-badge" class="w-12 h-12 rounded-xl bg-tertiary-fixed/30 text-on-tertiary-fixed flex items-center justify-center font-bold text-headline-sm transition-all">
+  101
+</div>
 <div>
 <div class="flex items-center gap-2">
-<h4 class="font-headline-sm text-headline-sm text-primary">Phòng King Tầng 1</h4>
-<span id="room-101-status-badge" class="bg-status-danger text-on-primary font-label-sm text-label-sm px-2.5 py-0.5 rounded-full flex items-center gap-1 transition-all">
-<span class="w-1.5 h-1.5 rounded-full bg-on-primary"></span> Locked (Đang Khóa)
-                </span>
+<h4 class="font-headline-sm text-headline-sm text-primary">Phòng 101 (Deluxe Queen)</h4>
+<span id="room-101-status-badge" class="bg-tertiary-container text-on-tertiary-container font-label-sm text-label-sm px-2.5 py-0.5 rounded-full flex items-center gap-1 font-semibold transition-all">
+  <span class="w-1.5 h-1.5 rounded-full bg-tertiary-fixed"></span> Available
+</span>
 </div>
-<p id="room-101-subtext" class="font-body-sm text-body-sm text-text-muted mt-0.5">Khóa an toàn đang đóng • <strong class="text-status-danger">Bấm ổ khóa đỏ bên cạnh để mở sang Available</strong></p>
+<p id="room-101-subtext" class="font-body-sm text-body-sm text-text-muted mt-0.5"><span class="text-[#10B981] font-semibold flex items-center gap-1"><span class="material-symbols-outlined text-[15px]">check_circle</span> Sẵn sàng đón khách (Ổ khóa đã mở xanh)</span></p>
 </div>
 </div>
-<button id="room-101-lock-btn" type="button" onclick="toggleRoomLock(101)" title="Bấm để Chuyển Đổi Khóa Đỏ / Mở Khóa Xanh (Available)" class="p-2.5 rounded-2xl bg-status-danger/10 hover:bg-status-danger/20 transition-all cursor-pointer hover:scale-110 flex items-center justify-center shadow-sm">
-  <span id="room-101-lock-icon" class="material-symbols-outlined text-status-danger text-[30px] transition-all">lock</span>
+<button id="room-101-lock-btn" type="button" onclick="toggleRoomLock(101)" title="Bấm để Chuyển Đổi Khóa Đỏ / Mở Khóa Xanh (Available)" class="p-2.5 rounded-2xl bg-[#10B981]/10 hover:bg-[#10B981]/20 transition-all cursor-pointer hover:scale-110 flex items-center justify-center shadow-sm">
+  <span id="room-101-lock-icon" class="material-symbols-outlined text-[28px] text-[#10B981] transition-all">lock_open</span>
 </button>
 </div>
 <div id="room-101-body" class="my-space-md p-space-md bg-surface-container-low rounded-xl flex flex-col gap-2 transition-all">
 <div class="flex items-center justify-between">
-<span class="font-label-sm text-label-sm text-text-muted">Tình trạng buồng phòng:</span>
-<span class="font-label-md text-label-md text-status-danger font-bold flex items-center gap-1">
-  <span class="material-symbols-outlined text-[16px]">lock</span> Đang Khóa An Toàn
-</span>
+  <span class="font-label-sm text-label-sm text-text-muted">Mã PIN Dự Phòng Sẵn Sàng:</span>
+  <span class="font-code-ticket text-headline-sm font-bold text-text-muted tracking-widest bg-surface-container-lowest px-3 py-1 rounded-lg">7633</span>
 </div>
 <div class="flex items-center justify-between pt-1">
-<span class="font-label-sm text-label-sm text-text-muted">Trạng thái khóa:</span>
-<span class="font-label-sm text-label-sm text-text-muted font-mono">Chốt an toàn đóng</span>
+  <span class="font-label-sm text-label-sm text-text-muted">Khử khuẩn buồng phòng:</span>
+  <span class="font-label-sm text-label-sm text-primary font-medium">Hoàn tất lúc 10:15 Sáng nay</span>
 </div>
 <div class="flex items-center justify-between">
-<span class="font-label-sm text-label-sm text-text-muted">Mã PIN dự phòng:</span>
-<span class="font-label-sm text-label-sm text-text-muted">Tạm ngắt đón khách</span>
+  <span class="font-label-sm text-label-sm text-text-muted">Tình trạng cổng TTLock:</span>
+  <span class="font-label-sm text-label-sm text-on-tertiary-container font-semibold">Online (Pin: 94%)</span>
 </div>
 </div>
 <div id="room-101-actions" class="flex items-center gap-space-sm transition-all">
@@ -410,136 +409,145 @@ Tạo Mã Nhanh
 </button>
 </div>
 </div>
-<!-- PHÒNG 102: Trống sạch sẽ (UV Sterilized) -->
-<div class="bg-surface-container-lowest rounded-2xl p-space-lg shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+
+<!-- PHÒNG 102 -->
+<div id="admin-card-102" class="bg-surface-container-lowest rounded-2xl p-space-lg shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow relative overflow-hidden">
 <div class="flex items-start justify-between">
 <div class="flex items-center gap-space-sm">
-<div class="w-12 h-12 rounded-xl bg-tertiary-fixed/30 text-on-tertiary-fixed flex items-center justify-center font-bold text-headline-sm">
-              102
-            </div>
+<div id="room-102-num-badge" class="w-12 h-12 rounded-xl bg-tertiary-fixed/30 text-on-tertiary-fixed flex items-center justify-center font-bold text-headline-sm transition-all">
+  102
+</div>
 <div>
 <div class="flex items-center gap-2">
-<h4 class="font-headline-sm text-headline-sm text-primary">Phòng Queen Deluxe</h4>
-<span class="bg-tertiary-container text-on-tertiary-container font-label-sm text-label-sm px-2.5 py-0.5 rounded-full flex items-center gap-1 font-semibold">
-<span class="w-1.5 h-1.5 rounded-full bg-tertiary-fixed"></span> Available
-                </span>
+<h4 class="font-headline-sm text-headline-sm text-primary">Phòng 102 (Queen Deluxe)</h4>
+<span id="room-102-status-badge" class="bg-tertiary-container text-on-tertiary-container font-label-sm text-label-sm px-2.5 py-0.5 rounded-full flex items-center gap-1 font-semibold transition-all">
+  <span class="w-1.5 h-1.5 rounded-full bg-tertiary-fixed"></span> Available
+</span>
 </div>
-<p class="font-body-sm text-body-sm text-on-tertiary-container font-medium mt-0.5 flex items-center gap-1">
-<span class="material-symbols-outlined text-[16px]">clean_hands</span> Đã vệ sinh đèn UV &amp; Thay ga
-              </p>
+<p id="room-102-subtext" class="font-body-sm text-body-sm text-text-muted mt-0.5"><span class="text-[#10B981] font-semibold flex items-center gap-1"><span class="material-symbols-outlined text-[15px]">check_circle</span> Sẵn sàng đón khách (Ổ khóa đã mở xanh)</span></p>
 </div>
 </div>
-<span class="material-symbols-outlined text-on-tertiary-container text-[26px]">lock_open</span>
+<button id="room-102-lock-btn" type="button" onclick="toggleRoomLock(102)" title="Bấm để Chuyển Đổi Khóa Đỏ / Mở Khóa Xanh (Available)" class="p-2.5 rounded-2xl bg-[#10B981]/10 hover:bg-[#10B981]/20 transition-all cursor-pointer hover:scale-110 flex items-center justify-center shadow-sm">
+  <span id="room-102-lock-icon" class="material-symbols-outlined text-[28px] text-[#10B981] transition-all">lock_open</span>
+</button>
 </div>
-<div class="my-space-md p-space-md bg-surface-container-low rounded-xl flex flex-col gap-2">
+<div id="room-102-body" class="my-space-md p-space-md bg-surface-container-low rounded-xl flex flex-col gap-2 transition-all">
 <div class="flex items-center justify-between">
-<span class="font-label-sm text-label-sm text-text-muted">Mã PIN Dự Phòng Sẵn Sàng:</span>
-<span class="font-code-ticket text-headline-sm font-bold text-text-muted tracking-widest bg-surface-container-lowest px-3 py-1 rounded-lg">8192</span>
+  <span class="font-label-sm text-label-sm text-text-muted">Mã PIN Dự Phòng Sẵn Sàng:</span>
+  <span class="font-code-ticket text-headline-sm font-bold text-text-muted tracking-widest bg-surface-container-lowest px-3 py-1 rounded-lg">8192</span>
 </div>
 <div class="flex items-center justify-between pt-1">
-<span class="font-label-sm text-label-sm text-text-muted">Khử khuẩn buồng phòng:</span>
-<span class="font-label-sm text-label-sm text-primary font-medium">Hoàn tất lúc 10:15 Sáng nay</span>
+  <span class="font-label-sm text-label-sm text-text-muted">Khử khuẩn buồng phòng:</span>
+  <span class="font-label-sm text-label-sm text-primary font-medium">Hoàn tất lúc 10:15 Sáng nay</span>
 </div>
 <div class="flex items-center justify-between">
-<span class="font-label-sm text-label-sm text-text-muted">Tình trạng cổng TTLock:</span>
-<span class="font-label-sm text-label-sm text-on-tertiary-container font-semibold">Online (Pin: 92%)</span>
+  <span class="font-label-sm text-label-sm text-text-muted">Tình trạng cổng TTLock:</span>
+  <span class="font-label-sm text-label-sm text-on-tertiary-container font-semibold">Online (Pin: 92%)</span>
 </div>
 </div>
-<div class="flex items-center gap-space-sm">
-<button class="flex-1 py-2.5 px-3 bg-secondary-container hover:bg-secondary-fixed-dim text-on-secondary-fixed font-label-md text-label-md rounded-xl transition-all flex items-center justify-center gap-1.5 font-semibold" onclick="createFastPin(102)">
+<div id="room-102-actions" class="flex items-center gap-space-sm transition-all">
+<button class="flex-1 py-2.5 px-3 bg-secondary-container hover:bg-secondary-fixed-dim text-on-secondary-fixed font-label-md text-label-md rounded-xl transition-all flex items-center justify-center gap-1.5 font-semibold cursor-pointer" onclick="createFastPin(102)" type="button">
 <span class="material-symbols-outlined text-[18px]">add_circle</span>
-            Tạo Mã Nhanh
-          </button>
-<button class="flex-1 py-2.5 px-3 bg-surface-container-high hover:bg-surface-variant text-primary font-label-md text-label-md rounded-xl transition-all flex items-center justify-center gap-1.5" onclick="manualBooking(102)">
+Tạo Mã Nhanh
+</button>
+<button class="flex-1 py-2.5 px-3 bg-surface-container-high hover:bg-surface-variant text-primary font-label-md text-label-md rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer" onclick="manualBooking(102)" type="button">
 <span class="material-symbols-outlined text-[18px]">edit_calendar</span>
-            Đặt Thủ Công
-          </button>
-</div>
-</div>
-<!-- PHÒNG 103: Đang dọn vệ sinh khử khuẩn (Tương tác xác nhận dọn xong) -->
-<div id="admin-card-103" class="bg-surface-container-lowest rounded-2xl p-space-lg shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
-<div class="flex items-start justify-between">
-<div class="flex items-center gap-space-sm">
-<div id="room-103-num-badge" class="w-12 h-12 rounded-xl bg-secondary-fixed/50 text-secondary flex items-center justify-center font-bold text-headline-sm transition-all">
-              103
-            </div>
-<div>
-<div class="flex items-center gap-2">
-<h4 class="font-headline-sm text-headline-sm text-primary">Phòng King VIP Cửa Sổ</h4>
-<span id="room-103-status-badge" class="bg-secondary-container text-on-secondary-container font-label-sm text-label-sm px-2.5 py-0.5 rounded-full flex items-center gap-1 font-semibold transition-all">
-<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Cleaning Buffer 2h
-                </span>
-</div>
-<p id="room-103-subtext" class="font-body-sm text-body-sm text-text-muted mt-0.5">Dự kiến hoàn thành: <strong class="text-secondary font-semibold">18:30 Tối nay</strong></p>
-</div>
-</div>
-<span id="room-103-icon" class="material-symbols-outlined text-secondary text-[26px]">sanitizer</span>
-</div>
-<div id="room-103-body" class="my-space-md p-space-md bg-surface-container-low rounded-xl flex flex-col gap-2 transition-all">
-<div class="flex items-center justify-between">
-<span class="font-label-sm text-label-sm text-text-muted">Nhân viên buồng phòng:</span>
-<span class="font-label-md text-label-md text-primary font-medium">Chị Lan (Tầng 1)</span>
-</div>
-<div class="flex items-center justify-between pt-1">
-<span class="font-label-sm text-label-sm text-text-muted">Quy trình hiện tại:</span>
-<span class="font-label-sm text-label-sm text-secondary font-semibold">Xông tinh dầu sả chanh + Chiếu UV</span>
-</div>
-<div class="flex items-center justify-between">
-<span class="font-label-sm text-label-sm text-text-muted">Mã PIN cửa khóa phòng:</span>
-<span class="font-label-sm text-label-sm text-text-muted font-mono">Đang tạm khóa khách</span>
-</div>
-</div>
-<div id="room-103-actions" class="flex items-center gap-space-sm transition-all">
-<button id="btn-clean-103" class="w-full py-2.5 px-3 bg-secondary hover:bg-secondary/90 text-on-secondary font-label-md text-label-md rounded-xl transition-all flex items-center justify-center gap-1.5 font-bold cursor-pointer shadow-sm" onclick="finishCleaning(103)" type="button">
-<span class="material-symbols-outlined text-[18px]">task_alt</span>
-            Xác Nhận Dọn Xong &amp; Đưa Vào Sẵn Sàng
+Đặt Thủ Công
 </button>
 </div>
 </div>
-<!-- PHÒNG 104: Trống sẵn sàng -->
-<div class="bg-surface-container-lowest rounded-2xl p-space-lg shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+
+<!-- PHÒNG 103 -->
+<div id="admin-card-103" class="bg-surface-container-lowest rounded-2xl p-space-lg shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow relative overflow-hidden">
 <div class="flex items-start justify-between">
 <div class="flex items-center gap-space-sm">
-<div class="w-12 h-12 rounded-xl bg-tertiary-fixed/30 text-on-tertiary-fixed flex items-center justify-center font-bold text-headline-sm">
-              104
-            </div>
+<div id="room-103-num-badge" class="w-12 h-12 rounded-xl bg-tertiary-fixed/30 text-on-tertiary-fixed flex items-center justify-center font-bold text-headline-sm transition-all">
+  103
+</div>
 <div>
 <div class="flex items-center gap-2">
-<h4 class="font-headline-sm text-headline-sm text-primary">Phòng Tiêu Chuẩn Yên Tĩnh</h4>
-<span class="bg-tertiary-container text-on-tertiary-container font-label-sm text-label-sm px-2.5 py-0.5 rounded-full flex items-center gap-1 font-semibold">
-<span class="w-1.5 h-1.5 rounded-full bg-tertiary-fixed"></span> Available
-                </span>
+<h4 class="font-headline-sm text-headline-sm text-primary">Phòng 103 (VIP King Window)</h4>
+<span id="room-103-status-badge" class="bg-tertiary-container text-on-tertiary-container font-label-sm text-label-sm px-2.5 py-0.5 rounded-full flex items-center gap-1 font-semibold transition-all">
+  <span class="w-1.5 h-1.5 rounded-full bg-tertiary-fixed"></span> Available
+</span>
 </div>
-<p class="font-body-sm text-body-sm text-on-tertiary-container font-medium mt-0.5 flex items-center gap-1">
-<span class="material-symbols-outlined text-[16px]">check_circle</span> Sạch sẽ, nước hoa phòng đã bật
-              </p>
+<p id="room-103-subtext" class="font-body-sm text-body-sm text-text-muted mt-0.5"><span class="text-[#10B981] font-semibold flex items-center gap-1"><span class="material-symbols-outlined text-[15px]">check_circle</span> Sẵn sàng đón khách (Ổ khóa đã mở xanh)</span></p>
 </div>
 </div>
-<span class="material-symbols-outlined text-on-tertiary-container text-[26px]">lock_open</span>
+<button id="room-103-lock-btn" type="button" onclick="toggleRoomLock(103)" title="Bấm để Chuyển Đổi Khóa Đỏ / Mở Khóa Xanh (Available)" class="p-2.5 rounded-2xl bg-[#10B981]/10 hover:bg-[#10B981]/20 transition-all cursor-pointer hover:scale-110 flex items-center justify-center shadow-sm">
+  <span id="room-103-lock-icon" class="material-symbols-outlined text-[28px] text-[#10B981] transition-all">lock_open</span>
+</button>
 </div>
-<div class="my-space-md p-space-md bg-surface-container-low rounded-xl flex flex-col gap-2">
+<div id="room-103-body" class="my-space-md p-space-md bg-surface-container-low rounded-xl flex flex-col gap-2 transition-all">
 <div class="flex items-center justify-between">
-<span class="font-label-sm text-label-sm text-text-muted">Mã PIN Chờ Kích Hoạt:</span>
-<span class="font-code-ticket text-headline-sm font-bold text-text-muted tracking-widest bg-surface-container-lowest px-3 py-1 rounded-lg">4529</span>
+  <span class="font-label-sm text-label-sm text-text-muted">Mã PIN Dự Phòng Sẵn Sàng:</span>
+  <span class="font-code-ticket text-headline-sm font-bold text-text-muted tracking-widest bg-surface-container-lowest px-3 py-1 rounded-lg">3819</span>
 </div>
 <div class="flex items-center justify-between pt-1">
-<span class="font-label-sm text-label-sm text-text-muted">Trạng thái thiết bị:</span>
-<span class="font-label-sm text-label-sm text-on-tertiary-container font-medium">Điều hòa sẵn sàng đón khách</span>
+  <span class="font-label-sm text-label-sm text-text-muted">Khử khuẩn buồng phòng:</span>
+  <span class="font-label-sm text-label-sm text-primary font-medium">Hoàn tất lúc 11:30 Sáng nay</span>
 </div>
 <div class="flex items-center justify-between">
-<span class="font-label-sm text-label-sm text-text-muted">Tình trạng cổng TTLock:</span>
-<span class="font-label-sm text-label-sm text-on-tertiary-container font-semibold">Online (Pin: 88%)</span>
+  <span class="font-label-sm text-label-sm text-text-muted">Tình trạng cổng TTLock:</span>
+  <span class="font-label-sm text-label-sm text-on-tertiary-container font-semibold">Online (Pin: 90%)</span>
 </div>
 </div>
-<div class="flex items-center gap-space-sm">
-<button class="flex-1 py-2.5 px-3 bg-secondary-container hover:bg-secondary-fixed-dim text-on-secondary-fixed font-label-md text-label-md rounded-xl transition-all flex items-center justify-center gap-1.5 font-semibold" onclick="createFastPin(104)">
+<div id="room-103-actions" class="flex items-center gap-space-sm transition-all">
+<button class="flex-1 py-2.5 px-3 bg-secondary-container hover:bg-secondary-fixed-dim text-on-secondary-fixed font-label-md text-label-md rounded-xl transition-all flex items-center justify-center gap-1.5 font-semibold cursor-pointer" onclick="createFastPin(103)" type="button">
 <span class="material-symbols-outlined text-[18px]">add_circle</span>
-            Tạo Mã Nhanh
-          </button>
-<button class="flex-1 py-2.5 px-3 bg-surface-container-high hover:bg-surface-variant text-primary font-label-md text-label-md rounded-xl transition-all flex items-center justify-center gap-1.5" onclick="manualBooking(104)">
+Tạo Mã Nhanh
+</button>
+<button class="flex-1 py-2.5 px-3 bg-surface-container-high hover:bg-surface-variant text-primary font-label-md text-label-md rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer" onclick="manualBooking(103)" type="button">
 <span class="material-symbols-outlined text-[18px]">edit_calendar</span>
-            Đặt Thủ Công
-          </button>
+Đặt Thủ Công
+</button>
+</div>
+</div>
+
+<!-- PHÒNG 104 -->
+<div id="admin-card-104" class="bg-surface-container-lowest rounded-2xl p-space-lg shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow relative overflow-hidden">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-space-sm">
+<div id="room-104-num-badge" class="w-12 h-12 rounded-xl bg-tertiary-fixed/30 text-on-tertiary-fixed flex items-center justify-center font-bold text-headline-sm transition-all">
+  104
+</div>
+<div>
+<div class="flex items-center gap-2">
+<h4 class="font-headline-sm text-headline-sm text-primary">Phòng 104 (Balcony Studio)</h4>
+<span id="room-104-status-badge" class="bg-tertiary-container text-on-tertiary-container font-label-sm text-label-sm px-2.5 py-0.5 rounded-full flex items-center gap-1 font-semibold transition-all">
+  <span class="w-1.5 h-1.5 rounded-full bg-tertiary-fixed"></span> Available
+</span>
+</div>
+<p id="room-104-subtext" class="font-body-sm text-body-sm text-text-muted mt-0.5"><span class="text-[#10B981] font-semibold flex items-center gap-1"><span class="material-symbols-outlined text-[15px]">check_circle</span> Sẵn sàng đón khách (Ổ khóa đã mở xanh)</span></p>
+</div>
+</div>
+<button id="room-104-lock-btn" type="button" onclick="toggleRoomLock(104)" title="Bấm để Chuyển Đổi Khóa Đỏ / Mở Khóa Xanh (Available)" class="p-2.5 rounded-2xl bg-[#10B981]/10 hover:bg-[#10B981]/20 transition-all cursor-pointer hover:scale-110 flex items-center justify-center shadow-sm">
+  <span id="room-104-lock-icon" class="material-symbols-outlined text-[28px] text-[#10B981] transition-all">lock_open</span>
+</button>
+</div>
+<div id="room-104-body" class="my-space-md p-space-md bg-surface-container-low rounded-xl flex flex-col gap-2 transition-all">
+<div class="flex items-center justify-between">
+  <span class="font-label-sm text-label-sm text-text-muted">Mã PIN Dự Phòng Sẵn Sàng:</span>
+  <span class="font-code-ticket text-headline-sm font-bold text-text-muted tracking-widest bg-surface-container-lowest px-3 py-1 rounded-lg">4529</span>
+</div>
+<div class="flex items-center justify-between pt-1">
+  <span class="font-label-sm text-label-sm text-text-muted">Trạng thái thiết bị:</span>
+  <span class="font-label-sm text-label-sm text-on-tertiary-container font-medium">Điều hòa sẵn sàng đón khách</span>
+</div>
+<div class="flex items-center justify-between">
+  <span class="font-label-sm text-label-sm text-text-muted">Tình trạng cổng TTLock:</span>
+  <span class="font-label-sm text-label-sm text-on-tertiary-container font-semibold">Online (Pin: 88%)</span>
+</div>
+</div>
+<div id="room-104-actions" class="flex items-center gap-space-sm transition-all">
+<button class="flex-1 py-2.5 px-3 bg-secondary-container hover:bg-secondary-fixed-dim text-on-secondary-fixed font-label-md text-label-md rounded-xl transition-all flex items-center justify-center gap-1.5 font-semibold cursor-pointer" onclick="createFastPin(104)" type="button">
+<span class="material-symbols-outlined text-[18px]">add_circle</span>
+Tạo Mã Nhanh
+</button>
+<button class="flex-1 py-2.5 px-3 bg-surface-container-high hover:bg-surface-variant text-primary font-label-md text-label-md rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer" onclick="manualBooking(104)" type="button">
+<span class="material-symbols-outlined text-[18px]">edit_calendar</span>
+Đặt Thủ Công
+</button>
 </div>
 </div>
 </div>
@@ -1266,17 +1274,17 @@ Tạo Mã Nhanh
   const DEFAULT_ROOMS_STATE = {
     101: {
       id: 101,
-      name: 'Phòng King Tầng 1',
-      status: 'locked', // initially locked with red lock per user request
+      name: 'Phòng 101 (Deluxe Queen)',
+      status: 'available',
       pin: '7633',
-      guest: '0942 817 633 (Anh Hùng)',
-      package: 'Nghỉ 3 Giờ (12:00 - 15:00)',
-      checkoutTime: '15:00',
+      guest: null,
+      package: null,
+      checkoutTime: null,
       cleaningUntil: null
     },
     102: {
       id: 102,
-      name: 'Phòng Queen Deluxe',
+      name: 'Phòng 102 (Queen Deluxe)',
       status: 'available',
       pin: '8192',
       guest: null,
@@ -1286,17 +1294,17 @@ Tạo Mã Nhanh
     },
     103: {
       id: 103,
-      name: 'Phòng King VIP Cửa Sổ',
-      status: 'cleaning', // initially cleaning buffer 2h
-      pin: 'Đang tạm khóa',
+      name: 'Phòng 103 (VIP King Window)',
+      status: 'available',
+      pin: '3819',
       guest: null,
       package: null,
       checkoutTime: null,
-      cleaningUntil: '18:30'
+      cleaningUntil: null
     },
     104: {
       id: 104,
-      name: 'Phòng Tiêu Chuẩn Yên Tĩnh',
+      name: 'Phòng 104 (Balcony Studio)',
       status: 'available',
       pin: '4529',
       guest: null,
@@ -1310,12 +1318,17 @@ Tạo Mã Nhanh
     try {
       const stored = localStorage.getItem('diemchau_rooms_state');
       if (stored) {
-        return JSON.parse(stored);
+        const parsed = JSON.parse(stored);
+        if (parsed[101] && parsed[102] && parsed[103] && parsed[104]) {
+          return parsed;
+        }
       }
     } catch (e) {
       console.error(e);
     }
-    return JSON.parse(JSON.stringify(DEFAULT_ROOMS_STATE));
+    const initial = JSON.parse(JSON.stringify(DEFAULT_ROOMS_STATE));
+    localStorage.setItem('diemchau_rooms_state', JSON.stringify(initial));
+    return initial;
   }
 
   function saveRoomsState(rooms) {
@@ -1447,8 +1460,9 @@ Tạo Mã Nhanh
     renderAdminRoomsUI();
   }
 
-  // Toggle Lock Room 101 (Red Lock -> Green Lock Open -> Available)
-  function toggleRoomLock(roomId = 101) {
+  // Toggle Lock Any Room (101, 102, 103, 104)
+  function toggleRoomLock(roomId) {
+    roomId = parseInt(roomId);
     const rooms = getRoomsState();
     const room = rooms[roomId];
     if (!room) return;
@@ -1459,17 +1473,18 @@ Tạo Mã Nhanh
       room.guest = null;
       room.package = null;
       saveRoomsState(rooms);
-      showToastNotification(`🔓 Phòng ${roomId}: Đã mở khóa thành công! Trạng thái chuyển sang [Available - Sẵn sàng nhận khách].`, 3500, 'success');
+      showToastNotification(`🔓 Phòng ${roomId}: Đã MỞ KHÓA thành công! Trạng thái chuyển sang [Available - Sẵn sàng nhận khách].`, 3500, 'success');
     } else {
       room.status = 'locked';
       saveRoomsState(rooms);
-      showToastNotification(`🔒 Phòng ${roomId}: Đã khóa phòng an toàn. Trạng thái chuyển sang [Locked].`, 3000, 'warning');
+      showToastNotification(`🔒 Phòng ${roomId}: Đã KHÓA ĐỎ an toàn! Bên trang Đặt Phòng sẽ tự động khóa phòng này để khách không thể đặt.`, 4000, 'warning');
     }
     renderAdminRoomsUI();
   }
 
-  // Confirm Cleaning Finished for Room 103 (Cleaning -> Available)
+  // Confirm Cleaning Finished for Any Room
   function finishCleaning(roomId = 103) {
+    roomId = parseInt(roomId);
     const rooms = getRoomsState();
     const room = rooms[roomId];
     if (!room) return;
@@ -1485,289 +1500,84 @@ Tạo Mã Nhanh
   function renderAdminRoomsUI() {
     const rooms = getRoomsState();
 
-    // 1. Render Room 101 in Tab 2
-    const card101 = document.getElementById('admin-card-101');
-    const lockBtn101 = document.getElementById('room-101-lock-btn');
-    const lockIcon101 = document.getElementById('room-101-lock-icon');
-    const badge101 = document.getElementById('room-101-status-badge');
-    const subtext101 = document.getElementById('room-101-subtext');
-    const numBadge101 = document.getElementById('room-101-num-badge');
-    const body101 = document.getElementById('room-101-body');
-    const actions101 = document.getElementById('room-101-actions');
+    [101, 102, 103, 104].forEach(id => {
+      const r = rooms[id];
+      if (!r) return;
 
-    if (rooms[101]) {
-      const r = rooms[101];
+      const numBadge = document.getElementById(`room-${id}-num-badge`);
+      const statusBadge = document.getElementById(`room-${id}-status-badge`);
+      const subtext = document.getElementById(`room-${id}-subtext`);
+      const lockBtn = document.getElementById(`room-${id}-lock-btn`);
+      const lockIcon = document.getElementById(`room-${id}-lock-icon`);
+      const miniDot = document.getElementById(`overview-mini-dot-${id}`);
+      const miniBadge = document.getElementById(`overview-mini-badge-${id}`);
+
       if (r.status === 'available') {
-        if (badge101) {
-          badge101.className = 'bg-tertiary-container text-on-tertiary-container font-label-sm text-label-sm px-2.5 py-0.5 rounded-full flex items-center gap-1 font-semibold';
-          badge101.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-tertiary-fixed"></span> Available';
+        if (numBadge) numBadge.className = 'w-12 h-12 rounded-xl bg-tertiary-fixed/30 text-on-tertiary-fixed flex items-center justify-center font-bold text-headline-sm transition-all';
+        if (statusBadge) {
+          statusBadge.className = 'bg-tertiary-container text-on-tertiary-container font-label-sm text-label-sm px-2.5 py-0.5 rounded-full flex items-center gap-1 font-semibold transition-all';
+          statusBadge.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-tertiary-fixed"></span> Available';
         }
-        if (lockIcon101) {
-          lockIcon101.textContent = 'lock_open';
-          lockIcon101.className = 'material-symbols-outlined text-[28px] text-[#10B981]';
+        if (subtext) subtext.innerHTML = '<span class="text-[#10B981] font-semibold flex items-center gap-1"><span class="material-symbols-outlined text-[15px]">check_circle</span> Sẵn sàng đón khách (Ổ khóa đã mở xanh)</span>';
+        if (lockBtn) {
+          lockBtn.className = 'p-2.5 rounded-2xl bg-[#10B981]/10 hover:bg-[#10B981]/20 transition-all cursor-pointer hover:scale-110 flex items-center justify-center shadow-sm';
+          lockBtn.title = `Phòng ${id} đang MỞ (Available). Bấm để Khóa Đỏ.`;
         }
-        if (lockBtn101) {
-          lockBtn101.className = 'p-2 rounded-xl bg-[#10B981]/10 hover:bg-[#10B981]/20 transition-all cursor-pointer hover:scale-110 flex items-center justify-center shadow-sm';
-          lockBtn101.title = 'Phòng đang MỞ KHÓA (Available). Bấm để khóa lại nếu cần.';
-        }
-        if (numBadge101) {
-          numBadge101.className = 'w-12 h-12 rounded-xl bg-tertiary-fixed/30 text-on-tertiary-fixed flex items-center justify-center font-bold text-headline-sm';
-        }
-        if (subtext101) {
-          subtext101.innerHTML = '<span class="text-[#10B981] font-semibold flex items-center gap-1"><span class="material-symbols-outlined text-[15px]">check_circle</span> Sẵn sàng đón khách (Ổ khóa đã mở xanh)</span>';
+        if (lockIcon) {
+          lockIcon.textContent = 'lock_open';
+          lockIcon.className = 'material-symbols-outlined text-[28px] text-[#10B981] transition-all';
         }
 
-        // Available Body - Remove guest name & old package
-        if (body101) {
-          body101.innerHTML = `
-            <div class="flex items-center justify-between">
-              <span class="font-label-sm text-label-sm text-text-muted">Mã PIN Dự Phòng Sẵn Sàng:</span>
-              <span class="font-code-ticket text-headline-sm font-bold text-text-muted tracking-widest bg-surface-container-lowest px-3 py-1 rounded-lg">7633</span>
-            </div>
-            <div class="flex items-center justify-between pt-1">
-              <span class="font-label-sm text-label-sm text-text-muted">Khử khuẩn buồng phòng:</span>
-              <span class="font-label-sm text-label-sm text-primary font-medium">Hoàn tất lúc 10:15 Sáng nay</span>
-            </div>
-            <div class="flex items-center justify-between">
-              <span class="font-label-sm text-label-sm text-text-muted">Tình trạng cổng TTLock:</span>
-              <span class="font-label-sm text-label-sm text-on-tertiary-container font-semibold">Online (Pin: 94%)</span>
-            </div>
-          `;
-        }
-
-        // Available Actions - Two standard buttons (Tạo mã nhanh & Đặt thủ công)
-        if (actions101) {
-          actions101.innerHTML = `
-            <button class="flex-1 py-2.5 px-3 bg-secondary-container hover:bg-secondary-fixed-dim text-on-secondary-fixed font-label-md text-label-md rounded-xl transition-all flex items-center justify-center gap-1.5 font-semibold cursor-pointer" onclick="createFastPin(101)" type="button">
-              <span class="material-symbols-outlined text-[18px]">add_circle</span>
-              Tạo Mã Nhanh
-            </button>
-            <button class="flex-1 py-2.5 px-3 bg-surface-container-high hover:bg-surface-variant text-primary font-label-md text-label-md rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer" onclick="manualBooking(101)" type="button">
-              <span class="material-symbols-outlined text-[18px]">edit_calendar</span>
-              Đặt Thủ Công
-            </button>
-          `;
+        if (miniDot) miniDot.className = 'w-2 h-2 rounded-full bg-[#10B981]';
+        if (miniBadge) {
+          miniBadge.className = 'inline-block bg-[#10B981]/10 text-[#10B981] font-label-sm text-label-sm font-semibold px-2 py-0.5 rounded-md';
+          miniBadge.textContent = 'Phòng trống';
         }
       } else if (r.status === 'cleaning') {
-        if (badge101) {
-          badge101.className = 'bg-secondary-container text-on-secondary-container font-label-sm text-label-sm px-2.5 py-0.5 rounded-full flex items-center gap-1 font-semibold';
-          badge101.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Cleaning Buffer 2h';
+        if (numBadge) numBadge.className = 'w-12 h-12 rounded-xl bg-secondary-fixed/50 text-secondary flex items-center justify-center font-bold text-headline-sm transition-all';
+        if (statusBadge) {
+          statusBadge.className = 'bg-secondary-container text-on-secondary-container font-label-sm text-label-sm px-2.5 py-0.5 rounded-full flex items-center gap-1 font-semibold transition-all';
+          statusBadge.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Cleaning Buffer 2h';
         }
-        if (lockIcon101) {
-          lockIcon101.textContent = 'sanitizer';
-          lockIcon101.className = 'material-symbols-outlined text-[28px] text-secondary';
+        if (subtext) subtext.innerHTML = `Đang dọn vệ sinh UV • Xong lúc <strong class="text-secondary font-semibold">${r.cleaningUntil || '18:30'}</strong>`;
+        if (lockBtn) {
+          lockBtn.className = 'p-2.5 rounded-2xl bg-secondary-container/30 hover:bg-secondary-container/50 transition-all cursor-pointer hover:scale-110 flex items-center justify-center shadow-sm';
+          lockBtn.title = `Phòng ${id} đang dọn buffer. Bấm để chuyển đổi khóa.`;
         }
-        if (lockBtn101) {
-          lockBtn101.className = 'p-2 rounded-xl bg-secondary-container/30 hover:bg-secondary-container/50 transition-all cursor-pointer hover:scale-110 flex items-center justify-center shadow-sm';
+        if (lockIcon) {
+          lockIcon.textContent = 'sanitizer';
+          lockIcon.className = 'material-symbols-outlined text-[28px] text-secondary transition-all';
         }
-        if (numBadge101) {
-          numBadge101.className = 'w-12 h-12 rounded-xl bg-secondary-fixed/50 text-secondary flex items-center justify-center font-bold text-headline-sm';
-        }
-        if (subtext101) {
-          subtext101.innerHTML = `Đang dọn buffer 2 tiếng • Xong lúc <strong class="text-secondary font-semibold">${r.cleaningUntil || '17:00'}</strong>`;
-        }
-        if (body101) {
-          body101.innerHTML = `
-            <div class="flex items-center justify-between">
-              <span class="font-label-sm text-label-sm text-text-muted">Quy trình:</span>
-              <span class="font-label-md text-label-md text-secondary font-semibold">Khử khuẩn UV & Thay ga mới</span>
-            </div>
-            <div class="flex items-center justify-between pt-1">
-              <span class="font-label-sm text-label-sm text-text-muted">Dự kiến hoàn tất:</span>
-              <span class="font-label-md text-label-md text-primary font-bold">${r.cleaningUntil || '17:00'}</span>
-            </div>
-            <div class="flex items-center justify-between">
-              <span class="font-label-sm text-label-sm text-text-muted">Cổng khóa điện tử:</span>
-              <span class="font-label-sm text-label-sm text-text-muted font-mono">Đang tạm khóa buồng phòng</span>
-            </div>
-          `;
-        }
-        if (actions101) {
-          actions101.innerHTML = `
-            <button class="w-full py-2.5 px-3 bg-secondary hover:bg-secondary/90 text-on-secondary font-label-md text-label-md rounded-xl transition-all flex items-center justify-center gap-1.5 font-bold cursor-pointer shadow-sm" onclick="finishCleaning(101)" type="button">
-              <span class="material-symbols-outlined text-[18px]">task_alt</span>
-              Xác Nhận Dọn Xong & Đưa Vào Sẵn Sàng
-            </button>
-          `;
+
+        if (miniDot) miniDot.className = 'w-2 h-2 rounded-full bg-secondary';
+        if (miniBadge) {
+          miniBadge.className = 'inline-block bg-secondary-fixed/50 text-secondary font-label-sm text-label-sm font-semibold px-2 py-0.5 rounded-md';
+          miniBadge.textContent = 'Đang dọn UV';
         }
       } else {
         // Locked / Occupied
-        if (badge101) {
-          badge101.className = 'bg-status-danger text-on-primary font-label-sm text-label-sm px-2.5 py-0.5 rounded-full flex items-center gap-1';
-          badge101.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-on-primary"></span> ' + (r.status === 'locked' ? 'Locked (Đang Khóa)' : 'Occupied');
+        if (numBadge) numBadge.className = 'w-12 h-12 rounded-xl bg-status-danger/10 text-status-danger flex items-center justify-center font-bold text-headline-sm transition-all';
+        if (statusBadge) {
+          statusBadge.className = 'bg-status-danger text-on-primary font-label-sm text-label-sm px-2.5 py-0.5 rounded-full flex items-center gap-1 transition-all';
+          statusBadge.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-on-primary"></span> Locked (Đang Khóa)';
         }
-        if (lockIcon101) {
-          lockIcon101.textContent = 'lock';
-          lockIcon101.className = 'material-symbols-outlined text-[28px] text-status-danger';
+        if (subtext) subtext.innerHTML = 'Khóa an toàn đang đóng • <strong class="text-status-danger">Bấm ổ khóa đỏ bên cạnh để mở sang Available</strong>';
+        if (lockBtn) {
+          lockBtn.className = 'p-2.5 rounded-2xl bg-status-danger/10 hover:bg-status-danger/20 transition-all cursor-pointer hover:scale-110 flex items-center justify-center shadow-sm animate-pulse';
+          lockBtn.title = `Phòng ${id} đang KHÓA ĐỎ. Bấm vào đây để mở khóa sang Available!`;
         }
-        if (lockBtn101) {
-          lockBtn101.className = 'p-2 rounded-xl bg-status-danger/10 hover:bg-status-danger/20 transition-all cursor-pointer hover:scale-110 flex items-center justify-center shadow-sm animate-pulse';
-          lockBtn101.title = 'Phòng đang KHÓA ĐỎ. Bấm vào đây để mở khóa sang Available!';
+        if (lockIcon) {
+          lockIcon.textContent = 'lock';
+          lockIcon.className = 'material-symbols-outlined text-[28px] text-status-danger transition-all';
         }
-        if (numBadge101) {
-          numBadge101.className = 'w-12 h-12 rounded-xl bg-status-danger/10 text-status-danger flex items-center justify-center font-bold text-headline-sm';
-        }
-        if (subtext101) {
-          subtext101.innerHTML = 'Khóa an toàn đang đóng • <strong class="text-status-danger">Bấm ổ khóa đỏ để mở sang Available</strong>';
-        }
-        if (body101) {
-          body101.innerHTML = `
-            <div class="flex items-center justify-between">
-              <span class="font-label-sm text-label-sm text-text-muted">Tình trạng buồng phòng:</span>
-              <span class="font-label-md text-label-md text-status-danger font-bold flex items-center gap-1">
-                <span class="material-symbols-outlined text-[16px]">lock</span> Đang Khóa An Toàn
-              </span>
-            </div>
-            <div class="flex items-center justify-between pt-1">
-              <span class="font-label-sm text-label-sm text-text-muted">Trạng thái khóa:</span>
-              <span class="font-label-sm text-label-sm text-text-muted font-mono">Chốt an toàn đóng</span>
-            </div>
-            <div class="flex items-center justify-between">
-              <span class="font-label-sm text-label-sm text-text-muted">Mã PIN dự phòng:</span>
-              <span class="font-label-sm text-label-sm text-text-muted">Tạm ngắt đón khách</span>
-            </div>
-          `;
-        }
-        if (actions101) {
-          actions101.innerHTML = `
-            <button class="flex-1 py-2.5 px-3 bg-[#10B981] hover:bg-[#10B981]/90 text-on-primary font-label-md text-label-md rounded-xl transition-all flex items-center justify-center gap-1.5 font-bold cursor-pointer shadow-sm" onclick="toggleRoomLock(101)" type="button">
-              <span class="material-symbols-outlined text-[18px]">lock_open</span>
-              Mở Khóa Xanh
-            </button>
-            <button class="flex-1 py-2.5 px-3 bg-surface-container-high hover:bg-surface-variant text-primary font-label-md text-label-md rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer" onclick="manualBooking(101)" type="button">
-              <span class="material-symbols-outlined text-[18px]">edit_calendar</span>
-              Đặt Thủ Công
-            </button>
-          `;
+
+        if (miniDot) miniDot.className = 'w-2 h-2 rounded-full bg-status-danger';
+        if (miniBadge) {
+          miniBadge.className = 'inline-block bg-status-danger/10 text-status-danger font-label-sm text-label-sm font-semibold px-2 py-0.5 rounded-md';
+          miniBadge.textContent = 'Đã khóa';
         }
       }
-    }
-
-    // 2. Render Room 103 in Tab 2
-    const badge103 = document.getElementById('room-103-status-badge');
-    const subtext103 = document.getElementById('room-103-subtext');
-    const numBadge103 = document.getElementById('room-103-num-badge');
-    const icon103 = document.getElementById('room-103-icon');
-    const body103 = document.getElementById('room-103-body');
-    const actions103 = document.getElementById('room-103-actions');
-
-    if (rooms[103]) {
-      const r = rooms[103];
-      if (r.status === 'available') {
-        if (badge103) {
-          badge103.className = 'bg-tertiary-container text-on-tertiary-container font-label-sm text-label-sm px-2.5 py-0.5 rounded-full flex items-center gap-1 font-semibold';
-          badge103.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-tertiary-fixed"></span> Available';
-        }
-        if (numBadge103) {
-          numBadge103.className = 'w-12 h-12 rounded-xl bg-tertiary-fixed/30 text-on-tertiary-fixed flex items-center justify-center font-bold text-headline-sm';
-        }
-        if (subtext103) {
-          subtext103.innerHTML = '<span class="text-[#10B981] font-semibold flex items-center gap-1"><span class="material-symbols-outlined text-[15px]">check_circle</span> Đã dọn xong, tiệt trùng UV hoàn tất</span>';
-        }
-        if (icon103) {
-          icon103.textContent = 'lock_open';
-          icon103.className = 'material-symbols-outlined text-[26px] text-on-tertiary-container';
-        }
-        // Available Body - Clean room status
-        if (body103) {
-          body103.innerHTML = `
-            <div class="flex items-center justify-between">
-              <span class="font-label-sm text-label-sm text-text-muted">Mã PIN Dự Phòng Sẵn Sàng:</span>
-              <span class="font-code-ticket text-headline-sm font-bold text-text-muted tracking-widest bg-surface-container-lowest px-3 py-1 rounded-lg">3819</span>
-            </div>
-            <div class="flex items-center justify-between pt-1">
-              <span class="font-label-sm text-label-sm text-text-muted">Khử khuẩn buồng phòng:</span>
-              <span class="font-label-sm text-label-sm text-primary font-medium">Hoàn tất lúc 11:30 Sáng nay</span>
-            </div>
-            <div class="flex items-center justify-between">
-              <span class="font-label-sm text-label-sm text-text-muted">Tình trạng cổng TTLock:</span>
-              <span class="font-label-sm text-label-sm text-on-tertiary-container font-semibold">Online (Pin: 90%)</span>
-            </div>
-          `;
-        }
-        // Available Actions - Two standard buttons (Tạo mã nhanh & Đặt thủ công)
-        if (actions103) {
-          actions103.innerHTML = `
-            <button class="flex-1 py-2.5 px-3 bg-secondary-container hover:bg-secondary-fixed-dim text-on-secondary-fixed font-label-md text-label-md rounded-xl transition-all flex items-center justify-center gap-1.5 font-semibold cursor-pointer" onclick="createFastPin(103)" type="button">
-              <span class="material-symbols-outlined text-[18px]">add_circle</span>
-              Tạo Mã Nhanh
-            </button>
-            <button class="flex-1 py-2.5 px-3 bg-surface-container-high hover:bg-surface-variant text-primary font-label-md text-label-md rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer" onclick="manualBooking(103)" type="button">
-              <span class="material-symbols-outlined text-[18px]">edit_calendar</span>
-              Đặt Thủ Công
-            </button>
-          `;
-        }
-      } else {
-        if (badge103) {
-          badge103.className = 'bg-secondary-container text-on-secondary-container font-label-sm text-label-sm px-2.5 py-0.5 rounded-full flex items-center gap-1 font-semibold';
-          badge103.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Cleaning Buffer 2h';
-        }
-        if (numBadge103) {
-          numBadge103.className = 'w-12 h-12 rounded-xl bg-secondary-fixed/50 text-secondary flex items-center justify-center font-bold text-headline-sm';
-        }
-        if (subtext103) {
-          subtext103.innerHTML = `Dự kiến hoàn thành: <strong class="text-secondary font-semibold">${r.cleaningUntil || '18:30 Tối nay'}</strong>`;
-        }
-        if (icon103) {
-          icon103.textContent = 'sanitizer';
-          icon103.className = 'material-symbols-outlined text-[26px] text-secondary';
-        }
-        if (body103) {
-          body103.innerHTML = `
-            <div class="flex items-center justify-between">
-              <span class="font-label-sm text-label-sm text-text-muted">Nhân viên buồng phòng:</span>
-              <span class="font-label-md text-label-md text-primary font-medium">Chị Lan (Tầng 1)</span>
-            </div>
-            <div class="flex items-center justify-between pt-1">
-              <span class="font-label-sm text-label-sm text-text-muted">Quy trình hiện tại:</span>
-              <span class="font-label-sm text-label-sm text-secondary font-semibold">Xông tinh dầu sả chanh + Chiếu UV</span>
-            </div>
-            <div class="flex items-center justify-between">
-              <span class="font-label-sm text-label-sm text-text-muted">Mã PIN cửa khóa phòng:</span>
-              <span class="font-label-sm text-label-sm text-text-muted font-mono">Đang tạm khóa khách</span>
-            </div>
-          `;
-        }
-        if (actions103) {
-          actions103.innerHTML = `
-            <button id="btn-clean-103" class="w-full py-2.5 px-3 bg-secondary hover:bg-secondary/90 text-on-secondary font-label-md text-label-md rounded-xl transition-all flex items-center justify-center gap-1.5 font-bold cursor-pointer shadow-sm" onclick="finishCleaning(103)" type="button">
-              <span class="material-symbols-outlined text-[18px]">task_alt</span>
-              Xác Nhận Dọn Xong & Đưa Vào Sẵn Sàng
-            </button>
-          `;
-        }
-      }
-    }
-
-    // 3. Mini cards in Overview Tab
-    const miniDot101 = document.getElementById('overview-mini-dot-101');
-    const miniBadge101 = document.getElementById('overview-mini-badge-101');
-    if (miniDot101 && miniBadge101 && rooms[101]) {
-      if (rooms[101].status === 'available') {
-        miniDot101.className = 'w-2 h-2 rounded-full bg-[#10B981]';
-        miniBadge101.className = 'inline-block bg-[#10B981]/10 text-[#10B981] font-label-sm text-label-sm font-semibold px-2 py-0.5 rounded-md';
-        miniBadge101.textContent = 'Available';
-      } else {
-        miniDot101.className = 'w-2 h-2 rounded-full bg-status-danger';
-        miniBadge101.className = 'inline-block bg-status-danger/10 text-status-danger font-label-sm text-label-sm font-semibold px-2 py-0.5 rounded-md';
-        miniBadge101.textContent = 'Đang khóa';
-      }
-    }
-
-    const miniDot103 = document.getElementById('overview-mini-dot-103');
-    const miniBadge103 = document.getElementById('overview-mini-badge-103');
-    if (miniDot103 && miniBadge103 && rooms[103]) {
-      if (rooms[103].status === 'available') {
-        miniDot103.className = 'w-2 h-2 rounded-full bg-[#10B981]';
-        miniBadge103.className = 'inline-block bg-[#10B981]/10 text-[#10B981] font-label-sm text-label-sm font-semibold px-2 py-0.5 rounded-md';
-        miniBadge103.textContent = 'Available';
-      } else {
-        miniDot103.className = 'w-2 h-2 rounded-full bg-secondary';
-        miniBadge103.className = 'inline-block bg-secondary-fixed/50 text-secondary font-label-sm text-label-sm font-semibold px-2 py-0.5 rounded-md';
-        miniBadge103.textContent = 'Đang dọn UV';
-      }
-    }
+    });
   }
 
   // Cross-tab listener
