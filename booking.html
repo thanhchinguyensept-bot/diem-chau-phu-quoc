@@ -521,16 +521,29 @@ Check-in từ <span class="font-bold text-primary">12:00</span> ngày đặt ph�
 <button class="text-xs bg-secondary-container text-on-secondary-container px-2.5 py-1 rounded font-bold hover:bg-accent-hover cursor-pointer" id="btn-copy-memo" onclick="copyTransferMemo()" type="button">Sao chép</button>
 </div>
 </div>
-<!-- SSE Real-time listening indicator -->
-<div class="w-full mt-space-md p-space-sm rounded-xl bg-primary text-on-primary flex items-center justify-center gap-2">
-<span class="relative flex h-3 w-3">
-<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary-container opacity-75"></span>
-<span class="relative inline-flex rounded-full h-3 w-3 bg-secondary-container"></span>
-</span>
-<span class="font-label-sm text-label-sm text-secondary-container font-semibold animate-pulse">
-                  Hệ thống đang lắng nghe giao dịch SSE tự động...
-                </span>
-</div><div class="w-full mt-space-sm flex flex-col gap-2"><button class="w-full py-2.5 px-space-md rounded-xl bg-secondary-container hover:bg-accent-hover text-on-secondary-container font-label-md text-label-md font-bold flex items-center justify-center gap-2 transition-all shadow-sm cursor-pointer" id="btn-simulate-payment" onclick="simulatePaymentSuccess()" type="button"><span class="material-symbols-outlined text-[20px]">check_circle</span><span>Mô phỏng: Đã thanh toán thành công (Test QR)</span></button><div class="hidden p-space-sm rounded-lg bg-tertiary-fixed text-on-tertiary-fixed text-center font-label-sm text-label-sm font-bold items-center justify-center gap-1.5 animate-pulse" id="payment-success-toast"><span class="material-symbols-outlined text-[18px]">verified</span>Thanh toán thành công! Khóa PIN Smart Pass đã kích hoạt.</div></div>
+<!-- SePAY Real-time listening indicator -->
+<div class="w-full mt-space-md p-space-sm rounded-xl bg-primary text-on-primary flex items-center justify-between gap-2 shadow-sm transition-all" id="sepay-status-box">
+  <div class="flex items-center gap-2">
+    <span class="relative flex h-3 w-3 shrink-0">
+      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary-container opacity-75"></span>
+      <span class="relative inline-flex rounded-full h-3 w-3 bg-secondary-container"></span>
+    </span>
+    <span class="font-label-sm text-label-sm text-secondary-container font-semibold animate-pulse" id="sepay-status-text">
+      Cổng SePAY đang tự động kiểm tra giao dịch (2.5s)...
+    </span>
+  </div>
+  <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-primary-container text-secondary-container border border-outline-variant/30 hidden sm:inline-block" id="sepay-poll-badge">SePAY 24/7</span>
+</div>
+<div class="w-full mt-space-sm flex flex-col gap-2">
+  <button class="w-full py-2.5 px-space-md rounded-xl bg-secondary-container hover:bg-accent-hover text-on-secondary-container font-label-md text-label-md font-bold flex items-center justify-center gap-2 transition-all shadow-sm cursor-pointer" id="btn-simulate-payment" onclick="simulatePaymentSuccess()" type="button">
+    <span class="material-symbols-outlined text-[20px]">check_circle</span>
+    <span>Mô phỏng: Đã thanh toán thành công (Test QR)</span>
+  </button>
+  <div class="hidden p-space-sm rounded-lg bg-tertiary-fixed text-on-tertiary-fixed text-center font-label-sm text-label-sm font-bold items-center justify-center gap-1.5 animate-pulse" id="payment-success-toast">
+    <span class="material-symbols-outlined text-[18px]">verified</span>
+    Thanh toán thành công qua SePAY! Khóa PIN Smart Pass đã kích hoạt.
+  </div>
+</div>
 </div>
 </div>
 </div>
@@ -878,17 +891,150 @@ Check-in từ <span class="font-bold text-primary">12:00</span> ngày đặt ph�
     }
   }
 
-  function simulatePaymentSuccess() {
+  // SePAY Real-time Transaction Listening & Auto Smart Pass Activation
+  let sepayPollingInterval = null;
+  let isPaymentProcessed = false;
+
+  function getCurrentTotalAmount() {
+    if (bookingState.stayType === 'overnight') {
+      return (bookingState.nights || 1) * (bookingState.pricePerNight || 200000);
+    } else {
+      return (bookingState.hourlyPrices && bookingState.hourlyPrices[bookingState.hourlyDuration]) || 80000;
+    }
+  }
+
+  function handlePaymentSuccess(txInfo = {}) {
+    if (isPaymentProcessed) return;
+    isPaymentProcessed = true;
+    if (sepayPollingInterval) clearInterval(sepayPollingInterval);
+
     const toast = document.getElementById('payment-success-toast');
     const smartPass = document.getElementById('smart-pass-section');
+    const statusBox = document.getElementById('sepay-status-box');
+    const statusText = document.getElementById('sepay-status-text');
+
+    if (statusBox) {
+      statusBox.className = 'w-full mt-space-md p-space-sm rounded-xl bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-between gap-2 shadow-sm transition-all';
+      if (statusText) {
+        statusText.className = 'font-label-sm text-label-sm font-bold flex items-center gap-1.5';
+        statusText.innerHTML = `<span class="material-symbols-outlined text-[18px]">verified</span> SePAY: Giao dịch thành công (${txInfo.amount ? formatVND(txInfo.amount) + 'đ' : 'Khớp biến động số dư'})`;
+      }
+    }
+
     if (toast) {
       toast.classList.remove('hidden');
       toast.classList.add('flex');
+      toast.innerHTML = `<span class="material-symbols-outlined text-[18px]">verified</span> Thanh toán SePAY thành công! Khóa PIN Smart Pass đã kích hoạt.`;
     }
+
+    // Prepare active pass data
+    const cleanPhone = bookingState.phone.replace(/\s+/g, '');
+    const phoneTail = cleanPhone.slice(-4) || '7633';
+    const pin = phoneTail;
+    const billCode = `DC-${bookingState.roomId}${phoneTail}`;
+    const totalAmount = getCurrentTotalAmount();
+
+    const activePass = {
+      roomId: bookingState.roomId,
+      roomName: bookingState.roomName,
+      roomShort: bookingState.roomShort,
+      pin: pin,
+      phone: bookingState.phone,
+      stayType: bookingState.stayType,
+      hourlyDuration: bookingState.hourlyDuration,
+      nights: bookingState.nights || 1,
+      checkinDate: bookingState.checkinDate,
+      checkoutDate: bookingState.checkoutDate,
+      checkinTime: bookingState.checkinTime,
+      totalPrice: totalAmount,
+      paidAt: new Date().toISOString(),
+      billCode: billCode,
+      sepayTxId: txInfo.id || 'SEPAY-TX'
+    };
+
+    try {
+      localStorage.setItem('diemchau_active_pass', JSON.stringify(activePass));
+
+      // Append to Admin bookings list
+      const existingBookings = JSON.parse(localStorage.getItem('diemchau_bookings') || '[]');
+      existingBookings.unshift({
+        id: billCode,
+        room: bookingState.roomId,
+        guestPhone: bookingState.phone,
+        stayType: bookingState.stayType,
+        checkin: `${bookingState.checkinDate} ${bookingState.checkinTime || '12:00'}`,
+        checkout: `${bookingState.checkoutDate}`,
+        amount: totalAmount,
+        status: 'PAID',
+        pin: pin,
+        time: new Date().toLocaleString('vi-VN')
+      });
+      localStorage.setItem('diemchau_bookings', JSON.stringify(existingBookings.slice(0, 50)));
+
+      // Dispatch storage event for other tabs
+      window.dispatchEvent(new Event('storage'));
+    } catch(e){}
+
     if (smartPass) {
       smartPass.classList.remove('hidden');
       smartPass.scrollIntoView({ behavior: 'smooth' });
     }
+
+    // Auto-redirect to smart-pass.html after 2.5 seconds
+    setTimeout(() => {
+      window.location.href = `smart-pass.html?room=${bookingState.roomId}&pin=${pin}&code=${billCode}`;
+    }, 2500);
+  }
+
+  function simulatePaymentSuccess() {
+    handlePaymentSuccess({ id: 'SIMULATED-' + Date.now(), amount: getCurrentTotalAmount() });
+  }
+
+  // Real-time SePAY Polling Engine
+  function startSePayPolling() {
+    if (sepayPollingInterval) clearInterval(sepayPollingInterval);
+
+    sepayPollingInterval = setInterval(async () => {
+      if (isPaymentProcessed) return;
+
+      const totalAmount = getCurrentTotalAmount();
+      const cleanPhone = bookingState.phone.replace(/\s+/g, '');
+      const memoCode = `DIEMCHAU P${bookingState.roomId} ${cleanPhone}`;
+
+      try {
+        // Call Vercel Serverless API
+        const apiUrl = `/api/check-payment?amount=${totalAmount}&memo=${encodeURIComponent(memoCode)}`;
+        const res = await fetch(apiUrl);
+        if (res.ok) {
+          const data = await res.json();
+          if (data.success && data.transaction) {
+            handlePaymentSuccess(data.transaction);
+            return;
+          }
+        } else if (res.status === 404) {
+          // Fallback if tested on local static server without /api
+          const SEPAY_TOKEN = 'M7PITPKYBZR85DDZFFVJ1CR2CZBWH2HVPGOKWNOUBJ3UMD7YLIAWGAUJDQNSHKPN';
+          const directRes = await fetch('https://my.sepay.vn/userapi/transactions/list?limit=15', {
+            headers: { 'Authorization': `Bearer ${SEPAY_TOKEN}` }
+          });
+          if (directRes.ok) {
+            const directData = await directRes.json();
+            const txs = directData.messages || directData.transactions || [];
+            const cleanMemo = memoCode.replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
+            const matched = txs.find(t => {
+              const amt = parseInt(t.amount_in || t.amount || 0, 10);
+              const cnt = (t.transaction_content || t.description || '').replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
+              return Math.abs(amt - totalAmount) < 1000 && (cnt.includes(cleanMemo) || cnt.includes('DIEMCHAU') || cnt.includes(bookingState.roomId));
+            });
+            if (matched) {
+              handlePaymentSuccess(matched);
+            }
+          }
+        }
+      } catch (err) {
+        // Keep listening silently
+      }
+    }, 2500);
   }
 
   // Sync Room Availability with Admin State
@@ -1150,6 +1296,7 @@ Check-in từ <span class="font-bold text-primary">12:00</span> ngày đặt ph�
     // Initialize
     syncRoomsAvailability();
     updateBookingView();
+    startSePayPolling();
   });
 </script></main><footer class="w-full bg-primary-container text-on-primary mt-space-xl"><div class="max-w-[1200px] mx-auto px-margin lg:px-margin-desktop pt-space-xl pb-space-lg"><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-space-xl pb-space-xl"><div class="flex flex-col gap-space-sm"><div class="flex items-center gap-space-sm mb-space-xs"><img alt="logo nên mau thuong hieu.png" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1Vy1hCh2eluTorBOCq7DXwF5b1O2dTZOnU1CI9hjV9Ndznt-LQ1D6izf71Tq7r3D5SbYdpx2o4rrwTS6h90nC399mXdPGoIqPRJuNyQBGbRbe5rqlhTnLxljRusa3872PZdEwBHYecTVvsqHYq2umZCvE1XJ5wA5YKiP12c1DOKD1DgiFa9OYik_SrmAu5xleJnwiB0w-j3ZElNQBt_7g-8WZI9uTwDPXQYKRheQXCbVxWZC6qHnooECTFnGqX_FIhEXAYQeyAHBw"/><span class="font-headline-sm text-headline-sm text-on-primary">DIỄM CHÂU</span></div><p class="font-body-sm text-body-sm text-on-primary-container">Nhà nghỉ boutique tiện nghi, phòng sạch tiêu chuẩn, mức giá chỉ từ 80k. Cam kết trải nghiệm riêng tư tuyệt đối, tự động hoá nhận phòng siêu tốc tại Phú Quốc.</p><div class="flex items-center gap-space-xs text-secondary-container mt-space-xs"><span class="material-symbols-outlined text-[20px]">verified_user</span><span class="font-label-sm text-label-sm">Tự Động Hóa 100% - Không Lễ Tân</span></div></div><div class="flex flex-col gap-space-sm"><h3 class="font-headline-sm text-headline-sm text-secondary-container">Liên Hệ</h3><div class="flex items-start gap-space-xs text-on-primary-container font-body-sm text-body-sm"><span class="material-symbols-outlined text-[18px] text-secondary-container shrink-0 mt-0.5">location_on</span><span class="">Đường Cách Mạng Tháng Tám, Dương Đông, Phú Quốc</span></div><div class="flex items-center gap-space-xs text-on-primary-container font-body-sm text-body-sm"><span class="material-symbols-outlined text-[18px] text-secondary-container shrink-0">call</span><span class="">0942 817 633 (Hỗ trợ 24/7)</span></div><div class="flex items-center gap-space-sm pt-space-xs"><a class="p-space-xs rounded-lg bg-primary hover:bg-secondary-container hover:text-on-secondary-container text-on-primary transition-colors flex items-center justify-center" href="#"><span class="material-symbols-outlined text-[20px]">share</span></a><a class="p-space-xs rounded-lg bg-primary hover:bg-secondary-container hover:text-on-secondary-container text-on-primary transition-colors flex items-center justify-center" href="#"><span class="material-symbols-outlined text-[20px]">map</span></a><a class="p-space-xs rounded-lg bg-primary hover:bg-secondary-container hover:text-on-secondary-container text-on-primary transition-colors flex items-center justify-center" href="#"><span class="material-symbols-outlined text-[20px]">chat</span></a></div></div><div class="flex flex-col gap-space-sm"><h3 class="font-headline-sm text-headline-sm text-secondary-container">Chính Sách &amp; Giờ Giấc</h3><ul class="flex flex-col gap-space-xs text-on-primary-container font-body-sm text-body-sm"><li class="">Linh hoạt theo giờ &amp; Qua đêm trọn gói (12h - 12h)</li><li class="">Check-in tức thì qua Smart Pass (Mã PIN tự sinh)</li><li class="">Bảo mật thông tin khách hàng tuyệt đối</li><li class="">Hỗ trợ đổi giờ &amp; hủy phòng thuận tiện</li></ul></div><div class="flex flex-col gap-space-sm"><h3 class="font-headline-sm text-headline-sm text-secondary-container">Hotline 24/7</h3><p class="font-body-sm text-body-sm text-on-primary-container">Đội ngũ kỹ thuật &amp; CSKH luôn sẵn sàng đồng hành cùng kỳ nghỉ của bạn.</p><div class="p-space-md rounded-xl bg-primary flex items-center justify-between"><div class="flex flex-col"><span class="font-label-sm text-label-sm text-secondary-container uppercase">Khẩn cấp &amp; Đặt chỗ</span><span class="font-headline-sm text-headline-sm text-on-primary">0942 817 633</span></div><span class="material-symbols-outlined text-secondary-container text-[28px]">support_agent</span></div></div></div><div class="pt-space-md flex flex-col md:flex-row items-center justify-between text-on-primary-container font-body-sm text-body-sm gap-space-sm"><p class="">© 2025 Nhà Nghỉ Diễm Châu - Phú Quốc. Toàn bộ quyền được bảo lưu.</p><p class="font-label-sm text-label-sm text-secondary-container">Slogan: Riêng Tư Tuyệt Đối - Đón Tiếp Tận Tâm</p></div></div></footer>
 </body></html>

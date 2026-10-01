@@ -21,8 +21,8 @@
 </div>
 </div>
 </section>
-<!-- Main Booking Workspace 2 Columns -->
-<section class="max-w-[1200px] w-full mx-auto px-margin lg:px-margin-desktop py-space-xl" style="filter: blur(5px); pointer-events: none; opacity: 0.45; transition: filter 0.3s ease;">
+<!-- Main Booking Workspace 2 Columns (Hidden on Smart Pass page) -->
+<section class="max-w-[1200px] w-full mx-auto px-margin lg:px-margin-desktop py-space-xl hidden" id="booking-workspace-section">
 <div class="grid grid-cols-1 lg:grid-cols-12 gap-space-xl items-start">
 <!-- LEFT COLUMN: Step interactive forms (Steps 1 -> 4) -->
 <div class="lg:col-span-7 flex flex-col gap-space-lg">
@@ -473,8 +473,8 @@
 </div>
 </div>
 </section>
-<!-- Step 7: Smart Pass Result Section (Unlocked Experience Simulation) -->
-<section class="w-full bg-surface-container py-space-xl hidden" id="smart-pass-section">
+<!-- Step 7: Smart Pass Result Section (Active Ticket View) -->
+<section class="w-full bg-surface-container py-space-xl" id="smart-pass-section">
 <div class="max-w-[1200px] mx-auto px-margin lg:px-margin-desktop">
 <div class="text-center max-w-xl mx-auto mb-space-lg">
 <h2 class="font-headline-lg text-headline-lg text-primary mt-1">Smart Pass Kỹ Thuật Số</h2>
@@ -910,8 +910,50 @@
       });
     });
 
-    // Initial render
-    updateBookingView();
+    // Check active pass from SePAY or URL params
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const urlRoom = params.get('room');
+      const urlPin = params.get('pin');
+      const urlCode = params.get('code');
+
+      let savedPass = null;
+      const stored = localStorage.getItem('diemchau_active_pass');
+      if (stored) savedPass = JSON.parse(stored);
+
+      if (savedPass) {
+        if (savedPass.roomId) bookingState.roomId = savedPass.roomId;
+        if (savedPass.roomName) bookingState.roomName = savedPass.roomName;
+        if (savedPass.roomShort) bookingState.roomShort = savedPass.roomShort;
+        if (savedPass.phone) bookingState.phone = savedPass.phone;
+        if (savedPass.stayType) bookingState.stayType = savedPass.stayType;
+        if (savedPass.hourlyDuration) bookingState.hourlyDuration = savedPass.hourlyDuration;
+        if (savedPass.checkinDate) bookingState.date = savedPass.checkinDate;
+        if (savedPass.checkinTime) bookingState.startTime = savedPass.checkinTime;
+      }
+
+      if (urlRoom) {
+        bookingState.roomId = urlRoom;
+        bookingState.roomShort = `PHÒNG ${urlRoom}`;
+      }
+
+      // Initial render with updated data
+      updateBookingView();
+
+      const activePin = urlPin || (savedPass && savedPass.pin) || '7633';
+      const pinEl = document.getElementById('smartpass-pin-code');
+      if (pinEl) pinEl.textContent = activePin;
+
+      const modalPinEl = document.getElementById('modal-pin-code');
+      if (modalPinEl) modalPinEl.textContent = activePin;
+
+      if (urlCode || (savedPass && savedPass.billCode)) {
+        const badge = document.getElementById('bill-code-badge');
+        if (badge) badge.textContent = `MÃ: ${urlCode || savedPass.billCode}`;
+      }
+    } catch(err) {
+      updateBookingView();
+    }
   });
 </script><div class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto" id="smartpass-modal-backdrop" style="background: rgba(1, 36, 53, 0.78); backdrop-filter: blur(8px);"><div class="relative w-full max-w-lg my-auto bg-background-main rounded-2xl shadow-2xl border-2 border-secondary-container overflow-hidden animate-in fade-in zoom-in duration-300"><div class="bg-primary-container p-6 text-on-primary relative text-center border-b border-secondary-container/30"><button class="absolute top-4 right-4 w-8 h-8 rounded-full bg-primary/60 hover:bg-primary text-on-primary flex items-center justify-center transition-colors cursor-pointer" onclick="document.getElementById('smartpass-modal-backdrop').style.display='none'" type="button"><span class="material-symbols-outlined text-[20px]">close</span></button><div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-tertiary-fixed text-on-tertiary-fixed mb-3 shadow-lg ring-4 ring-tertiary-fixed/30"><span class="material-symbols-outlined text-[36px]">verified</span></div><div class="flex items-center justify-center gap-2 mb-1"><span class="font-label-sm text-label-sm uppercase tracking-widest text-secondary-container font-bold">🎉 THANH TOÁN THÀNH CÔNG!</span></div><h2 class="font-headline-md text-headline-md text-on-primary font-bold">Smart Pass Kỹ Thuật Số</h2><p class="font-body-sm text-body-sm text-on-primary-container mt-1.5 max-w-sm mx-auto">Hệ thống đã nhận thanh toán <span class="text-secondary-container font-bold">80.000 VNĐ</span> qua VietQR. Khóa thông minh đã được cấp mã mở phòng tự động.</p></div><div class="p-6 flex flex-col items-center bg-background-main"><div class="w-full p-4 rounded-xl bg-surface-container-low border border-outline-variant/30 flex items-center justify-between mb-5"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-lg bg-primary-container text-secondary-container flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-[24px]">hotel</span></div><div><div class="font-headline-sm text-headline-sm text-primary font-bold">PHÒNG 101 (Deluxe Queen)</div><p class="font-body-sm text-body-sm text-text-muted flex items-center gap-1 mt-0.5"><span class="material-symbols-outlined text-[15px] text-secondary">location_on</span>Đường Cách Mạng Tháng Tám, Dương Đông, Phú Quốc</p></div></div><span class="font-label-sm text-label-sm px-2.5 py-1 rounded-full bg-secondary-container/30 text-secondary font-bold shrink-0">Tầng trệt</span></div><div class="w-full bg-primary-container/5 rounded-2xl border-2 border-dashed border-secondary-container p-5 mb-5 text-center"><div class="flex items-center justify-between mb-2"><span class="font-label-sm text-label-sm text-text-muted uppercase tracking-wider font-semibold">Mã PIN Mở Cửa Tự Động</span><span class="font-label-sm text-label-sm px-2 py-0.5 rounded bg-tertiary-fixed text-on-tertiary-fixed font-bold flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-on-tertiary-fixed animate-pulse"></span> Đã Kích Hoạt</span></div><div class="flex items-center justify-center gap-3 py-2"><span class="font-code-ticket text-code-ticket text-primary tracking-widest font-bold text-[38px]" id="modal-pin-code">7633</span><button class="flex items-center gap-1 bg-secondary-container hover:bg-accent-hover text-on-secondary-container px-3 py-1.5 rounded-lg font-label-sm text-label-sm font-bold transition-all shadow-sm cursor-pointer" onclick="navigator.clipboard.writeText('7633'); alert('Đã sao chép mã PIN: 7633')" type="button"><span class="material-symbols-outlined text-[16px]">content_copy</span>Sao Chép</button></div><p class="font-label-sm text-label-sm text-secondary font-semibold mt-1 flex items-center justify-center gap-1"><span class="material-symbols-outlined text-[16px]">info</span>Bấm phím # trên khóa cửa sau khi nhập xong 4 số PIN</p></div><div class="w-full grid grid-cols-2 gap-3 mb-5"><div class="p-3 rounded-lg bg-surface-container-low"><span class="text-[11px] text-text-muted uppercase font-semibold block">Giờ Check-in</span><span class="font-headline-sm text-headline-sm text-primary font-bold block">14:00</span><span class="text-[12px] text-text-muted">Thứ Năm, 01/10/2026</span></div><div class="p-3 rounded-lg bg-surface-container-low text-right"><span class="text-[11px] text-text-muted uppercase font-semibold block">Giờ Check-out</span><span class="font-headline-sm text-headline-sm text-secondary font-bold block">15:00</span><span class="text-[12px] text-text-muted">Thứ Năm, 01/10/2026</span></div></div><div class="w-full flex flex-col gap-2.5"><button class="w-full h-12 rounded-xl bg-secondary-container hover:bg-accent-hover text-on-secondary-container font-label-md text-label-md font-bold flex items-center justify-center gap-2 transition-all shadow-md cursor-pointer" onclick="window.print()" type="button"><span class="material-symbols-outlined text-[20px]">download</span>📥 Tải Thẻ / Chụp Màn Hình Smart Pass</button><div class="grid grid-cols-2 gap-2"><a class="h-11 px-3 rounded-xl bg-surface-container-low hover:bg-surface-container text-primary font-label-md text-label-md font-semibold flex items-center justify-center gap-1.5 transition-colors border border-outline-variant/30 text-center" href="tel:0942817633"><span class="material-symbols-outlined text-[18px] text-secondary">call</span>0942 817 633</a><button class="h-11 px-3 rounded-xl bg-primary-container hover:bg-primary text-on-primary font-label-md text-label-md font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer" onclick="document.getElementById('smartpass-modal-backdrop').style.display='none'" type="button"><span class="material-symbols-outlined text-[18px]">receipt_long</span>Xem Hóa Đơn</button></div></div><p class="font-body-sm text-body-sm text-text-muted text-center mt-4 flex items-center justify-center gap-1"><span class="material-symbols-outlined text-[15px] text-tertiary-container">check_circle</span>Mã mở cửa đã được gửi dự phòng đồng thời qua tin nhắn SMS tới <span class="font-semibold text-primary">0942 817 633</span>.</p></div></div></div></main><footer class="w-full bg-primary-container text-on-primary mt-space-xl"><div class="max-w-[1200px] mx-auto px-margin lg:px-margin-desktop pt-space-xl pb-space-lg"><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-space-xl pb-space-xl"><div class="flex flex-col gap-space-sm"><div class="flex items-center gap-space-sm mb-space-xs"><img alt="logo nên mau thuong hieu.png" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1Vy1hCh2eluTorBOCq7DXwF5b1O2dTZOnU1CI9hjV9Ndznt-LQ1D6izf71Tq7r3D5SbYdpx2o4rrwTS6h90nC399mXdPGoIqPRJuNyQBGbRbe5rqlhTnLxljRusa3872PZdEwBHYecTVvsqHYq2umZCvE1XJ5wA5YKiP12c1DOKD1DgiFa9OYik_SrmAu5xleJnwiB0w-j3ZElNQBt_7g-8WZI9uTwDPXQYKRheQXCbVxWZC6qHnooECTFnGqX_FIhEXAYQeyAHBw"/><span class="font-headline-sm text-headline-sm text-on-primary">DIỄM CHÂU</span></div><p class="font-body-sm text-body-sm text-on-primary-container">Nhà nghỉ boutique tiện nghi, phòng sạch tiêu chuẩn, mức giá chỉ từ 80k. Cam kết trải nghiệm riêng tư tuyệt đối, tự động hoá nhận phòng siêu tốc tại Phú Quốc.</p><div class="flex items-center gap-space-xs text-secondary-container mt-space-xs"><span class="material-symbols-outlined text-[20px]">verified_user</span><span class="font-label-sm text-label-sm">Tự Động Hóa 100% - Không Lễ Tân</span></div></div><div class="flex flex-col gap-space-sm"><h3 class="font-headline-sm text-headline-sm text-secondary-container">Liên Hệ</h3><div class="flex items-start gap-space-xs text-on-primary-container font-body-sm text-body-sm"><span class="material-symbols-outlined text-[18px] text-secondary-container shrink-0 mt-0.5">location_on</span><span class="">Đường Cách Mạng Tháng Tám, Dương Đông, Phú Quốc</span></div><div class="flex items-center gap-space-xs text-on-primary-container font-body-sm text-body-sm"><span class="material-symbols-outlined text-[18px] text-secondary-container shrink-0">call</span><span class="">0942 817 633 (Hỗ trợ 24/7)</span></div><div class="flex items-center gap-space-sm pt-space-xs"><a class="p-space-xs rounded-lg bg-primary hover:bg-secondary-container hover:text-on-secondary-container text-on-primary transition-colors flex items-center justify-center" href="#"><span class="material-symbols-outlined text-[20px]">share</span></a><a class="p-space-xs rounded-lg bg-primary hover:bg-secondary-container hover:text-on-secondary-container text-on-primary transition-colors flex items-center justify-center" href="#"><span class="material-symbols-outlined text-[20px]">map</span></a><a class="p-space-xs rounded-lg bg-primary hover:bg-secondary-container hover:text-on-secondary-container text-on-primary transition-colors flex items-center justify-center" href="#"><span class="material-symbols-outlined text-[20px]">chat</span></a></div></div><div class="flex flex-col gap-space-sm"><h3 class="font-headline-sm text-headline-sm text-secondary-container">Chính Sách &amp; Giờ Giấc</h3><ul class="flex flex-col gap-space-xs text-on-primary-container font-body-sm text-body-sm"><li class="">Linh hoạt theo giờ: 1h / 3h / 5h / Qua đêm</li><li class="">Check-in tức thì qua Smart Pass (Mã PIN tự sinh)</li><li class="">Bảo mật thông tin khách hàng tuyệt đối</li><li class="">Hỗ trợ đổi giờ &amp; hủy phòng thuận tiện</li></ul></div><div class="flex flex-col gap-space-sm"><h3 class="font-headline-sm text-headline-sm text-secondary-container">Hotline 24/7</h3><p class="font-body-sm text-body-sm text-on-primary-container">Đội ngũ kỹ thuật &amp; CSKH luôn sẵn sàng đồng hành cùng kỳ nghỉ của bạn.</p><div class="p-space-md rounded-xl bg-primary flex items-center justify-between"><div class="flex flex-col"><span class="font-label-sm text-label-sm text-secondary-container uppercase">Khẩn cấp &amp; Đặt chỗ</span><span class="font-headline-sm text-headline-sm text-on-primary">0942 817 633</span></div><span class="material-symbols-outlined text-secondary-container text-[28px]">support_agent</span></div></div></div><div class="pt-space-md flex flex-col md:flex-row items-center justify-between text-on-primary-container font-body-sm text-body-sm gap-space-sm"><p class="">© 2025 Nhà Nghỉ Diễm Châu - Phú Quốc. Toàn bộ quyền được bảo lưu.</p><p class="font-label-sm text-label-sm text-secondary-container">Slogan: Riêng Tư Tuyệt Đối - Đón Tiếp Tận Tâm</p></div></div></footer>
 </body></html>
