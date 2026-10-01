@@ -1,0 +1,2247 @@
+<!DOCTYPE html>
+
+<html lang="vi"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@700&amp;family=Playfair+Display:ital,wght@0,600;0,700;1,600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}.admin-tab-pane.hidden{display:none !important;}
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-8px); }
+  40%, 80% { transform: translateX(8px); }
+}
+.animate-shake {
+  animation: shake 0.4s ease-in-out;
+}
+</style><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"on-tertiary-container":"#01b57e","accent-hover":"#C09540","on-tertiary-fixed":"#002113","surface-container-low":"#f6f3f2","on-primary":"#ffffff","on-secondary":"#ffffff","tertiary-fixed-dim":"#4edea3","surface":"#fcf9f8","status-danger":"#EF4444","on-background":"#1b1c1c","surface-variant":"#e4e2e1","secondary":"#7b5804","on-secondary-container":"#785601","background":"#fcf9f8","inverse-on-surface":"#f3f0f0","primary-container":"#1b3a4b","on-primary-fixed":"#001e2d","on-tertiary-fixed-variant":"#005236","primary":"#012435","secondary-fixed":"#ffdea6","surface-bright":"#fcf9f8","on-primary-container":"#85a4b8","error-container":"#ffdad6","on-surface-variant":"#42474c","tertiary-container":"#003f29","on-error":"#ffffff","background-main":"#FFFFFF","surface-container-highest":"#e4e2e1","on-tertiary":"#ffffff","secondary-container":"#fdcd74","outline-variant":"#c2c7cc","inverse-primary":"#accbe0","on-error-container":"#93000a","on-secondary-fixed":"#271900","surface-container":"#f0eded","surface-container-lowest":"#ffffff","surface-dim":"#dcd9d9","on-surface":"#1b1c1c","primary-fixed":"#c8e7fd","tertiary":"#002718","secondary-fixed-dim":"#eec068","text-muted":"#6B7280","tertiary-fixed":"#6ffbbe","error":"#ba1a1a","outline":"#72787c","background-subtle":"#F7F7F7","on-primary-fixed-variant":"#2c4a5c","surface-tint":"#446274","on-secondary-fixed-variant":"#5d4200","surface-container-high":"#eae7e7","inverse-surface":"#303030","primary-fixed-dim":"#accbe0"},borderRadius:{DEFAULT:"0.25rem",lg:"0.5rem",xl:"0.75rem",full:"9999px"},spacing:{"space-lg":"1.5rem","space-xl":"2.5rem",gutter:"1rem","space-md":"1rem","gutter-desktop":"1.5rem","space-xs":"0.25rem","margin-desktop":"2.5rem","space-sm":"0.5rem",margin:"1rem"},fontFamily:{"label-md":["Inter"],"body-md":["Inter"],"body-sm":["Inter"],"display-hero":["Playfair Display"],"code-ticket":["JetBrains Mono"],"headline-lg-mobile":["Playfair Display"],"headline-md":["Playfair Display"],"body-lg":["Inter"],"headline-sm":["Playfair Display"],"label-sm":["Inter"],"display-hero-mobile":["Playfair Display"],"headline-lg":["Playfair Display"]},fontSize:{"label-md":["14px",{lineHeight:"20px",letterSpacing:"0.02em",fontWeight:"600"}],"body-md":["16px",{lineHeight:"24px",fontWeight:"400"}],"body-sm":["14px",{lineHeight:"20px",fontWeight:"400"}],"display-hero":["48px",{lineHeight:"56px",letterSpacing:"-0.02em",fontWeight:"700"}],"code-ticket":["32px",{lineHeight:"40px",letterSpacing:"0.15em",fontWeight:"700"}],"headline-lg-mobile":["26px",{lineHeight:"34px",fontWeight:"600"}],"headline-md":["24px",{lineHeight:"32px",fontWeight:"600"}],"body-lg":["18px",{lineHeight:"28px",fontWeight:"400"}],"headline-sm":["20px",{lineHeight:"28px",fontWeight:"600"}],"label-sm":["12px",{lineHeight:"16px",letterSpacing:"0.04em",fontWeight:"500"}],"display-hero-mobile":["32px",{lineHeight:"40px",letterSpacing:"-0.01em",fontWeight:"700"}],"headline-lg":["36px",{lineHeight:"44px",fontWeight:"600"}]}}}}</script></head><body class="bg-surface font-body-md text-body-md text-on-surface">
+<!-- MÀN HÌNH BẢO MẬT XÁC THỰC MÃ PIN TOÀN MÀN HÌNH (PIN GATE LOCK SCREEN) -->
+<div class="fixed inset-0 z-[100] bg-primary/95 backdrop-blur-xl flex items-center justify-center p-4 transition-all duration-300" id="admin-security-gate">
+<div class="w-full max-w-md bg-surface-container-lowest text-on-surface rounded-3xl shadow-2xl p-6 md:p-8 flex flex-col items-center relative border border-outline-variant/30">
+<!-- Back to Home button at top-left -->
+<a class="absolute left-6 top-6 inline-flex items-center gap-1.5 text-text-muted hover:text-primary transition-colors text-label-sm font-label-sm font-semibold" href="index.html">
+<span class="material-symbols-outlined text-[18px]">arrow_back</span>
+<span>Về Trang Chủ</span>
+</a>
+<!-- Top Badge / Header Brand -->
+<div class="mt-8 flex flex-col items-center text-center">
+<div class="w-16 h-16 rounded-2xl bg-primary flex items-center justify-center text-secondary-fixed shadow-lg mb-3">
+<span class="material-symbols-outlined text-[36px]">shield_person</span>
+</div>
+<span class="font-label-sm text-[11px] tracking-widest uppercase font-semibold text-secondary-container bg-primary-container px-3 py-1 rounded-full mb-1">
+        HỆ THỐNG QUẢN TRỊ NỘI BỘ
+      </span>
+<h2 class="font-headline-md text-headline-md text-primary font-bold">Xác Thực Quản Trị Cấp Cao</h2>
+<p class="font-body-sm text-body-sm text-text-muted mt-1 px-4 text-center">
+        Nhập mã PIN 4 số của chủ quản để truy cập dữ liệu kinh doanh và điều khiển phòng
+      </p>
+</div>
+<!-- PIN Visual Display (4 Boxes) -->
+<div class="my-6 w-full flex flex-col items-center">
+<div class="flex items-center justify-center gap-3.5" id="pin-display-group">
+<div class="pin-box w-12 h-14 rounded-2xl bg-surface-container border-2 border-outline-variant flex items-center justify-center font-code-ticket text-2xl font-bold text-primary transition-all"></div>
+<div class="pin-box w-12 h-14 rounded-2xl bg-surface-container border-2 border-outline-variant flex items-center justify-center font-code-ticket text-2xl font-bold text-primary transition-all"></div>
+<div class="pin-box w-12 h-14 rounded-2xl bg-surface-container border-2 border-outline-variant flex items-center justify-center font-code-ticket text-2xl font-bold text-primary transition-all"></div>
+<div class="pin-box w-12 h-14 rounded-2xl bg-surface-container border-2 border-outline-variant flex items-center justify-center font-code-ticket text-2xl font-bold text-primary transition-all"></div>
+</div>
+<!-- Real hidden input for physical keyboard entry -->
+<input autocomplete="off" autofocus="" class="opacity-0 absolute -z-10" id="hidden-pin-input" inputmode="numeric" maxlength="4" type="password"/>
+<!-- Status / Feedback Notice -->
+<div class="mt-3.5 text-center text-label-sm font-label-sm font-medium text-text-muted min-h-[22px] flex items-center gap-1.5 justify-center" id="pin-status-message">
+<span class="material-symbols-outlined text-[16px] text-secondary">vpn_key</span>
+<span>Gợi ý mã bảo vệ mặc định: <strong class="text-primary font-mono font-bold bg-surface-container px-1.5 py-0.5 rounded">7633</strong></span>
+</div>
+</div>
+<!-- Virtual Keypad (0-9, Backspace, Confirm) -->
+<div class="w-full grid grid-cols-3 gap-2.5 max-w-[280px]">
+<button class="pin-key h-12 rounded-xl bg-surface-container-low hover:bg-surface-container text-primary font-headline-sm text-lg font-bold transition-all active:scale-95 flex items-center justify-center" onclick="handlePinKey('1')" type="button">1</button>
+<button class="pin-key h-12 rounded-xl bg-surface-container-low hover:bg-surface-container text-primary font-headline-sm text-lg font-bold transition-all active:scale-95 flex items-center justify-center" onclick="handlePinKey('2')" type="button">2</button>
+<button class="pin-key h-12 rounded-xl bg-surface-container-low hover:bg-surface-container text-primary font-headline-sm text-lg font-bold transition-all active:scale-95 flex items-center justify-center" onclick="handlePinKey('3')" type="button">3</button>
+<button class="pin-key h-12 rounded-xl bg-surface-container-low hover:bg-surface-container text-primary font-headline-sm text-lg font-bold transition-all active:scale-95 flex items-center justify-center" onclick="handlePinKey('4')" type="button">4</button>
+<button class="pin-key h-12 rounded-xl bg-surface-container-low hover:bg-surface-container text-primary font-headline-sm text-lg font-bold transition-all active:scale-95 flex items-center justify-center" onclick="handlePinKey('5')" type="button">5</button>
+<button class="pin-key h-12 rounded-xl bg-surface-container-low hover:bg-surface-container text-primary font-headline-sm text-lg font-bold transition-all active:scale-95 flex items-center justify-center" onclick="handlePinKey('6')" type="button">6</button>
+<button class="pin-key h-12 rounded-xl bg-surface-container-low hover:bg-surface-container text-primary font-headline-sm text-lg font-bold transition-all active:scale-95 flex items-center justify-center" onclick="handlePinKey('7')" type="button">7</button>
+<button class="pin-key h-12 rounded-xl bg-surface-container-low hover:bg-surface-container text-primary font-headline-sm text-lg font-bold transition-all active:scale-95 flex items-center justify-center" onclick="handlePinKey('8')" type="button">8</button>
+<button class="pin-key h-12 rounded-xl bg-surface-container-low hover:bg-surface-container text-primary font-headline-sm text-lg font-bold transition-all active:scale-95 flex items-center justify-center" onclick="handlePinKey('9')" type="button">9</button>
+<button class="pin-key h-12 rounded-xl bg-surface-container-low hover:bg-status-danger/10 text-status-danger font-label-md transition-all active:scale-95 flex items-center justify-center" onclick="handlePinDelete()" title="Xóa ký tự" type="button">
+<span class="material-symbols-outlined text-[22px]">backspace</span>
+</button>
+<button class="pin-key h-12 rounded-xl bg-surface-container-low hover:bg-surface-container text-primary font-headline-sm text-lg font-bold transition-all active:scale-95 flex items-center justify-center" onclick="handlePinKey('0')" type="button">0</button>
+<button class="pin-key h-12 rounded-xl bg-secondary-container hover:bg-secondary-fixed-dim text-on-secondary-fixed font-label-md font-bold transition-all active:scale-95 flex items-center justify-center shadow-sm" onclick="validateCurrentPin()" title="Xác nhận" type="button">
+<span class="material-symbols-outlined text-[24px]">arrow_forward</span>
+</button>
+</div>
+<!-- Security hint footer -->
+<div class="mt-6 pt-4 border-t border-surface-container w-full flex items-center justify-between text-label-sm text-text-muted">
+<span class="flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary-fixed-dim"></span> Bảo mật 256-bit
+      </span>
+<a class="hover:text-primary transition-colors flex items-center gap-1 font-medium" href="index.html">
+<span class="material-symbols-outlined text-[14px]">home</span> Trang Chủ Khách
+      </a>
+</div>
+</div>
+</div>
+<header class="fixed top-0 left-0 right-0 h-16 z-50 bg-primary-container text-on-primary shadow-[0_12px_28px_-4px_rgba(27,58,75,0.12)]"><div class="h-16 w-full px-gutter-desktop flex items-center justify-between"><div class="flex items-center gap-space-md"><img alt="logo nên mau thuong hieu.png" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1Vy1hCh2eluTorBOCq7DXwF5b1O2dTZOnU1CI9hjV9Ndznt-LQ1D6izf71Tq7r3D5SbYdpx2o4rrwTS6h90nC399mXdPGoIqPRJuNyQBGbRbe5rqlhTnLxljRusa3872PZdEwBHYecTVvsqHYq2umZCvE1XJ5wA5YKiP12c1DOKD1DgiFa9OYik_SrmAu5xleJnwiB0w-j3ZElNQBt_7g-8WZI9uTwDPXQYKRheQXCbVxWZC6qHnooECTFnGqX_FIhEXAYQeyAHBw"/><div class="flex flex-col"><span class="font-headline-sm text-headline-sm tracking-tight text-on-primary">Nhà Nghỉ Diễm Châu</span><span class="font-label-sm text-label-sm text-on-primary-container tracking-wider uppercase font-semibold">Hệ Thống Quản Trị Nội Bộ</span></div><div class="hidden xl:flex items-center gap-space-xs bg-tertiary-container text-on-tertiary-container px-space-sm py-1 rounded-full text-label-sm font-label-sm ml-space-sm"><span class="w-2 h-2 rounded-full bg-tertiary-fixed animate-pulse"></span><span>Khóa thông minh: Đang kết nối</span></div></div><div class="flex items-center gap-space-md"><a class="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-primary/40 hover:bg-primary text-on-primary font-label-sm text-label-sm transition-colors" href="index.html"><span class="material-symbols-outlined text-secondary-fixed text-[18px]">home</span><span>Về Trang Chủ</span></a><div class="hidden md:flex items-center gap-space-xs px-space-sm py-1 rounded-lg bg-primary text-on-primary font-label-sm text-label-sm"><span class="material-symbols-outlined text-secondary-fixed text-[18px]">lock_open</span><span>Bảo vệ PIN: Đã xác thực</span></div><div class="flex items-center gap-space-sm bg-primary/40 px-space-sm py-1.5 rounded-full"><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div><div class="hidden sm:flex flex-col text-left"><span class="font-label-md text-label-md text-on-primary leading-none">Quản Trị Viên</span><span class="font-label-sm text-label-sm text-on-primary-container leading-none mt-0.5">Phú Quốc Hub</span></div><button class="ml-space-xs w-8 h-8 rounded-full bg-status-danger/20 hover:bg-status-danger text-on-primary flex items-center justify-center transition-colors" onclick="lockAdminSession()" title="Khóa nhanh hệ thống" type="button"><span class="material-symbols-outlined text-[18px]">lock</span></button></div></div></div></header><div class="w-full"><main class="w-full pt-16 bg-surface min-h-screen px-gutter-desktop py-space-lg max-w-7xl mx-auto"><div class="flex flex-col w-full gap-space-lg pb-space-xl">
+<!-- 1. KHU VỰC BẢO MẬT & XÁC THỰC MÃ PIN BANNER -->
+<section class="bg-primary text-on-primary rounded-2xl p-space-md shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-space-md relative overflow-hidden">
+<div class="absolute -right-8 -top-8 w-44 h-44 rounded-full bg-secondary-container/10 pointer-events-none blur-2xl"></div>
+<div class="flex items-center gap-space-md z-10">
+<div class="w-12 h-12 rounded-xl bg-secondary/20 flex items-center justify-center text-secondary-fixed shrink-0 shadow-inner">
+<span class="material-symbols-outlined text-[26px]">verified_user</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs flex-wrap">
+<span class="font-headline-sm text-headline-sm text-on-primary">Quyền Quản Trị Cấp Cao</span>
+<span class="inline-flex items-center gap-1 bg-tertiary-container text-on-tertiary-container px-2.5 py-0.5 rounded-full font-label-sm text-label-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary-fixed animate-ping"></span> Phiên 256-bit An Toàn
+          </span>
+</div>
+<p class="font-body-sm text-body-sm text-on-primary-container mt-0.5">
+          Mã PIN quản trị đang bảo vệ: <span class="font-code-ticket tracking-widest text-secondary-fixed font-bold bg-primary-container px-2 py-0.5 rounded" id="banner-pin-display">7633</span> (Thời hạn phiên: 58 phút còn lại)
+        </p>
+</div>
+</div>
+<div class="flex items-center gap-space-sm w-full md:w-auto z-10 shrink-0">
+<a class="flex-1 md:flex-none flex items-center justify-center gap-1.5 bg-surface-container-high/20 hover:bg-surface-container-high/30 text-on-primary px-space-md py-2.5 rounded-xl font-label-md text-label-md transition-all" href="index.html">
+<span class="material-symbols-outlined text-[18px]">home</span>
+        Trang Chủ
+</a>
+<button class="flex-1 md:flex-none flex items-center justify-center gap-1.5 bg-primary-container hover:bg-surface-tint text-on-primary px-space-md py-2.5 rounded-xl font-label-md text-label-md transition-all" id="btn-open-pin-modal" type="button">
+<span class="material-symbols-outlined text-[18px] text-secondary-fixed">password</span>
+        Đổi Mã PIN
+      </button>
+<button class="flex-1 md:flex-none flex items-center justify-center gap-1.5 bg-status-danger/90 hover:bg-status-danger text-on-primary px-space-md py-2.5 rounded-xl font-label-md text-label-md shadow-md transition-all" id="btn-lock-session" onclick="lockAdminSession()" type="button">
+<span class="material-symbols-outlined text-[18px]">lock_clock</span>
+        Khóa Nhanh Màn Hình
+      </button>
+</div>
+</section>
+<!-- 2. THANH ĐIỀU HƯỚNG 7 TAB CHUYÊN NGHIỆP -->
+<nav class="bg-surface-container-lowest rounded-2xl p-1.5 shadow-sm overflow-x-auto no-scrollbar">
+<div class="flex items-center gap-1 min-w-[860px]">
+<button class="admin-tab-btn flex items-center gap-2 px-space-md py-2.5 rounded-xl font-label-md text-label-md transition-all bg-primary-container text-on-primary shadow-sm font-semibold" id="nav-tab-overview" onclick="switchTab('tab-overview')">
+<span class="material-symbols-outlined text-[20px]">dashboard</span>
+        1. Tổng Quan &amp; KPI
+      </button>
+<button class="admin-tab-btn flex items-center gap-2 px-space-md py-2.5 rounded-xl font-label-md text-label-md text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all" id="nav-tab-rooms" onclick="switchTab('tab-rooms')">
+<span class="material-symbols-outlined text-[20px]">meeting_room</span>
+        2. Quản Lý Phòng (101-104)
+      </button>
+<button class="admin-tab-btn flex items-center gap-2 px-space-md py-2.5 rounded-xl font-label-md text-label-md text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all" id="nav-tab-sepay" onclick="switchTab('tab-sepay')">
+<span class="material-symbols-outlined text-[20px]">sync_alt</span>
+        3. VietQR &amp; SePay
+      </button>
+<button class="admin-tab-btn flex items-center gap-2 px-space-md py-2.5 rounded-xl font-label-md text-label-md text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all" id="nav-tab-crm" onclick="switchTab('tab-crm')">
+<span class="material-symbols-outlined text-[20px]">group</span>
+        4. CRM Khách Hàng
+      </button>
+<button class="admin-tab-btn flex items-center gap-2 px-space-md py-2.5 rounded-xl font-label-md text-label-md text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all" id="nav-tab-revenue" onclick="switchTab('tab-revenue')">
+<span class="material-symbols-outlined text-[20px]">query_stats</span>
+        5. Doanh Thu &amp; Lợi Nhuận
+      </button>
+<button class="admin-tab-btn flex items-center gap-2 px-space-md py-2.5 rounded-xl font-label-md text-label-md text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all" id="nav-tab-inventory" onclick="switchTab('tab-inventory')">
+<span class="material-symbols-outlined text-[20px]">inventory_2</span>
+        6. Vật Tư &amp; Chi Phí
+      </button>
+<button class="admin-tab-btn flex items-center gap-2 px-space-md py-2.5 rounded-xl font-label-md text-label-md text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all" id="nav-tab-blog" onclick="switchTab('tab-blog')">
+<span class="material-symbols-outlined text-[20px]">edit_note</span>
+        7. Cẩm Nang &amp; Blog SEO
+      </button>
+</div>
+</nav>
+<!-- TAB 1: DASHBOARD TỔNG QUAN & KPI -->
+<div class="admin-tab-pane flex flex-col gap-space-lg" id="tab-overview">
+<!-- Hàng 4 Card KPI thực -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md">
+<!-- Card 1: Doanh Thu Hôm Nay -->
+<div class="bg-surface-container-lowest p-space-md rounded-2xl shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow relative overflow-hidden">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-text-muted">Doanh thu hôm nay</span>
+<span class="w-9 h-9 rounded-xl bg-tertiary-fixed/40 flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined text-[20px]">today</span>
+</span>
+</div>
+<div class="mt-space-md">
+<div class="flex items-baseline gap-2">
+<span class="font-headline-lg text-headline-lg text-primary">860.000đ</span>
+</div>
+<div class="flex items-center gap-1.5 mt-2 font-label-sm text-label-sm text-on-tertiary-container">
+<span class="material-symbols-outlined text-[16px]">trending_up</span>
+<span class="font-semibold">+18%</span>
+<span class="text-text-muted">so với cùng kỳ hôm qua</span>
+</div>
+</div>
+</div>
+<!-- Card 2: Doanh Thu Tuần -->
+<div class="bg-surface-container-lowest p-space-md rounded-2xl shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-text-muted">Doanh thu 7 ngày qua</span>
+<span class="w-9 h-9 rounded-xl bg-secondary-fixed/50 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[20px]">date_range</span>
+</span>
+</div>
+<div class="mt-space-md">
+<span class="font-headline-lg text-headline-lg text-primary">5.420.000đ</span>
+<div class="flex items-center gap-1.5 mt-2 font-label-sm text-label-sm text-on-tertiary-container">
+<span class="material-symbols-outlined text-[16px]">north_east</span>
+<span class="font-semibold">+12.4%</span>
+<span class="text-text-muted">tỷ lệ lấp đầy 84%</span>
+</div>
+</div>
+</div>
+<!-- Card 3: Doanh Thu Tháng -->
+<div class="bg-surface-container-lowest p-space-md rounded-2xl shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-text-muted">Doanh thu lũy kế tháng</span>
+<span class="w-9 h-9 rounded-xl bg-primary-fixed flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[20px]">calendar_view_month</span>
+</span>
+</div>
+<div class="mt-space-md">
+<span class="font-headline-lg text-headline-lg text-primary">22.800.000đ</span>
+<div class="flex items-center gap-1.5 mt-2 font-label-sm text-label-sm text-on-tertiary-container">
+<span class="material-symbols-outlined text-[16px]">monitoring</span>
+<span class="font-semibold">Vượt chỉ tiêu</span>
+<span class="text-text-muted">38 lượt đặt SePay</span>
+</div>
+</div>
+</div>
+<!-- Card 4: Lợi Nhuận Ròng -->
+<div class="bg-primary text-on-primary p-space-md rounded-2xl shadow-md flex flex-col justify-between hover:shadow-lg transition-shadow relative overflow-hidden">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-primary-container">Lợi nhuận thực tế (Net)</span>
+<span class="w-9 h-9 rounded-xl bg-secondary/30 flex items-center justify-center text-secondary-fixed">
+<span class="material-symbols-outlined text-[20px]">account_balance_wallet</span>
+</span>
+</div>
+<div class="mt-space-md">
+<span class="font-headline-lg text-headline-lg text-secondary-fixed">16.350.000đ</span>
+<div class="flex items-center gap-1 mt-2 font-label-sm text-label-sm text-inverse-primary">
+<span>Khấu trừ vật tư &amp; điện:</span>
+<span class="text-secondary-fixed font-semibold">6.450.000đ</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Phân bổ Doanh Thu Theo Gói & Snapshot Khóa Nhanh -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-md items-start">
+<!-- Biểu đồ phân bổ doanh thu theo gói giờ -->
+<div class="lg:col-span-8 bg-surface-container-lowest p-space-lg rounded-2xl shadow-sm flex flex-col gap-space-md">
+<div class="flex items-center justify-between flex-wrap gap-2">
+<div>
+<h3 class="font-headline-sm text-headline-sm text-primary">Cơ Cấu Doanh Thu Gói Đặt Phòng</h3>
+<p class="font-body-sm text-body-sm text-text-muted">Phân tích hành vi chọn gói: 1 Giờ, 3 Giờ, 5 Giờ và Qua Đêm</p>
+</div>
+<span class="px-2.5 py-1 bg-surface-container rounded-lg font-label-sm text-label-sm text-on-surface-variant font-medium">Tháng hiện tại</span>
+</div>
+<!-- SVG Donut Chart & Breakdown Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-12 gap-space-md items-center pt-space-xs">
+<div class="sm:col-span-5 flex items-center justify-center relative">
+<!-- Inline SVG Pie/Donut (Under 2KB) -->
+<svg class="w-48 h-48 transform -rotate-90" viewbox="0 0 160 160">
+<!-- Qua đêm: 45% (dasharray 226) -->
+<circle cx="80" cy="80" fill="transparent" r="60" stroke="#012435" stroke-dasharray="169 377" stroke-dashoffset="0" stroke-width="24"></circle>
+<!-- Gói 3h: 30% (dasharray 113) -->
+<circle cx="80" cy="80" fill="transparent" r="60" stroke="#fdcd74" stroke-dasharray="113 377" stroke-dashoffset="-169" stroke-width="24"></circle>
+<!-- Gói 1h: 15% (dasharray 56) -->
+<circle cx="80" cy="80" fill="transparent" r="60" stroke="#01b57e" stroke-dasharray="56 377" stroke-dashoffset="-282" stroke-width="24"></circle>
+<!-- Gói 5h: 10% (dasharray 38) -->
+<circle cx="80" cy="80" fill="transparent" r="60" stroke="#72787c" stroke-dasharray="38 377" stroke-dashoffset="-338" stroke-width="24"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+<span class="font-headline-sm text-headline-sm text-primary">100%</span>
+<span class="font-label-sm text-label-sm text-text-muted">22.8M VND</span>
+</div>
+</div>
+<div class="sm:col-span-7 flex flex-col gap-2.5">
+<div class="flex items-center justify-between p-2.5 rounded-xl bg-surface-container-low">
+<div class="flex items-center gap-2">
+<span class="w-3.5 h-3.5 rounded-md bg-primary"></span>
+<span class="font-label-md text-label-md text-on-surface">Gói Qua Đêm (21:00 - 08:00)</span>
+</div>
+<span class="font-label-md text-label-md font-bold text-primary">10.260.000đ (45%)</span>
+</div>
+<div class="flex items-center justify-between p-2.5 rounded-xl bg-surface-container-low">
+<div class="flex items-center gap-2">
+<span class="w-3.5 h-3.5 rounded-md bg-secondary-container"></span>
+<span class="font-label-md text-label-md text-on-surface">Gói Trải Nghiệm 3 Giờ</span>
+</div>
+<span class="font-label-md text-label-md font-bold text-secondary">6.840.000đ (30%)</span>
+</div>
+<div class="flex items-center justify-between p-2.5 rounded-xl bg-surface-container-low">
+<div class="flex items-center gap-2">
+<span class="w-3.5 h-3.5 rounded-md bg-on-tertiary-container"></span>
+<span class="font-label-md text-label-md text-on-surface">Gói Nghỉ Nhanh 1 Giờ</span>
+</div>
+<span class="font-label-md text-label-md font-bold text-primary">3.420.000đ (15%)</span>
+</div>
+<div class="flex items-center justify-between p-2.5 rounded-xl bg-surface-container-low">
+<div class="flex items-center gap-2">
+<span class="w-3.5 h-3.5 rounded-md bg-outline"></span>
+<span class="font-label-md text-label-md text-on-surface">Gói Nửa Ngày 5 Giờ</span>
+</div>
+<span class="font-label-md text-label-md font-bold text-text-muted">2.280.000đ (10%)</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Trực quan trạng thái 4 phòng thu nhỏ -->
+<div class="lg:col-span-4 bg-surface-container-lowest p-space-lg rounded-2xl shadow-sm flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<h3 class="font-headline-sm text-headline-sm text-primary">Sơ Đồ Phòng Trực Tuyến</h3>
+<span class="flex items-center gap-1 font-label-sm text-label-sm text-on-tertiary-container font-semibold">
+<span class="w-2 h-2 rounded-full bg-tertiary-fixed-dim"></span> Live
+          </span>
+</div>
+<div class="grid grid-cols-2 gap-space-sm">
+<div class="p-space-sm bg-surface-container-low rounded-xl flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md font-bold text-primary">P.101</span>
+<span id="overview-mini-dot-101" class="w-2 h-2 rounded-full bg-status-danger"></span>
+</div>
+<div class="mt-2">
+<span id="overview-mini-badge-101" class="inline-block bg-status-danger/10 text-status-danger font-label-sm text-label-sm font-semibold px-2 py-0.5 rounded-md">Đang ở</span>
+<p class="font-code-ticket text-[18px] text-primary mt-1">PIN: 7633</p>
+</div>
+</div>
+<div class="p-space-sm bg-surface-container-low rounded-xl flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md font-bold text-primary">P.102</span>
+<span class="w-2 h-2 rounded-full bg-on-tertiary-container"></span>
+</div>
+<div class="mt-2">
+<span class="inline-block bg-tertiary-container/20 text-on-tertiary-container font-label-sm text-label-sm font-semibold px-2 py-0.5 rounded-md">Phòng trống</span>
+<p class="font-code-ticket text-[18px] text-text-muted mt-1">Chờ: 8192</p>
+</div>
+</div>
+<div class="p-space-sm bg-surface-container-low rounded-xl flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md font-bold text-primary">P.103</span>
+<span id="overview-mini-dot-103" class="w-2 h-2 rounded-full bg-secondary"></span>
+</div>
+<div class="mt-2">
+<span id="overview-mini-badge-103" class="inline-block bg-secondary-fixed/50 text-secondary font-label-sm text-label-sm font-semibold px-2 py-0.5 rounded-md">Đang dọn UV</span>
+<p class="font-label-sm text-label-sm text-text-muted mt-1">Buffer: 18:30</p>
+</div>
+</div>
+<div class="p-space-sm bg-surface-container-low rounded-xl flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md font-bold text-primary">P.104</span>
+<span class="w-2 h-2 rounded-full bg-on-tertiary-container"></span>
+</div>
+<div class="mt-2">
+<span class="inline-block bg-tertiary-container/20 text-on-tertiary-container font-label-sm text-label-sm font-semibold px-2 py-0.5 rounded-md">Phòng trống</span>
+<p class="font-code-ticket text-[18px] text-text-muted mt-1">Chờ: 4529</p>
+</div>
+</div>
+</div>
+<button class="w-full py-2.5 bg-surface-container hover:bg-surface-container-high rounded-xl text-primary font-label-md text-label-md flex items-center justify-center gap-1.5 transition-colors" onclick="switchTab('tab-rooms')">
+          Xem Điều Khiển Chi Tiết 4 Khóa
+          <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- TAB 2: QUẢN LÝ 4 PHÒNG (101 - 104) -->
+<div class="admin-tab-pane hidden flex flex-col gap-space-lg" id="tab-rooms">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm">
+<div>
+<h2 class="font-headline-md text-headline-md text-primary">Bảng Điều Khiển Cụm 4 Phòng Thông Minh</h2>
+<p class="font-body-sm text-body-sm text-text-muted">Kiểm soát mã PIN TTLock trực tiếp, trạng thái dọn buồng phòng và ngắt nguồn khẩn cấp</p>
+</div>
+<div class="flex flex-wrap items-center gap-2">
+  <button onclick="openTelegramModal()" type="button" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-primary text-secondary-container hover:bg-primary-container text-label-sm font-label-sm font-semibold transition-all shadow-sm cursor-pointer border border-secondary-container/40">
+    <span class="material-symbols-outlined text-[18px]">send</span>
+    <span>Cấu Hình Telegram Bot</span>
+  </button>
+  <button onclick="simulateAutoCheckout(101)" type="button" title="Mô phỏng khách trả phòng 101 để kích hoạt buffer dọn 2h & bắn Telegram" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-secondary-container hover:bg-accent-hover text-on-secondary-container text-label-sm font-label-sm font-bold transition-all shadow-sm cursor-pointer">
+    <span class="material-symbols-outlined text-[18px]">alarm_on</span>
+    <span>⚡ Mô Phỏng: Trả Phòng P.101 (Buffer 2h)</span>
+  </button>
+  <span class="inline-flex items-center gap-1.5 bg-tertiary-container text-on-tertiary-container px-3 py-1.5 rounded-xl font-label-sm text-label-sm font-semibold">
+    <span class="w-2 h-2 rounded-full bg-tertiary-fixed animate-pulse"></span> IoT Gateway: Sẵn Sàng
+  </span>
+</div>
+</div>
+<!-- Grid 4 Card Phòng Theo Spec mục 3 -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-md">
+<!-- PHÒNG 101: Tương Tác Khóa & Trạng Thái -->
+<div id="admin-card-101" class="bg-surface-container-lowest rounded-2xl p-space-lg shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow relative overflow-hidden">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-space-sm">
+<div id="room-101-num-badge" class="w-12 h-12 rounded-xl bg-status-danger/10 text-status-danger flex items-center justify-center font-bold text-headline-sm transition-all">
+              101
+            </div>
+<div>
+<div class="flex items-center gap-2">
+<h4 class="font-headline-sm text-headline-sm text-primary">Phòng King Tầng 1</h4>
+<span id="room-101-status-badge" class="bg-status-danger text-on-primary font-label-sm text-label-sm px-2.5 py-0.5 rounded-full flex items-center gap-1 transition-all">
+<span class="w-1.5 h-1.5 rounded-full bg-on-primary"></span> Locked (Đang Khóa)
+                </span>
+</div>
+<p id="room-101-subtext" class="font-body-sm text-body-sm text-text-muted mt-0.5">Khóa an toàn đang đóng • <strong class="text-status-danger">Bấm ổ khóa đỏ bên cạnh để mở sang Available</strong></p>
+</div>
+</div>
+<button id="room-101-lock-btn" type="button" onclick="toggleRoomLock(101)" title="Bấm để Chuyển Đổi Khóa Đỏ / Mở Khóa Xanh (Available)" class="p-2.5 rounded-2xl bg-status-danger/10 hover:bg-status-danger/20 transition-all cursor-pointer hover:scale-110 flex items-center justify-center shadow-sm">
+  <span id="room-101-lock-icon" class="material-symbols-outlined text-status-danger text-[30px] transition-all">lock</span>
+</button>
+</div>
+<div id="room-101-body" class="my-space-md p-space-md bg-surface-container-low rounded-xl flex flex-col gap-2 transition-all">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-text-muted">Tình trạng buồng phòng:</span>
+<span class="font-label-md text-label-md text-status-danger font-bold flex items-center gap-1">
+  <span class="material-symbols-outlined text-[16px]">lock</span> Đang Khóa An Toàn
+</span>
+</div>
+<div class="flex items-center justify-between pt-1">
+<span class="font-label-sm text-label-sm text-text-muted">Trạng thái khóa:</span>
+<span class="font-label-sm text-label-sm text-text-muted font-mono">Chốt an toàn đóng</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-text-muted">Mã PIN dự phòng:</span>
+<span class="font-label-sm text-label-sm text-text-muted">Tạm ngắt đón khách</span>
+</div>
+</div>
+<div id="room-101-actions" class="flex items-center gap-space-sm transition-all">
+<button class="flex-1 py-2.5 px-3 bg-secondary-container hover:bg-secondary-fixed-dim text-on-secondary-fixed font-label-md text-label-md rounded-xl transition-all flex items-center justify-center gap-1.5 font-semibold cursor-pointer" onclick="createFastPin(101)" type="button">
+<span class="material-symbols-outlined text-[18px]">add_circle</span>
+Tạo Mã Nhanh
+</button>
+<button class="flex-1 py-2.5 px-3 bg-surface-container-high hover:bg-surface-variant text-primary font-label-md text-label-md rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer" onclick="manualBooking(101)" type="button">
+<span class="material-symbols-outlined text-[18px]">edit_calendar</span>
+Đặt Thủ Công
+</button>
+</div>
+</div>
+<!-- PHÒNG 102: Trống sạch sẽ (UV Sterilized) -->
+<div class="bg-surface-container-lowest rounded-2xl p-space-lg shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-space-sm">
+<div class="w-12 h-12 rounded-xl bg-tertiary-fixed/30 text-on-tertiary-fixed flex items-center justify-center font-bold text-headline-sm">
+              102
+            </div>
+<div>
+<div class="flex items-center gap-2">
+<h4 class="font-headline-sm text-headline-sm text-primary">Phòng Queen Deluxe</h4>
+<span class="bg-tertiary-container text-on-tertiary-container font-label-sm text-label-sm px-2.5 py-0.5 rounded-full flex items-center gap-1 font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary-fixed"></span> Available
+                </span>
+</div>
+<p class="font-body-sm text-body-sm text-on-tertiary-container font-medium mt-0.5 flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">clean_hands</span> Đã vệ sinh đèn UV &amp; Thay ga
+              </p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-tertiary-container text-[26px]">lock_open</span>
+</div>
+<div class="my-space-md p-space-md bg-surface-container-low rounded-xl flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-text-muted">Mã PIN Dự Phòng Sẵn Sàng:</span>
+<span class="font-code-ticket text-headline-sm font-bold text-text-muted tracking-widest bg-surface-container-lowest px-3 py-1 rounded-lg">8192</span>
+</div>
+<div class="flex items-center justify-between pt-1">
+<span class="font-label-sm text-label-sm text-text-muted">Khử khuẩn buồng phòng:</span>
+<span class="font-label-sm text-label-sm text-primary font-medium">Hoàn tất lúc 10:15 Sáng nay</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-text-muted">Tình trạng cổng TTLock:</span>
+<span class="font-label-sm text-label-sm text-on-tertiary-container font-semibold">Online (Pin: 92%)</span>
+</div>
+</div>
+<div class="flex items-center gap-space-sm">
+<button class="flex-1 py-2.5 px-3 bg-secondary-container hover:bg-secondary-fixed-dim text-on-secondary-fixed font-label-md text-label-md rounded-xl transition-all flex items-center justify-center gap-1.5 font-semibold" onclick="createFastPin(102)">
+<span class="material-symbols-outlined text-[18px]">add_circle</span>
+            Tạo Mã Nhanh
+          </button>
+<button class="flex-1 py-2.5 px-3 bg-surface-container-high hover:bg-surface-variant text-primary font-label-md text-label-md rounded-xl transition-all flex items-center justify-center gap-1.5" onclick="manualBooking(102)">
+<span class="material-symbols-outlined text-[18px]">edit_calendar</span>
+            Đặt Thủ Công
+          </button>
+</div>
+</div>
+<!-- PHÒNG 103: Đang dọn vệ sinh khử khuẩn (Tương tác xác nhận dọn xong) -->
+<div id="admin-card-103" class="bg-surface-container-lowest rounded-2xl p-space-lg shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-space-sm">
+<div id="room-103-num-badge" class="w-12 h-12 rounded-xl bg-secondary-fixed/50 text-secondary flex items-center justify-center font-bold text-headline-sm transition-all">
+              103
+            </div>
+<div>
+<div class="flex items-center gap-2">
+<h4 class="font-headline-sm text-headline-sm text-primary">Phòng King VIP Cửa Sổ</h4>
+<span id="room-103-status-badge" class="bg-secondary-container text-on-secondary-container font-label-sm text-label-sm px-2.5 py-0.5 rounded-full flex items-center gap-1 font-semibold transition-all">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Cleaning Buffer 2h
+                </span>
+</div>
+<p id="room-103-subtext" class="font-body-sm text-body-sm text-text-muted mt-0.5">Dự kiến hoàn thành: <strong class="text-secondary font-semibold">18:30 Tối nay</strong></p>
+</div>
+</div>
+<span id="room-103-icon" class="material-symbols-outlined text-secondary text-[26px]">sanitizer</span>
+</div>
+<div id="room-103-body" class="my-space-md p-space-md bg-surface-container-low rounded-xl flex flex-col gap-2 transition-all">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-text-muted">Nhân viên buồng phòng:</span>
+<span class="font-label-md text-label-md text-primary font-medium">Chị Lan (Tầng 1)</span>
+</div>
+<div class="flex items-center justify-between pt-1">
+<span class="font-label-sm text-label-sm text-text-muted">Quy trình hiện tại:</span>
+<span class="font-label-sm text-label-sm text-secondary font-semibold">Xông tinh dầu sả chanh + Chiếu UV</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-text-muted">Mã PIN cửa khóa phòng:</span>
+<span class="font-label-sm text-label-sm text-text-muted font-mono">Đang tạm khóa khách</span>
+</div>
+</div>
+<div id="room-103-actions" class="flex items-center gap-space-sm transition-all">
+<button id="btn-clean-103" class="w-full py-2.5 px-3 bg-secondary hover:bg-secondary/90 text-on-secondary font-label-md text-label-md rounded-xl transition-all flex items-center justify-center gap-1.5 font-bold cursor-pointer shadow-sm" onclick="finishCleaning(103)" type="button">
+<span class="material-symbols-outlined text-[18px]">task_alt</span>
+            Xác Nhận Dọn Xong &amp; Đưa Vào Sẵn Sàng
+</button>
+</div>
+</div>
+<!-- PHÒNG 104: Trống sẵn sàng -->
+<div class="bg-surface-container-lowest rounded-2xl p-space-lg shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-space-sm">
+<div class="w-12 h-12 rounded-xl bg-tertiary-fixed/30 text-on-tertiary-fixed flex items-center justify-center font-bold text-headline-sm">
+              104
+            </div>
+<div>
+<div class="flex items-center gap-2">
+<h4 class="font-headline-sm text-headline-sm text-primary">Phòng Tiêu Chuẩn Yên Tĩnh</h4>
+<span class="bg-tertiary-container text-on-tertiary-container font-label-sm text-label-sm px-2.5 py-0.5 rounded-full flex items-center gap-1 font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary-fixed"></span> Available
+                </span>
+</div>
+<p class="font-body-sm text-body-sm text-on-tertiary-container font-medium mt-0.5 flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">check_circle</span> Sạch sẽ, nước hoa phòng đã bật
+              </p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-tertiary-container text-[26px]">lock_open</span>
+</div>
+<div class="my-space-md p-space-md bg-surface-container-low rounded-xl flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-text-muted">Mã PIN Chờ Kích Hoạt:</span>
+<span class="font-code-ticket text-headline-sm font-bold text-text-muted tracking-widest bg-surface-container-lowest px-3 py-1 rounded-lg">4529</span>
+</div>
+<div class="flex items-center justify-between pt-1">
+<span class="font-label-sm text-label-sm text-text-muted">Trạng thái thiết bị:</span>
+<span class="font-label-sm text-label-sm text-on-tertiary-container font-medium">Điều hòa sẵn sàng đón khách</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-text-muted">Tình trạng cổng TTLock:</span>
+<span class="font-label-sm text-label-sm text-on-tertiary-container font-semibold">Online (Pin: 88%)</span>
+</div>
+</div>
+<div class="flex items-center gap-space-sm">
+<button class="flex-1 py-2.5 px-3 bg-secondary-container hover:bg-secondary-fixed-dim text-on-secondary-fixed font-label-md text-label-md rounded-xl transition-all flex items-center justify-center gap-1.5 font-semibold" onclick="createFastPin(104)">
+<span class="material-symbols-outlined text-[18px]">add_circle</span>
+            Tạo Mã Nhanh
+          </button>
+<button class="flex-1 py-2.5 px-3 bg-surface-container-high hover:bg-surface-variant text-primary font-label-md text-label-md rounded-xl transition-all flex items-center justify-center gap-1.5" onclick="manualBooking(104)">
+<span class="material-symbols-outlined text-[18px]">edit_calendar</span>
+            Đặt Thủ Công
+          </button>
+</div>
+</div>
+</div>
+</div>
+<!-- TAB 3: LỊCH SỬ GIAO DỊCH & SEPAY THỜI GIAN THỰC -->
+<div class="admin-tab-pane hidden flex flex-col gap-space-lg" id="tab-sepay">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm">
+<div>
+<h2 class="font-headline-md text-headline-md text-primary">Webhook Giao Dịch SePay &amp; Cổng VietQR</h2>
+<p class="font-body-sm text-body-sm text-text-muted">Dòng tiền đổ vào TPBank số TK: <strong class="text-primary font-mono">88188968888</strong> (Tự động kích hoạt mã PIN qua SSE)</p>
+</div>
+<div class="flex items-center gap-2">
+<span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-tertiary-container text-on-tertiary-container font-label-sm text-label-sm font-semibold">
+<span class="w-2 h-2 rounded-full bg-tertiary-fixed animate-ping"></span> SePay Webhook Connected
+        </span>
+</div>
+</div>
+<!-- Bảng Giao Dịch SePay Real-time -->
+<div class="bg-surface-container-lowest rounded-2xl shadow-sm overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left font-body-sm text-body-sm">
+<thead class="bg-surface-container-low text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wider">
+<tr>
+<th class="py-3.5 px-space-md">Mã GD &amp; Thời Gian</th>
+<th class="py-3.5 px-space-md">Khách Hàng</th>
+<th class="py-3.5 px-space-md">Phòng &amp; Gói Đặt</th>
+<th class="py-3.5 px-space-md">Số Tiền (VND)</th>
+<th class="py-3.5 px-space-md">Mã PIN Cấp</th>
+<th class="py-3.5 px-space-md">Cổng Thanh Toán</th>
+<th class="py-3.5 px-space-md text-right">Trạng Thái SSE</th>
+</tr>
+</thead>
+<tbody id="inventory-table-body" class="divide-y divide-surface-container">
+<tr class="hover:bg-surface-container-low/60 transition-colors">
+<td class="py-3.5 px-space-md font-mono text-primary font-medium">
+                #SP-99214
+                <div class="font-label-sm text-label-sm text-text-muted font-sans">13:42:09 Hôm nay</div>
+</td>
+<td class="py-3.5 px-space-md">
+<span class="font-label-md text-label-md text-primary font-semibold">0942 817 633</span>
+<div class="text-text-muted font-body-sm text-body-sm">Anh Hùng (TP.HCM)</div>
+</td>
+<td class="py-3.5 px-space-md">
+<span class="inline-block bg-primary-fixed text-primary px-2 py-0.5 rounded font-label-sm text-label-sm font-bold">Phòng 101</span>
+<div class="text-text-muted">Gói 3 Giờ (12:00 - 15:00)</div>
+</td>
+<td class="py-3.5 px-space-md font-bold text-headline-sm text-primary">
+                100.000đ
+              </td>
+<td class="py-3.5 px-space-md">
+<span class="font-code-ticket text-headline-sm font-bold text-secondary tracking-widest bg-surface-container px-2 py-0.5 rounded">7633</span>
+</td>
+<td class="py-3.5 px-space-md">
+<span class="font-label-sm text-label-sm text-primary font-medium block">TPBank Auto-Match</span>
+<span class="text-text-muted font-mono text-label-sm text-label-sm">88188968888</span>
+</td>
+<td class="py-3.5 px-space-md text-right">
+<span class="inline-flex items-center gap-1 bg-tertiary-container text-on-tertiary-container px-2.5 py-1 rounded-full font-label-sm text-label-sm font-semibold">
+<span class="material-symbols-outlined text-[14px]">check</span> Thành công
+                </span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low/60 transition-colors">
+<td class="py-3.5 px-space-md font-mono text-primary font-medium">
+                #SP-99208
+                <div class="font-label-sm text-label-sm text-text-muted font-sans">11:15:30 Hôm nay</div>
+</td>
+<td class="py-3.5 px-space-md">
+<span class="font-label-md text-label-md text-primary font-semibold">0918 332 119</span>
+<div class="text-text-muted font-body-sm text-body-sm">Chị Mai Anh</div>
+</td>
+<td class="py-3.5 px-space-md">
+<span class="inline-block bg-surface-container text-primary px-2 py-0.5 rounded font-label-sm text-label-sm font-bold">Phòng 102</span>
+<div class="text-text-muted">Gói 1 Giờ Tốc Hành</div>
+</td>
+<td class="py-3.5 px-space-md font-bold text-headline-sm text-primary">
+                80.000đ
+              </td>
+<td class="py-3.5 px-space-md">
+<span class="font-code-ticket text-headline-sm font-bold text-text-muted tracking-widest bg-surface-container px-2 py-0.5 rounded">8192</span>
+</td>
+<td class="py-3.5 px-space-md">
+<span class="font-label-sm text-label-sm text-primary font-medium block">TPBank VietQR Pro</span>
+<span class="text-text-muted font-mono text-label-sm text-label-sm">88188968888</span>
+</td>
+<td class="py-3.5 px-space-md text-right">
+<span class="inline-flex items-center gap-1 bg-tertiary-container text-on-tertiary-container px-2.5 py-1 rounded-full font-label-sm text-label-sm font-semibold">
+<span class="material-symbols-outlined text-[14px]">check</span> Thành công
+                </span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low/60 transition-colors">
+<td class="py-3.5 px-space-md font-mono text-primary font-medium">
+                #SP-99182
+                <div class="font-label-sm text-label-sm text-text-muted font-sans">22:04:18 Hôm qua</div>
+</td>
+<td class="py-3.5 px-space-md">
+<span class="font-label-md text-label-md text-primary font-semibold">0973 400 921</span>
+<div class="text-text-muted font-body-sm text-body-sm">Khách Ẩn Danh</div>
+</td>
+<td class="py-3.5 px-space-md">
+<span class="inline-block bg-surface-container text-primary px-2 py-0.5 rounded font-label-sm text-label-sm font-bold">Phòng 104</span>
+<div class="text-text-muted">Gói Nghỉ Qua Đêm</div>
+</td>
+<td class="py-3.5 px-space-md font-bold text-headline-sm text-primary">
+                200.000đ
+              </td>
+<td class="py-3.5 px-space-md">
+<span class="font-code-ticket text-headline-sm font-bold text-text-muted tracking-widest bg-surface-container px-2 py-0.5 rounded">4529</span>
+</td>
+<td class="py-3.5 px-space-md">
+<span class="font-label-sm text-label-sm text-primary font-medium block">TPBank VietQR Pro</span>
+<span class="text-text-muted font-mono text-label-sm text-label-sm">88188968888</span>
+</td>
+<td class="py-3.5 px-space-md text-right">
+<span class="inline-flex items-center gap-1 bg-tertiary-container text-on-tertiary-container px-2.5 py-1 rounded-full font-label-sm text-label-sm font-semibold">
+<span class="material-symbols-outlined text-[14px]">check</span> Thành công
+                </span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<!-- TAB 4: THÔNG TIN KHÁCH HÀNG (CRM) -->
+<div class="admin-tab-pane hidden flex flex-col gap-space-lg" id="tab-crm">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm">
+<div>
+<h2 class="font-headline-md text-headline-md text-primary">Dữ Liệu Khách Hàng Thường Xuyên (CRM)</h2>
+<p class="font-body-sm text-body-sm text-text-muted">Quản lý lịch sử ghé thăm, ghi chú sở thích và hạn mức điểm thưởng riêng tư</p>
+</div>
+<button id="btn-create-blog" onclick="openCreateBlogModal()" type="button" class="bg-primary hover:bg-primary-container text-on-primary px-space-md py-2.5 rounded-xl font-label-md text-label-md flex items-center gap-2 self-start transition-all cursor-pointer shadow-sm">
+<span class="material-symbols-outlined text-[18px]">person_add</span>
+        Thêm Khách Thủ Công
+      </button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-md">
+<div class="bg-surface-container-lowest p-space-md rounded-2xl shadow-sm flex flex-col justify-between">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-full bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center font-bold text-headline-sm">
+            H
+          </div>
+<div>
+<h4 class="font-headline-sm text-headline-sm text-primary">0942 817 633</h4>
+<span class="text-text-muted font-label-sm text-label-sm">Anh Hùng • 6 lượt ghé</span>
+</div>
+</div>
+<div class="my-space-md p-space-sm bg-surface-container-low rounded-xl">
+<p class="font-body-sm text-body-sm text-on-surface">Thích phòng 101 yên tĩnh, thường dùng Red Bull và khăn tắm thêm.</p>
+</div>
+<div class="flex items-center justify-between font-label-sm text-label-sm">
+<span class="text-text-muted">Tổng chi: <strong class="text-primary">1.280.000đ</strong></span>
+<span class="text-secondary font-semibold">Khách VIP</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-space-md rounded-2xl shadow-sm flex flex-col justify-between">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-full bg-primary-fixed text-primary flex items-center justify-center font-bold text-headline-sm">
+            M
+          </div>
+<div>
+<h4 class="font-headline-sm text-headline-sm text-primary">0918 332 119</h4>
+<span class="text-text-muted font-label-sm text-label-sm">Chị Mai Anh • 3 lượt ghé</span>
+</div>
+</div>
+<div class="my-space-md p-space-sm bg-surface-container-low rounded-xl">
+<p class="font-body-sm text-body-sm text-on-surface">Khách chuyên nghỉ gói trưa 1h-3h. Luôn thanh toán nhanh qua VietQR.</p>
+</div>
+<div class="flex items-center justify-between font-label-sm text-label-sm">
+<span class="text-text-muted">Tổng chi: <strong class="text-primary">360.000đ</strong></span>
+<span class="text-text-muted font-semibold">Khách Chuẩn</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-space-md rounded-2xl shadow-sm flex flex-col justify-between">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-full bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-center font-bold text-headline-sm">
+            K
+          </div>
+<div>
+<h4 class="font-headline-sm text-headline-sm text-primary">0973 400 921</h4>
+<span class="text-text-muted font-label-sm text-label-sm">Khách Vãng Lai • 4 lượt</span>
+</div>
+</div>
+<div class="my-space-md p-space-sm bg-surface-container-low rounded-xl">
+<p class="font-body-sm text-body-sm text-on-surface">Thường đặt gói qua đêm lúc muộn (&gt;22:00). Đặt mã qua cổng tự động.</p>
+</div>
+<div class="flex items-center justify-between font-label-sm text-label-sm">
+<span class="text-text-muted">Tổng chi: <strong class="text-primary">800.000đ</strong></span>
+<span class="text-secondary font-semibold">Khách Đêm</span>
+</div>
+</div>
+</div>
+</div>
+<!-- TAB 5: THỐNG KÊ DOANH THU & LỢI NHUẬN (EXPANDED) -->
+<div class="admin-tab-pane hidden flex flex-col gap-space-lg" id="tab-revenue">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm">
+<div>
+<h2 class="font-headline-md text-headline-md text-primary">Chi Tiết Báo Cáo Tài Chính &amp; Lợi Nhuận Ròng</h2>
+<p class="font-body-sm text-body-sm text-text-muted">Hệ thống tự động trừ tiền chi phí vật tư và tiền điện nước theo thời gian thực</p>
+</div>
+<div class="flex items-center gap-space-xs">
+<button class="bg-surface-container-high hover:bg-surface-variant text-primary px-3 py-2 rounded-xl font-label-sm text-label-sm flex items-center gap-1.5 transition-colors">
+<span class="material-symbols-outlined text-[16px]">file_download</span> Xuất Báo Cáo Excel
+        </button>
+</div>
+</div>
+<!-- Phân tích dòng tiền -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-md">
+<div class="bg-surface-container-lowest p-space-lg rounded-2xl shadow-sm flex flex-col justify-between">
+<span class="font-label-sm text-label-sm text-text-muted uppercase">Tổng Doanh Thu Gộp (Gross)</span>
+<span class="font-headline-lg text-headline-lg text-primary mt-2">22.800.000đ</span>
+<div class="mt-4 pt-4 border-t border-surface-container text-body-sm text-body-sm text-text-muted flex justify-between">
+<span>Tiền phòng:</span>
+<span class="text-primary font-semibold">21.400.000đ</span>
+</div>
+<div class="text-body-sm text-body-sm text-text-muted flex justify-between mt-1">
+<span>Nước uống &amp; snack:</span>
+<span class="text-primary font-semibold">1.400.000đ</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-space-lg rounded-2xl shadow-sm flex flex-col justify-between">
+<span class="font-label-sm text-label-sm text-text-muted uppercase">Tổng Chi Phí Trừ Khoản (COGS)</span>
+<span class="font-headline-lg text-headline-lg text-status-danger mt-2">- 6.450.000đ</span>
+<div class="mt-4 pt-4 border-t border-surface-container text-body-sm text-body-sm text-text-muted flex justify-between">
+<span>Vật tư tiêu hao (Bảng mục 6):</span>
+<span class="text-status-danger font-semibold">- 1.890.000đ</span>
+</div>
+<div class="text-body-sm text-body-sm text-text-muted flex justify-between mt-1">
+<span>Điện nước &amp; Internet:</span>
+<span class="text-status-danger font-semibold">- 4.560.000đ</span>
+</div>
+</div>
+<div class="bg-primary text-on-primary p-space-lg rounded-2xl shadow-md flex flex-col justify-between">
+<span class="font-label-sm text-label-sm text-on-primary-container uppercase">Lợi Nhuận Ròng Thu Về (Net Profit)</span>
+<span class="font-headline-lg text-headline-lg text-secondary-fixed mt-2">16.350.000đ</span>
+<div class="mt-4 pt-4 border-t border-primary-container text-body-sm text-body-sm text-on-primary-container flex justify-between">
+<span>Biên lợi nhuận ròng:</span>
+<span class="text-secondary-fixed font-bold">71.7%</span>
+</div>
+<div class="text-body-sm text-body-sm text-on-primary-container flex justify-between mt-1">
+<span>Lợi nhuận TB / ngày:</span>
+<span class="text-on-primary font-semibold">545.000đ / ngày</span>
+</div>
+</div>
+</div>
+</div>
+<!-- TAB 6: QUẢN LÝ CHI PHÍ & VẬT TƯ ĐI KÈM THEO SPEC A7 -->
+<div class="admin-tab-pane hidden flex flex-col gap-space-lg" id="tab-inventory">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm">
+<div>
+<h2 class="font-headline-md text-headline-md text-primary">Danh Mục Vật Tư Tiêu Hao &amp; Chi Phí Vận Hành</h2>
+<p class="font-body-sm text-body-sm text-text-muted">Chi phí được khấu trừ trực tiếp vào kết quả kinh doanh để ra Lợi Nhuận Ròng chính xác</p>
+</div>
+<div class="flex items-center gap-space-xs">
+<button class="bg-secondary-container hover:bg-secondary-fixed-dim text-on-secondary-fixed font-label-md text-label-md px-space-md py-2.5 rounded-xl flex items-center gap-1.5 transition-all font-semibold" id="btn-add-item" type="button" onclick="openAddInventoryModal()">
+<span class="material-symbols-outlined text-[18px]">add</span>
+          Thêm Vật Tư Mới
+        </button>
+</div>
+</div>
+<!-- Tổng kết chi phí vật tư -->
+<div class="bg-surface-container-lowest p-space-md rounded-2xl shadow-sm flex flex-col md:flex-row items-center justify-between gap-space-md">
+<div class="flex items-center gap-space-md">
+<div class="w-12 h-12 rounded-xl bg-secondary-fixed/40 text-secondary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[26px]">calculate</span>
+</div>
+<div>
+<span class="font-headline-sm text-headline-sm text-primary">Tổng Chi Phí Vật Tư &amp; Sửa Chữa Kỳ Này:</span>
+<p class="font-body-sm text-body-sm text-text-muted">Gồm 9 mặt hàng vật tư tiêu hao + 2 khoản chi phí bảo trì phát sinh</p>
+</div>
+</div>
+<div class="text-right">
+<span id="inventory-total-cost" class="font-headline-lg text-headline-lg text-status-danger font-bold">1.890.000đ</span>
+<span class="block font-label-sm text-label-sm text-on-tertiary-container font-semibold">Tự động trừ vào quỹ lợi nhuận ròng</span>
+</div>
+</div>
+<!-- Bảng Vật Tư Chi Tiết Theo Đúng Spec Mục 3 -->
+<div class="bg-surface-container-lowest rounded-2xl shadow-sm overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left font-body-sm text-body-sm">
+<thead class="bg-surface-container-low text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wider">
+<tr>
+<th class="py-3.5 px-space-md">STT</th>
+<th class="py-3.5 px-space-md">Tên Vật Tư / Chi Phí</th>
+<th class="py-3.5 px-space-md">Phân Loại</th>
+<th class="py-3.5 px-space-md text-center">Số Lượng</th>
+<th class="py-3.5 px-space-md text-right">Đơn Giá</th>
+<th class="py-3.5 px-space-md text-right">Thành Tiền (VND)</th>
+<th class="py-3.5 px-space-md text-right">Thao Tác</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container">
+<!-- 1. Dầu gội -->
+<tr class="hover:bg-surface-container-low/60 transition-colors">
+<td class="py-3 px-space-md font-mono text-text-muted">01</td>
+<td class="py-3 px-space-md font-semibold text-primary">Dầu gội mini</td>
+<td class="py-3 px-space-md"><span class="bg-surface-container text-on-surface-variant px-2 py-0.5 rounded text-label-sm font-label-sm">Đồ dùng buồng</span></td>
+<td class="py-3 px-space-md text-center font-mono">50 chai</td>
+<td class="py-3 px-space-md text-right font-mono">5.000đ</td>
+<td class="py-3 px-space-md text-right font-bold text-primary font-mono">250.000đ</td>
+<td class="py-3 px-space-md text-right">
+<button class="text-text-muted hover:text-primary p-1"><span class="material-symbols-outlined text-[18px]">edit</span></button>
+<button class="text-text-muted hover:text-status-danger p-1"><span class="material-symbols-outlined text-[18px]">delete</span></button>
+</td>
+</tr>
+<!-- 2. Sữa tắm -->
+<tr class="hover:bg-surface-container-low/60 transition-colors">
+<td class="py-3 px-space-md font-mono text-text-muted">02</td>
+<td class="py-3 px-space-md font-semibold text-primary">Sữa tắm mini</td>
+<td class="py-3 px-space-md"><span class="bg-surface-container text-on-surface-variant px-2 py-0.5 rounded text-label-sm font-label-sm">Đồ dùng buồng</span></td>
+<td class="py-3 px-space-md text-center font-mono">50 chai</td>
+<td class="py-3 px-space-md text-right font-mono">5.000đ</td>
+<td class="py-3 px-space-md text-right font-bold text-primary font-mono">250.000đ</td>
+<td class="py-3 px-space-md text-right">
+<button class="text-text-muted hover:text-primary p-1"><span class="material-symbols-outlined text-[18px]">edit</span></button>
+<button class="text-text-muted hover:text-status-danger p-1"><span class="material-symbols-outlined text-[18px]">delete</span></button>
+</td>
+</tr>
+<!-- 3. Nước suối -->
+<tr class="hover:bg-surface-container-low/60 transition-colors">
+<td class="py-3 px-space-md font-mono text-text-muted">03</td>
+<td class="py-3 px-space-md font-semibold text-primary">Nước suối tinh khiết (Aquafina 500ml)</td>
+<td class="py-3 px-space-md"><span class="bg-surface-container text-on-surface-variant px-2 py-0.5 rounded text-label-sm font-label-sm">Miễn phí cho khách</span></td>
+<td class="py-3 px-space-md text-center font-mono">100 chai</td>
+<td class="py-3 px-space-md text-right font-mono">3.000đ</td>
+<td class="py-3 px-space-md text-right font-bold text-primary font-mono">300.000đ</td>
+<td class="py-3 px-space-md text-right">
+<button class="text-text-muted hover:text-primary p-1"><span class="material-symbols-outlined text-[18px]">edit</span></button>
+<button class="text-text-muted hover:text-status-danger p-1"><span class="material-symbols-outlined text-[18px]">delete</span></button>
+</td>
+</tr>
+<!-- 4. Trà xanh C2 -->
+<tr class="hover:bg-surface-container-low/60 transition-colors">
+<td class="py-3 px-space-md font-mono text-text-muted">04</td>
+<td class="py-3 px-space-md font-semibold text-primary">Trà xanh C2</td>
+<td class="py-3 px-space-md"><span class="bg-secondary-fixed/40 text-secondary px-2 py-0.5 rounded text-label-sm font-label-sm">Minibar nước ngọt</span></td>
+<td class="py-3 px-space-md text-center font-mono">30 chai</td>
+<td class="py-3 px-space-md text-right font-mono">8.000đ</td>
+<td class="py-3 px-space-md text-right font-bold text-primary font-mono">240.000đ</td>
+<td class="py-3 px-space-md text-right">
+<button class="text-text-muted hover:text-primary p-1"><span class="material-symbols-outlined text-[18px]">edit</span></button>
+<button class="text-text-muted hover:text-status-danger p-1"><span class="material-symbols-outlined text-[18px]">delete</span></button>
+</td>
+</tr>
+<!-- 5. Number One -->
+<tr class="hover:bg-surface-container-low/60 transition-colors">
+<td class="py-3 px-space-md font-mono text-text-muted">05</td>
+<td class="py-3 px-space-md font-semibold text-primary">Nước tăng lực Number One</td>
+<td class="py-3 px-space-md"><span class="bg-secondary-fixed/40 text-secondary px-2 py-0.5 rounded text-label-sm font-label-sm">Minibar nước ngọt</span></td>
+<td class="py-3 px-space-md text-center font-mono">20 chai</td>
+<td class="py-3 px-space-md text-right font-mono">10.000đ</td>
+<td class="py-3 px-space-md text-right font-bold text-primary font-mono">200.000đ</td>
+<td class="py-3 px-space-md text-right">
+<button class="text-text-muted hover:text-primary p-1"><span class="material-symbols-outlined text-[18px]">edit</span></button>
+<button class="text-text-muted hover:text-status-danger p-1"><span class="material-symbols-outlined text-[18px]">delete</span></button>
+</td>
+</tr>
+<!-- 6. Red Bull -->
+<tr class="hover:bg-surface-container-low/60 transition-colors">
+<td class="py-3 px-space-md font-mono text-text-muted">06</td>
+<td class="py-3 px-space-md font-semibold text-primary">Bò húc Red Bull lon</td>
+<td class="py-3 px-space-md"><span class="bg-secondary-fixed/40 text-secondary px-2 py-0.5 rounded text-label-sm font-label-sm">Minibar nước ngọt</span></td>
+<td class="py-3 px-space-md text-center font-mono">20 lon</td>
+<td class="py-3 px-space-md text-right font-mono">15.000đ</td>
+<td class="py-3 px-space-md text-right font-bold text-primary font-mono">300.000đ</td>
+<td class="py-3 px-space-md text-right">
+<button class="text-text-muted hover:text-primary p-1"><span class="material-symbols-outlined text-[18px]">edit</span></button>
+<button class="text-text-muted hover:text-status-danger p-1"><span class="material-symbols-outlined text-[18px]">delete</span></button>
+</td>
+</tr>
+<!-- 7. Bàn chải đánh răng -->
+<tr class="hover:bg-surface-container-low/60 transition-colors">
+<td class="py-3 px-space-md font-mono text-text-muted">07</td>
+<td class="py-3 px-space-md font-semibold text-primary">Bàn chải đánh răng sinh học + kem</td>
+<td class="py-3 px-space-md"><span class="bg-surface-container text-on-surface-variant px-2 py-0.5 rounded text-label-sm font-label-sm">Đồ dùng buồng</span></td>
+<td class="py-3 px-space-md text-center font-mono">50 cái</td>
+<td class="py-3 px-space-md text-right font-mono">3.000đ</td>
+<td class="py-3 px-space-md text-right font-bold text-primary font-mono">150.000đ</td>
+<td class="py-3 px-space-md text-right">
+<button class="text-text-muted hover:text-primary p-1"><span class="material-symbols-outlined text-[18px]">edit</span></button>
+<button class="text-text-muted hover:text-status-danger p-1"><span class="material-symbols-outlined text-[18px]">delete</span></button>
+</td>
+</tr>
+<!-- 8. Bột giặt -->
+<tr class="hover:bg-surface-container-low/60 transition-colors">
+<td class="py-3 px-space-md font-mono text-text-muted">08</td>
+<td class="py-3 px-space-md font-semibold text-primary">Bột giặt giặt sấy drap nệm</td>
+<td class="py-3 px-space-md"><span class="bg-surface-container text-on-surface-variant px-2 py-0.5 rounded text-label-sm font-label-sm">Giặt ủi vệ sinh</span></td>
+<td class="py-3 px-space-md text-center font-mono">20 gói</td>
+<td class="py-3 px-space-md text-right font-mono">10.000đ</td>
+<td class="py-3 px-space-md text-right font-bold text-primary font-mono">200.000đ</td>
+<td class="py-3 px-space-md text-right">
+<button class="text-text-muted hover:text-primary p-1"><span class="material-symbols-outlined text-[18px]">edit</span></button>
+<button class="text-text-muted hover:text-status-danger p-1"><span class="material-symbols-outlined text-[18px]">delete</span></button>
+</td>
+</tr>
+<!-- 9. Nước xả vải -->
+<tr class="hover:bg-surface-container-low/60 transition-colors">
+<td class="py-3 px-space-md font-mono text-text-muted">09</td>
+<td class="py-3 px-space-md font-semibold text-primary">Nước xả vải Comfort hương sả chanh</td>
+<td class="py-3 px-space-md"><span class="bg-surface-container text-on-surface-variant px-2 py-0.5 rounded text-label-sm font-label-sm">Giặt ủi vệ sinh</span></td>
+<td class="py-3 px-space-md text-center font-mono">10 chai</td>
+<td class="py-3 px-space-md text-right font-mono">20.000đ</td>
+<td class="py-3 px-space-md text-right font-bold text-primary font-mono">200.000đ</td>
+<td class="py-3 px-space-md text-right">
+<button class="text-text-muted hover:text-primary p-1"><span class="material-symbols-outlined text-[18px]">edit</span></button>
+<button class="text-text-muted hover:text-status-danger p-1"><span class="material-symbols-outlined text-[18px]">delete</span></button>
+</td>
+</tr>
+<!-- Chi phí phát sinh: Thay bóng đèn -->
+<tr class="bg-secondary-fixed/10 hover:bg-secondary-fixed/20 transition-colors">
+<td class="py-3 px-space-md font-mono text-secondary">PS1</td>
+<td class="py-3 px-space-md font-semibold text-secondary">Thay bóng đèn LED hành lang tầng 1</td>
+<td class="py-3 px-space-md"><span class="bg-secondary-container text-on-secondary-container px-2 py-0.5 rounded text-label-sm font-label-sm font-semibold">Chi phí sửa chữa</span></td>
+<td class="py-3 px-space-md text-center font-mono">1 bóng</td>
+<td class="py-3 px-space-md text-right font-mono">80.000đ</td>
+<td class="py-3 px-space-md text-right font-bold text-secondary font-mono">80.000đ</td>
+<td class="py-3 px-space-md text-right">
+<button class="text-text-muted hover:text-primary p-1"><span class="material-symbols-outlined text-[18px]">edit</span></button>
+<button class="text-text-muted hover:text-status-danger p-1"><span class="material-symbols-outlined text-[18px]">delete</span></button>
+</td>
+</tr>
+<!-- Chi phí phát sinh: Khử trùng định kỳ -->
+<tr class="bg-secondary-fixed/10 hover:bg-secondary-fixed/20 transition-colors">
+<td class="py-3 px-space-md font-mono text-secondary">PS2</td>
+<td class="py-3 px-space-md font-semibold text-secondary">Phun khử trùng &amp; diệt khuẩn buồng định kỳ tuần</td>
+<td class="py-3 px-space-md"><span class="bg-secondary-container text-on-secondary-container px-2 py-0.5 rounded text-label-sm font-label-sm font-semibold">Bảo trì vệ sinh</span></td>
+<td class="py-3 px-space-md text-center font-mono">1 gói</td>
+<td class="py-3 px-space-md text-right font-mono">150.000đ</td>
+<td class="py-3 px-space-md text-right font-bold text-secondary font-mono">150.000đ</td>
+<td class="py-3 px-space-md text-right">
+<button class="text-text-muted hover:text-primary p-1"><span class="material-symbols-outlined text-[18px]">edit</span></button>
+<button class="text-text-muted hover:text-status-danger p-1"><span class="material-symbols-outlined text-[18px]">delete</span></button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<!-- TAB 7: QUẢN LÝ BLOG / CẨM NANG SEO -->
+<div class="admin-tab-pane hidden flex flex-col gap-space-lg" id="tab-blog">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm">
+<div>
+<h2 class="font-headline-md text-headline-md text-primary">Cẩm Nang Du Lịch Phú Quốc &amp; Bài Viết SEO</h2>
+<p class="font-body-sm text-body-sm text-text-muted">Tối ưu hóa thứ hạng tìm kiếm cho từ khóa: "Nhà nghỉ thông minh tự check-in Phú Quốc"</p>
+</div>
+<button class="bg-primary hover:bg-primary-container text-on-primary px-space-md py-2.5 rounded-xl font-label-md text-label-md flex items-center gap-2 self-start transition-all">
+<span class="material-symbols-outlined text-[18px]">post_add</span>
+        Tạo Bài Viết Mới
+      </button>
+</div>
+<!-- Danh sách bài Blog SEO -->
+<div id="blog-posts-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-space-md">
+<!-- Bài 1 -->
+<div class="bg-surface-container-lowest rounded-2xl p-space-md shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+<div>
+<div class="w-full h-40 rounded-xl overflow-hidden mb-space-sm">
+<img class="w-full h-full object-cover" data-alt="A modern cozy boutique guest room interior with a digital smart lock on the door warm ambient coastal lighting soft linen bed modern minimalist Vietnamese design style" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAaChHCEl4XtK99cdmbTpmyjL-20fPkC-IVaKWN01LOJc7EWOtXTgCTh32ABIK1tRX0_CKtVGFBvW83dfuOTRK6BxJWR7XmaFK0Fsa07UeK4hFgfb45iosoBQM_LUSgmfG9ky0YZOMlHF0Z3GepPeNOBC0aca0asFAn-IXc5dvXHkvdXiUrs2j7G6d66E5uIvVMJrj7uqsWVv7fJ3xUUUnT8Ta0mU8k4V7dOx7pVKhNj78paL7Iz36O"/>
+</div>
+<div class="flex items-center gap-2 mb-2">
+<span class="inline-block bg-tertiary-container text-on-tertiary-container text-label-sm font-label-sm px-2 py-0.5 rounded font-semibold">Đã Xuất Bản</span>
+<span class="text-text-muted font-label-sm text-label-sm">1.840 Lượt đọc</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-primary line-clamp-2">Kinh Nghiệm Check-in Tự Động Không Gặp Lễ Tân Tại Phú Quốc</h4>
+<p class="font-body-sm text-body-sm text-text-muted line-clamp-2 mt-1">Hướng dẫn quy trình 7 bước nhận phòng trong 60 giây qua Smart Pass bảo mật tuyệt đối...</p>
+</div>
+<div class="flex items-center justify-between mt-space-md pt-space-xs border-t border-surface-container">
+<span class="font-label-sm text-label-sm text-text-muted">Cập nhật: 12/03/2025</span>
+<div class="flex items-center gap-1">
+<button class="p-1.5 text-text-muted hover:text-primary"><span class="material-symbols-outlined text-[18px]">edit</span></button>
+<button class="p-1.5 text-text-muted hover:text-status-danger"><span class="material-symbols-outlined text-[18px]">delete</span></button>
+</div>
+</div>
+</div>
+<!-- Bài 2 -->
+<div class="bg-surface-container-lowest rounded-2xl p-space-md shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+<div>
+<div class="w-full h-40 rounded-xl overflow-hidden mb-space-sm">
+<img class="w-full h-full object-cover" data-alt="Phu Quoc island tropical coast at sunset with emerald green sea warm sunlight sandy beach and lush palm trees serene vacation atmosphere" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBnzyOfM_q2toM1q6ZdXbvVAOnzCOeSy7Pk1wtpfWPFe7NZV9MdT0Sc8FLj0VmtAQkO495aGBLQdsR6zd2213Iu4Vmear97_U419ApZKdcpIBlWUsChM7amTlrnVkAV48tP7nijnsfFFwjYXHMlZ5moZDuyrLRZsVwYGtILhYV25vs4k4vbIfcJNfSMESaifNzC4vM_AfWCpIjgyApz-HaY_L81-L5fWjuLioj2_bvWo-unZ9q4hGnk"/>
+</div>
+<div class="flex items-center gap-2 mb-2">
+<span class="inline-block bg-tertiary-container text-on-tertiary-container text-label-sm font-label-sm px-2 py-0.5 rounded font-semibold">Đã Xuất Bản</span>
+<span class="text-text-muted font-label-sm text-label-sm">920 Lượt đọc</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-primary line-clamp-2">Top 5 Quán Cà Phê Ngắm Hoàng Hôn Gần Nhà Nghỉ Diễm Châu</h4>
+<p class="font-body-sm text-body-sm text-text-muted line-clamp-2 mt-1">Gợi ý lộ trình thư giãn riêng tư dành cho các cặp đôi ghé đảo ngọc trong 48 giờ...</p>
+</div>
+<div class="flex items-center justify-between mt-space-md pt-space-xs border-t border-surface-container">
+<span class="font-label-sm text-label-sm text-text-muted">Cập nhật: 08/03/2025</span>
+<div class="flex items-center gap-1">
+<button class="p-1.5 text-text-muted hover:text-primary"><span class="material-symbols-outlined text-[18px]">edit</span></button>
+<button class="p-1.5 text-text-muted hover:text-status-danger"><span class="material-symbols-outlined text-[18px]">delete</span></button>
+</div>
+</div>
+</div>
+<!-- Bài 3 -->
+<div class="bg-surface-container-lowest rounded-2xl p-space-md shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+<div>
+<div class="w-full h-40 rounded-xl overflow-hidden mb-space-sm">
+<img class="w-full h-full object-cover" data-alt="Close up of a luxury brass keyless door handle with numeric keypad glowing gently inside an intimate quiet boutique hotel hallway" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDVsaS4_MVyegAkUoAN0UkeSGFanSYOYMFPokCBsSPJRg76-3fSrFK1fE1F2ih6361hk3a7rNC_P9c1-J5tEADXicoiQGUn4pWSkyVy2sgxeX3b3kQMw2k-cExbBR1oWl3J76SwCA8w_XbrkAUV9F4N5XUegOaTG51-NOJAtbdq9Kk2fukCTjakSDU3yZC0jxwWVFizLYZjc4xclR6YQdrxqRwI3lWfriVYaIZkBhlSNsJoAi_kEZgm"/>
+</div>
+<div class="flex items-center gap-2 mb-2">
+<span class="inline-block bg-surface-container text-on-surface-variant text-label-sm font-label-sm px-2 py-0.5 rounded font-semibold">Bản Nháp (Draft)</span>
+<span class="text-text-muted font-label-sm text-label-sm">Đang biên tập</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-primary line-clamp-2">Tại Sao Du Lịch Khép Kín &amp; Tự Động Hóa Trở Thành Xu Hướng 2025?</h4>
+<p class="font-body-sm text-body-sm text-text-muted line-clamp-2 mt-1">Sự riêng tư tuyệt đối và trải nghiệm không tương tác trực tiếp giúp du khách tái tạo năng lượng hoàn hảo...</p>
+</div>
+<div class="flex items-center justify-between mt-space-md pt-space-xs border-t border-surface-container">
+<span class="font-label-sm text-label-sm text-text-muted">Lưu nháp: Hôm nay</span>
+<div class="flex items-center gap-1">
+<button class="p-1.5 text-text-muted hover:text-primary"><span class="material-symbols-outlined text-[18px]">edit</span></button>
+<button class="p-1.5 text-text-muted hover:text-status-danger"><span class="material-symbols-outlined text-[18px]">delete</span></button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- MODAL BẢO MẬT & ĐỔI MÃ PIN QUẢN TRỊ VIÊN (4 SỐ: 7633) -->
+<div class="fixed inset-0 z-50 bg-primary/80 backdrop-blur-sm hidden flex items-center justify-center p-space-md" id="pin-modal">
+<div class="bg-surface-container-lowest rounded-3xl max-w-md w-full p-space-lg shadow-2xl relative flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-10 h-10 rounded-xl bg-primary-fixed flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[22px]">pin</span>
+</span>
+<div>
+<h3 class="font-headline-sm text-headline-sm text-primary">Xác Thực Mã PIN Quản Trị</h3>
+<p class="font-body-sm text-body-sm text-text-muted">Bảo vệ phiên thao tác cấp Admin</p>
+</div>
+</div>
+<button class="w-8 h-8 rounded-full bg-surface-container hover:bg-surface-container-high flex items-center justify-center text-on-surface" id="btn-close-pin-modal">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+<div class="p-space-md bg-surface-container-low rounded-2xl flex flex-col items-center">
+<span class="font-label-sm text-label-sm text-text-muted mb-2">Mã PIN Hiện Tại Đang Sử Dụng</span>
+<div class="flex items-center gap-3">
+<input class="w-12 h-14 bg-surface-container-lowest text-center font-code-ticket text-headline-lg font-bold text-primary rounded-xl shadow-inner focus:outline-none focus:ring-2 focus:ring-primary" maxlength="1" readonly="" type="password" value="7"/>
+<input class="w-12 h-14 bg-surface-container-lowest text-center font-code-ticket text-headline-lg font-bold text-primary rounded-xl shadow-inner focus:outline-none focus:ring-2 focus:ring-primary" maxlength="1" readonly="" type="password" value="6"/>
+<input class="w-12 h-14 bg-surface-container-lowest text-center font-code-ticket text-headline-lg font-bold text-primary rounded-xl shadow-inner focus:outline-none focus:ring-2 focus:ring-primary" maxlength="1" readonly="" type="password" value="3"/>
+<input class="w-12 h-14 bg-surface-container-lowest text-center font-code-ticket text-headline-lg font-bold text-primary rounded-xl shadow-inner focus:outline-none focus:ring-2 focus:ring-primary" maxlength="1" readonly="" type="password" value="3"/>
+</div>
+<span class="mt-3 inline-flex items-center gap-1 text-on-tertiary-container font-label-sm text-label-sm font-semibold">
+<span class="material-symbols-outlined text-[16px]">verified</span> Mã hợp lệ: Quyền Quản Trị Đã Cấp
+        </span>
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-label-sm text-label-sm text-on-surface-variant font-semibold">Cập nhật mã PIN mới:</label>
+<input class="h-12 px-space-md bg-surface-container-low rounded-xl text-primary font-mono text-center font-bold tracking-widest focus:outline-none focus:bg-surface-container" id="new-pin-input-field" maxlength="4" placeholder="Nhập 4 số PIN mới (VD: 8899)" type="text"/>
+</div>
+<div class="flex items-center gap-space-sm pt-2">
+<button class="w-full py-3 bg-secondary-container hover:bg-secondary-fixed-dim text-on-secondary-fixed font-label-md text-label-md font-semibold rounded-xl transition-all flex items-center justify-center gap-2" id="btn-save-pin" type="button">
+<span class="material-symbols-outlined text-[20px]">save</span> Lưu Mã PIN Bảo Mật
+        </button>
+</div>
+</div>
+</div>
+</div>
+<script>
+  // Quản lý Mã PIN Hệ Thống
+  let currentAdminPin = "7633";
+  let enteredPin = "";
+
+  // Logic Khóa Toàn Màn Hình & Xác Thực PIN Gate
+  const securityGate = document.getElementById('admin-security-gate');
+  const pinDisplayGroup = document.getElementById('pin-display-group');
+  const pinBoxes = document.querySelectorAll('.pin-box');
+  const pinStatusMessage = document.getElementById('pin-status-message');
+  const hiddenPinInput = document.getElementById('hidden-pin-input');
+
+  function updatePinBoxes() {
+    pinBoxes.forEach((box, idx) => {
+      if (idx < enteredPin.length) {
+        box.textContent = '•';
+        box.classList.remove('bg-surface-container', 'border-outline-variant');
+        box.classList.add('bg-surface-container-lowest', 'border-primary', 'text-primary', 'shadow-sm');
+      } else {
+        box.textContent = '';
+        box.classList.remove('bg-surface-container-lowest', 'border-primary', 'text-primary', 'shadow-sm');
+        box.classList.add('bg-surface-container', 'border-outline-variant');
+      }
+    });
+  }
+
+  function handlePinKey(num) {
+    if (enteredPin.length < 4) {
+      enteredPin += num;
+      updatePinBoxes();
+      if (enteredPin.length === 4) {
+        setTimeout(validateCurrentPin, 150);
+      }
+    }
+  }
+
+  function handlePinDelete() {
+    if (enteredPin.length > 0) {
+      enteredPin = enteredPin.slice(0, -1);
+      updatePinBoxes();
+      resetPinStatus();
+    }
+  }
+
+  function resetPinStatus() {
+    pinStatusMessage.innerHTML = `
+      <span class="material-symbols-outlined text-[16px] text-secondary">vpn_key</span>
+      <span>Gợi ý mã bảo vệ mặc định: <strong class="text-primary font-mono font-bold bg-surface-container px-1.5 py-0.5 rounded">${currentAdminPin}</strong></span>
+    `;
+  }
+
+  function validateCurrentPin() {
+    if (enteredPin === currentAdminPin) {
+      pinStatusMessage.innerHTML = `
+        <span class="inline-flex items-center gap-1.5 text-on-tertiary-container font-semibold">
+          <span class="material-symbols-outlined text-[18px]">verified</span>
+          Xác thực thành công! Đang giải mã dữ liệu...
+        </span>
+      `;
+      pinDisplayGroup.classList.remove('animate-shake');
+      
+      // Mở khóa phiên và ẩn gate
+      setTimeout(() => {
+        securityGate.classList.add('opacity-0', 'pointer-events-none');
+        setTimeout(() => {
+          securityGate.classList.add('hidden');
+          securityGate.classList.remove('opacity-0');
+        }, 300);
+      }, 600);
+    } else {
+      // Rung lắc & báo lỗi
+      pinStatusMessage.innerHTML = `
+        <span class="inline-flex items-center gap-1.5 text-status-danger font-semibold">
+          <span class="material-symbols-outlined text-[18px]">error</span>
+          Mã PIN không chính xác! Vui lòng thử lại.
+        </span>
+      `;
+      pinDisplayGroup.classList.remove('animate-shake');
+      void pinDisplayGroup.offsetWidth; // trigger reflow
+      pinDisplayGroup.classList.add('animate-shake');
+      
+      setTimeout(() => {
+        enteredPin = "";
+        updatePinBoxes();
+      }, 700);
+    }
+  }
+
+  // Khóa nhanh màn hình
+  function lockAdminSession() {
+    enteredPin = "";
+    updatePinBoxes();
+    resetPinStatus();
+    securityGate.classList.remove('hidden', 'pointer-events-none', 'opacity-0');
+    if (hiddenPinInput) {
+      hiddenPinInput.focus();
+    }
+  }
+
+  // Lắng nghe bàn phím thật
+  window.addEventListener('keydown', (e) => {
+    if (!securityGate.classList.contains('hidden') && !securityGate.classList.contains('pointer-events-none')) {
+      if (e.key >= '0' && e.key <= '9') {
+        handlePinKey(e.key);
+      } else if (e.key === 'Backspace') {
+        handlePinDelete();
+      } else if (e.key === 'Enter') {
+        if (enteredPin.length === 4) {
+          validateCurrentPin();
+        }
+      }
+    }
+  });
+
+  // Chuyển Tab Admin
+  function switchTab(targetId) {
+    const tabs = document.querySelectorAll('.admin-tab-pane');
+    tabs.forEach(tab => tab.classList.add('hidden'));
+
+    const buttons = document.querySelectorAll('.admin-tab-btn');
+    buttons.forEach(btn => {
+      btn.classList.remove('bg-primary-container', 'text-on-primary', 'shadow-sm', 'font-semibold');
+      btn.classList.add('text-on-surface-variant');
+    });
+
+    const activePane = document.getElementById(targetId);
+    if (activePane) {
+      activePane.classList.remove('hidden');
+    }
+
+    const activeBtn = document.getElementById('nav-' + targetId);
+    if (activeBtn) {
+      activeBtn.classList.remove('text-on-surface-variant');
+      activeBtn.classList.add('bg-primary-container', 'text-on-primary', 'shadow-sm', 'font-semibold');
+    }
+  }
+
+  // Micro-interactions cho Khóa Thông Minh
+  function emergencyLock(roomNumber) {
+    if (confirm('CẢNH BÁO: Khóa khẩn cấp phòng ' + roomNumber + '? Mã PIN hiện tại sẽ bị hủy tức thì.')) {
+      alert('Đã vô hiệu hóa mã PIN phòng ' + roomNumber + '. Chốt an toàn đã đóng.');
+    }
+  }
+
+  function regeneratePin(roomNumber) {
+    const newPin = Math.floor(1000 + Math.random() * 9000);
+    alert('Đã cấp mã PIN mới cho phòng ' + roomNumber + ': ' + newPin + ' và gửi SMS thông báo tới khách hàng.');
+  }
+
+  function createFastPin(roomNumber) {
+    const tempPin = Math.floor(1000 + Math.random() * 9000);
+    alert('Đã kích hoạt mã PIN tạm cho phòng ' + roomNumber + ': ' + tempPin + ' (Có hiệu lực trong 4 giờ).');
+  }
+
+  function manualBooking(roomNumber) {
+    alert('Mở hộp thoại đặt phòng thủ công cho phòng ' + roomNumber + '.');
+  }
+
+  
+  // ==========================================
+  // DIEM CHAU ROOMS STATE MANAGEMENT & SYNC
+  // ==========================================
+  const DEFAULT_ROOMS_STATE = {
+    101: {
+      id: 101,
+      name: 'Phòng King Tầng 1',
+      status: 'locked', // initially locked with red lock per user request
+      pin: '7633',
+      guest: '0942 817 633 (Anh Hùng)',
+      package: 'Nghỉ 3 Giờ (12:00 - 15:00)',
+      checkoutTime: '15:00',
+      cleaningUntil: null
+    },
+    102: {
+      id: 102,
+      name: 'Phòng Queen Deluxe',
+      status: 'available',
+      pin: '8192',
+      guest: null,
+      package: null,
+      checkoutTime: null,
+      cleaningUntil: null
+    },
+    103: {
+      id: 103,
+      name: 'Phòng King VIP Cửa Sổ',
+      status: 'cleaning', // initially cleaning buffer 2h
+      pin: 'Đang tạm khóa',
+      guest: null,
+      package: null,
+      checkoutTime: null,
+      cleaningUntil: '18:30'
+    },
+    104: {
+      id: 104,
+      name: 'Phòng Tiêu Chuẩn Yên Tĩnh',
+      status: 'available',
+      pin: '4529',
+      guest: null,
+      package: null,
+      checkoutTime: null,
+      cleaningUntil: null
+    }
+  };
+
+  function getRoomsState() {
+    try {
+      const stored = localStorage.getItem('diemchau_rooms_state');
+      if (stored) {
+        return JSON.parse(stored);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+    return JSON.parse(JSON.stringify(DEFAULT_ROOMS_STATE));
+  }
+
+  function saveRoomsState(rooms) {
+    try {
+      localStorage.setItem('diemchau_rooms_state', JSON.stringify(rooms));
+      if (window.parent && window.parent !== window) {
+        window.parent.postMessage({ type: 'ROOMS_STATE_UPDATED', rooms: rooms }, '*');
+      }
+      window.dispatchEvent(new CustomEvent('rooms-state-changed', { detail: rooms }));
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  // Toast Notification Helper
+  function showToastNotification(message, duration = 4000, type = 'info') {
+    const container = document.getElementById('toast-container');
+    if (!container) return;
+
+    const toast = document.createElement('div');
+    toast.className = 'pointer-events-auto p-4 rounded-xl bg-primary text-on-primary shadow-xl border border-secondary-container/40 flex items-start gap-3 transition-all duration-300 transform translate-y-4 opacity-0 text-body-sm';
+    
+    let icon = 'info';
+    if (type === 'success') icon = 'check_circle';
+    if (type === 'warning') icon = 'warning';
+    if (type === 'telegram') icon = 'send';
+
+    toast.innerHTML = `
+      <span class="material-symbols-outlined text-secondary-container text-[22px] shrink-0 mt-0.5">${icon}</span>
+      <div class="flex-1">
+        <p class="font-medium leading-relaxed">${message}</p>
+      </div>
+      <button type="button" class="text-on-primary-container hover:text-on-primary shrink-0 cursor-pointer" onclick="this.parentElement.remove()">
+        <span class="material-symbols-outlined text-[16px]">close</span>
+      </button>
+    `;
+
+    container.appendChild(toast);
+    requestAnimationFrame(() => {
+      toast.classList.remove('translate-y-4', 'opacity-0');
+    });
+
+    setTimeout(() => {
+      toast.classList.add('opacity-0', 'translate-y-4');
+      setTimeout(() => toast.remove(), 300);
+    }, duration);
+  }
+
+  // Telegram Integration
+  function openTelegramModal() {
+    const modal = document.getElementById('telegram-modal');
+    if (!modal) return;
+    const tokenInput = document.getElementById('telegram-bot-token-input');
+    const chatInput = document.getElementById('telegram-chat-id-input');
+    if (tokenInput) tokenInput.value = localStorage.getItem('diemchau_telegram_bot_token') || '';
+    if (chatInput) chatInput.value = localStorage.getItem('diemchau_telegram_chat_id') || '';
+    modal.classList.remove('hidden');
+  }
+
+  function closeTelegramModal() {
+    const modal = document.getElementById('telegram-modal');
+    if (modal) modal.classList.add('hidden');
+  }
+
+  function saveTelegramSettings() {
+    const token = document.getElementById('telegram-bot-token-input')?.value.trim() || '';
+    const chatId = document.getElementById('telegram-chat-id-input')?.value.trim() || '';
+    localStorage.setItem('diemchau_telegram_bot_token', token);
+    localStorage.setItem('diemchau_telegram_chat_id', chatId);
+    closeTelegramModal();
+    showToastNotification('✅ Đã lưu cấu hình Telegram thành công!', 3000, 'success');
+  }
+
+  async function sendTelegramNotification(message) {
+    const token = localStorage.getItem('diemchau_telegram_bot_token') || '';
+    const chatId = localStorage.getItem('diemchau_telegram_chat_id') || '';
+
+    showToastNotification(`🔔 [Telegram Alert] ${message.replace(/<[^>]*>?/gm, '')}`, 5000, 'telegram');
+
+    if (token && chatId) {
+      try {
+        const url = `https://api.telegram.org/bot${token}/sendMessage`;
+        await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            chat_id: chatId,
+            text: message,
+            parse_mode: 'HTML'
+          })
+        });
+        console.log('[Telegram Alert] Đã gửi thành công tới bot.');
+      } catch (err) {
+        console.warn('[Telegram Alert Error]:', err);
+      }
+    } else {
+      console.info('[Telegram Bot]: Chưa cấu hình token/chatId, đã hiển thị qua Toast nội bộ.');
+    }
+  }
+
+  function testTelegramAlert() {
+    const msg = '<b>[TEST DIỄM CHÂU SMART-GATE]</b>\nKiểm tra kết nối thông báo Telegram thành công!';
+    sendTelegramNotification(msg);
+  }
+
+  // Auto Checkout -> 2h Cleaning Buffer
+  function simulateAutoCheckout(roomId = 101) {
+    const rooms = getRoomsState();
+    const room = rooms[roomId];
+    if (!room) return;
+
+    const now = new Date();
+    const cleanTime = new Date(now.getTime() + 2 * 60 * 60 * 1000);
+    const timeStr = (cleanTime.getHours() < 10 ? '0' : '') + cleanTime.getHours() + ':' + 
+                    (cleanTime.getMinutes() < 10 ? '0' : '') + cleanTime.getMinutes();
+
+    room.status = 'cleaning';
+    room.cleaningUntil = timeStr;
+    room.guest = null;
+    room.package = null;
+    saveRoomsState(rooms);
+
+    const alertMsg = `🔔 <b>[DIỄM CHÂU NOTIFICATION]</b>\n` +
+                     `🏨 <b>Phòng ${roomId}</b> vừa hết giờ lưu trú và trả phòng!\n` +
+                     `⏱ Hệ thống tự động chuyển sang chế độ <b>Cleaning Buffer 2 giờ</b>.\n` +
+                     `🧹 Dự kiến hoàn tất tiệt trùng UV & dọn dẹp lúc: <b>${timeStr}</b>.\n` +
+                     `👉 Vui lòng nhân viên buồng phòng tiến hành vệ sinh phòng!`;
+    sendTelegramNotification(alertMsg);
+    renderAdminRoomsUI();
+  }
+
+  // Toggle Lock Room 101 (Red Lock -> Green Lock Open -> Available)
+  function toggleRoomLock(roomId = 101) {
+    const rooms = getRoomsState();
+    const room = rooms[roomId];
+    if (!room) return;
+
+    if (room.status === 'locked' || room.status === 'occupied') {
+      room.status = 'available';
+      room.cleaningUntil = null;
+      room.guest = null;
+      room.package = null;
+      saveRoomsState(rooms);
+      showToastNotification(`🔓 Phòng ${roomId}: Đã mở khóa thành công! Trạng thái chuyển sang [Available - Sẵn sàng nhận khách].`, 3500, 'success');
+    } else {
+      room.status = 'locked';
+      saveRoomsState(rooms);
+      showToastNotification(`🔒 Phòng ${roomId}: Đã khóa phòng an toàn. Trạng thái chuyển sang [Locked].`, 3000, 'warning');
+    }
+    renderAdminRoomsUI();
+  }
+
+  // Confirm Cleaning Finished for Room 103 (Cleaning -> Available)
+  function finishCleaning(roomId = 103) {
+    const rooms = getRoomsState();
+    const room = rooms[roomId];
+    if (!room) return;
+
+    room.status = 'available';
+    room.cleaningUntil = null;
+    saveRoomsState(rooms);
+    showToastNotification(`✨ Phòng ${roomId}: Đã xác nhận tiệt trùng UV xong! Trạng thái chuyển sang [Available - Sẵn sàng nhận khách].`, 3500, 'success');
+    renderAdminRoomsUI();
+  }
+
+  // Render Admin UI based on state
+  function renderAdminRoomsUI() {
+    const rooms = getRoomsState();
+
+    // 1. Render Room 101 in Tab 2
+    const card101 = document.getElementById('admin-card-101');
+    const lockBtn101 = document.getElementById('room-101-lock-btn');
+    const lockIcon101 = document.getElementById('room-101-lock-icon');
+    const badge101 = document.getElementById('room-101-status-badge');
+    const subtext101 = document.getElementById('room-101-subtext');
+    const numBadge101 = document.getElementById('room-101-num-badge');
+    const body101 = document.getElementById('room-101-body');
+    const actions101 = document.getElementById('room-101-actions');
+
+    if (rooms[101]) {
+      const r = rooms[101];
+      if (r.status === 'available') {
+        if (badge101) {
+          badge101.className = 'bg-tertiary-container text-on-tertiary-container font-label-sm text-label-sm px-2.5 py-0.5 rounded-full flex items-center gap-1 font-semibold';
+          badge101.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-tertiary-fixed"></span> Available';
+        }
+        if (lockIcon101) {
+          lockIcon101.textContent = 'lock_open';
+          lockIcon101.className = 'material-symbols-outlined text-[28px] text-[#10B981]';
+        }
+        if (lockBtn101) {
+          lockBtn101.className = 'p-2 rounded-xl bg-[#10B981]/10 hover:bg-[#10B981]/20 transition-all cursor-pointer hover:scale-110 flex items-center justify-center shadow-sm';
+          lockBtn101.title = 'Phòng đang MỞ KHÓA (Available). Bấm để khóa lại nếu cần.';
+        }
+        if (numBadge101) {
+          numBadge101.className = 'w-12 h-12 rounded-xl bg-tertiary-fixed/30 text-on-tertiary-fixed flex items-center justify-center font-bold text-headline-sm';
+        }
+        if (subtext101) {
+          subtext101.innerHTML = '<span class="text-[#10B981] font-semibold flex items-center gap-1"><span class="material-symbols-outlined text-[15px]">check_circle</span> Sẵn sàng đón khách (Ổ khóa đã mở xanh)</span>';
+        }
+
+        // Available Body - Remove guest name & old package
+        if (body101) {
+          body101.innerHTML = `
+            <div class="flex items-center justify-between">
+              <span class="font-label-sm text-label-sm text-text-muted">Mã PIN Dự Phòng Sẵn Sàng:</span>
+              <span class="font-code-ticket text-headline-sm font-bold text-text-muted tracking-widest bg-surface-container-lowest px-3 py-1 rounded-lg">7633</span>
+            </div>
+            <div class="flex items-center justify-between pt-1">
+              <span class="font-label-sm text-label-sm text-text-muted">Khử khuẩn buồng phòng:</span>
+              <span class="font-label-sm text-label-sm text-primary font-medium">Hoàn tất lúc 10:15 Sáng nay</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="font-label-sm text-label-sm text-text-muted">Tình trạng cổng TTLock:</span>
+              <span class="font-label-sm text-label-sm text-on-tertiary-container font-semibold">Online (Pin: 94%)</span>
+            </div>
+          `;
+        }
+
+        // Available Actions - Two standard buttons (Tạo mã nhanh & Đặt thủ công)
+        if (actions101) {
+          actions101.innerHTML = `
+            <button class="flex-1 py-2.5 px-3 bg-secondary-container hover:bg-secondary-fixed-dim text-on-secondary-fixed font-label-md text-label-md rounded-xl transition-all flex items-center justify-center gap-1.5 font-semibold cursor-pointer" onclick="createFastPin(101)" type="button">
+              <span class="material-symbols-outlined text-[18px]">add_circle</span>
+              Tạo Mã Nhanh
+            </button>
+            <button class="flex-1 py-2.5 px-3 bg-surface-container-high hover:bg-surface-variant text-primary font-label-md text-label-md rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer" onclick="manualBooking(101)" type="button">
+              <span class="material-symbols-outlined text-[18px]">edit_calendar</span>
+              Đặt Thủ Công
+            </button>
+          `;
+        }
+      } else if (r.status === 'cleaning') {
+        if (badge101) {
+          badge101.className = 'bg-secondary-container text-on-secondary-container font-label-sm text-label-sm px-2.5 py-0.5 rounded-full flex items-center gap-1 font-semibold';
+          badge101.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Cleaning Buffer 2h';
+        }
+        if (lockIcon101) {
+          lockIcon101.textContent = 'sanitizer';
+          lockIcon101.className = 'material-symbols-outlined text-[28px] text-secondary';
+        }
+        if (lockBtn101) {
+          lockBtn101.className = 'p-2 rounded-xl bg-secondary-container/30 hover:bg-secondary-container/50 transition-all cursor-pointer hover:scale-110 flex items-center justify-center shadow-sm';
+        }
+        if (numBadge101) {
+          numBadge101.className = 'w-12 h-12 rounded-xl bg-secondary-fixed/50 text-secondary flex items-center justify-center font-bold text-headline-sm';
+        }
+        if (subtext101) {
+          subtext101.innerHTML = `Đang dọn buffer 2 tiếng • Xong lúc <strong class="text-secondary font-semibold">${r.cleaningUntil || '17:00'}</strong>`;
+        }
+        if (body101) {
+          body101.innerHTML = `
+            <div class="flex items-center justify-between">
+              <span class="font-label-sm text-label-sm text-text-muted">Quy trình:</span>
+              <span class="font-label-md text-label-md text-secondary font-semibold">Khử khuẩn UV & Thay ga mới</span>
+            </div>
+            <div class="flex items-center justify-between pt-1">
+              <span class="font-label-sm text-label-sm text-text-muted">Dự kiến hoàn tất:</span>
+              <span class="font-label-md text-label-md text-primary font-bold">${r.cleaningUntil || '17:00'}</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="font-label-sm text-label-sm text-text-muted">Cổng khóa điện tử:</span>
+              <span class="font-label-sm text-label-sm text-text-muted font-mono">Đang tạm khóa buồng phòng</span>
+            </div>
+          `;
+        }
+        if (actions101) {
+          actions101.innerHTML = `
+            <button class="w-full py-2.5 px-3 bg-secondary hover:bg-secondary/90 text-on-secondary font-label-md text-label-md rounded-xl transition-all flex items-center justify-center gap-1.5 font-bold cursor-pointer shadow-sm" onclick="finishCleaning(101)" type="button">
+              <span class="material-symbols-outlined text-[18px]">task_alt</span>
+              Xác Nhận Dọn Xong & Đưa Vào Sẵn Sàng
+            </button>
+          `;
+        }
+      } else {
+        // Locked / Occupied
+        if (badge101) {
+          badge101.className = 'bg-status-danger text-on-primary font-label-sm text-label-sm px-2.5 py-0.5 rounded-full flex items-center gap-1';
+          badge101.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-on-primary"></span> ' + (r.status === 'locked' ? 'Locked (Đang Khóa)' : 'Occupied');
+        }
+        if (lockIcon101) {
+          lockIcon101.textContent = 'lock';
+          lockIcon101.className = 'material-symbols-outlined text-[28px] text-status-danger';
+        }
+        if (lockBtn101) {
+          lockBtn101.className = 'p-2 rounded-xl bg-status-danger/10 hover:bg-status-danger/20 transition-all cursor-pointer hover:scale-110 flex items-center justify-center shadow-sm animate-pulse';
+          lockBtn101.title = 'Phòng đang KHÓA ĐỎ. Bấm vào đây để mở khóa sang Available!';
+        }
+        if (numBadge101) {
+          numBadge101.className = 'w-12 h-12 rounded-xl bg-status-danger/10 text-status-danger flex items-center justify-center font-bold text-headline-sm';
+        }
+        if (subtext101) {
+          subtext101.innerHTML = 'Khóa an toàn đang đóng • <strong class="text-status-danger">Bấm ổ khóa đỏ để mở sang Available</strong>';
+        }
+        if (body101) {
+          body101.innerHTML = `
+            <div class="flex items-center justify-between">
+              <span class="font-label-sm text-label-sm text-text-muted">Tình trạng buồng phòng:</span>
+              <span class="font-label-md text-label-md text-status-danger font-bold flex items-center gap-1">
+                <span class="material-symbols-outlined text-[16px]">lock</span> Đang Khóa An Toàn
+              </span>
+            </div>
+            <div class="flex items-center justify-between pt-1">
+              <span class="font-label-sm text-label-sm text-text-muted">Trạng thái khóa:</span>
+              <span class="font-label-sm text-label-sm text-text-muted font-mono">Chốt an toàn đóng</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="font-label-sm text-label-sm text-text-muted">Mã PIN dự phòng:</span>
+              <span class="font-label-sm text-label-sm text-text-muted">Tạm ngắt đón khách</span>
+            </div>
+          `;
+        }
+        if (actions101) {
+          actions101.innerHTML = `
+            <button class="flex-1 py-2.5 px-3 bg-[#10B981] hover:bg-[#10B981]/90 text-on-primary font-label-md text-label-md rounded-xl transition-all flex items-center justify-center gap-1.5 font-bold cursor-pointer shadow-sm" onclick="toggleRoomLock(101)" type="button">
+              <span class="material-symbols-outlined text-[18px]">lock_open</span>
+              Mở Khóa Xanh
+            </button>
+            <button class="flex-1 py-2.5 px-3 bg-surface-container-high hover:bg-surface-variant text-primary font-label-md text-label-md rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer" onclick="manualBooking(101)" type="button">
+              <span class="material-symbols-outlined text-[18px]">edit_calendar</span>
+              Đặt Thủ Công
+            </button>
+          `;
+        }
+      }
+    }
+
+    // 2. Render Room 103 in Tab 2
+    const badge103 = document.getElementById('room-103-status-badge');
+    const subtext103 = document.getElementById('room-103-subtext');
+    const numBadge103 = document.getElementById('room-103-num-badge');
+    const icon103 = document.getElementById('room-103-icon');
+    const body103 = document.getElementById('room-103-body');
+    const actions103 = document.getElementById('room-103-actions');
+
+    if (rooms[103]) {
+      const r = rooms[103];
+      if (r.status === 'available') {
+        if (badge103) {
+          badge103.className = 'bg-tertiary-container text-on-tertiary-container font-label-sm text-label-sm px-2.5 py-0.5 rounded-full flex items-center gap-1 font-semibold';
+          badge103.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-tertiary-fixed"></span> Available';
+        }
+        if (numBadge103) {
+          numBadge103.className = 'w-12 h-12 rounded-xl bg-tertiary-fixed/30 text-on-tertiary-fixed flex items-center justify-center font-bold text-headline-sm';
+        }
+        if (subtext103) {
+          subtext103.innerHTML = '<span class="text-[#10B981] font-semibold flex items-center gap-1"><span class="material-symbols-outlined text-[15px]">check_circle</span> Đã dọn xong, tiệt trùng UV hoàn tất</span>';
+        }
+        if (icon103) {
+          icon103.textContent = 'lock_open';
+          icon103.className = 'material-symbols-outlined text-[26px] text-on-tertiary-container';
+        }
+        // Available Body - Clean room status
+        if (body103) {
+          body103.innerHTML = `
+            <div class="flex items-center justify-between">
+              <span class="font-label-sm text-label-sm text-text-muted">Mã PIN Dự Phòng Sẵn Sàng:</span>
+              <span class="font-code-ticket text-headline-sm font-bold text-text-muted tracking-widest bg-surface-container-lowest px-3 py-1 rounded-lg">3819</span>
+            </div>
+            <div class="flex items-center justify-between pt-1">
+              <span class="font-label-sm text-label-sm text-text-muted">Khử khuẩn buồng phòng:</span>
+              <span class="font-label-sm text-label-sm text-primary font-medium">Hoàn tất lúc 11:30 Sáng nay</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="font-label-sm text-label-sm text-text-muted">Tình trạng cổng TTLock:</span>
+              <span class="font-label-sm text-label-sm text-on-tertiary-container font-semibold">Online (Pin: 90%)</span>
+            </div>
+          `;
+        }
+        // Available Actions - Two standard buttons (Tạo mã nhanh & Đặt thủ công)
+        if (actions103) {
+          actions103.innerHTML = `
+            <button class="flex-1 py-2.5 px-3 bg-secondary-container hover:bg-secondary-fixed-dim text-on-secondary-fixed font-label-md text-label-md rounded-xl transition-all flex items-center justify-center gap-1.5 font-semibold cursor-pointer" onclick="createFastPin(103)" type="button">
+              <span class="material-symbols-outlined text-[18px]">add_circle</span>
+              Tạo Mã Nhanh
+            </button>
+            <button class="flex-1 py-2.5 px-3 bg-surface-container-high hover:bg-surface-variant text-primary font-label-md text-label-md rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer" onclick="manualBooking(103)" type="button">
+              <span class="material-symbols-outlined text-[18px]">edit_calendar</span>
+              Đặt Thủ Công
+            </button>
+          `;
+        }
+      } else {
+        if (badge103) {
+          badge103.className = 'bg-secondary-container text-on-secondary-container font-label-sm text-label-sm px-2.5 py-0.5 rounded-full flex items-center gap-1 font-semibold';
+          badge103.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Cleaning Buffer 2h';
+        }
+        if (numBadge103) {
+          numBadge103.className = 'w-12 h-12 rounded-xl bg-secondary-fixed/50 text-secondary flex items-center justify-center font-bold text-headline-sm';
+        }
+        if (subtext103) {
+          subtext103.innerHTML = `Dự kiến hoàn thành: <strong class="text-secondary font-semibold">${r.cleaningUntil || '18:30 Tối nay'}</strong>`;
+        }
+        if (icon103) {
+          icon103.textContent = 'sanitizer';
+          icon103.className = 'material-symbols-outlined text-[26px] text-secondary';
+        }
+        if (body103) {
+          body103.innerHTML = `
+            <div class="flex items-center justify-between">
+              <span class="font-label-sm text-label-sm text-text-muted">Nhân viên buồng phòng:</span>
+              <span class="font-label-md text-label-md text-primary font-medium">Chị Lan (Tầng 1)</span>
+            </div>
+            <div class="flex items-center justify-between pt-1">
+              <span class="font-label-sm text-label-sm text-text-muted">Quy trình hiện tại:</span>
+              <span class="font-label-sm text-label-sm text-secondary font-semibold">Xông tinh dầu sả chanh + Chiếu UV</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="font-label-sm text-label-sm text-text-muted">Mã PIN cửa khóa phòng:</span>
+              <span class="font-label-sm text-label-sm text-text-muted font-mono">Đang tạm khóa khách</span>
+            </div>
+          `;
+        }
+        if (actions103) {
+          actions103.innerHTML = `
+            <button id="btn-clean-103" class="w-full py-2.5 px-3 bg-secondary hover:bg-secondary/90 text-on-secondary font-label-md text-label-md rounded-xl transition-all flex items-center justify-center gap-1.5 font-bold cursor-pointer shadow-sm" onclick="finishCleaning(103)" type="button">
+              <span class="material-symbols-outlined text-[18px]">task_alt</span>
+              Xác Nhận Dọn Xong & Đưa Vào Sẵn Sàng
+            </button>
+          `;
+        }
+      }
+    }
+
+    // 3. Mini cards in Overview Tab
+    const miniDot101 = document.getElementById('overview-mini-dot-101');
+    const miniBadge101 = document.getElementById('overview-mini-badge-101');
+    if (miniDot101 && miniBadge101 && rooms[101]) {
+      if (rooms[101].status === 'available') {
+        miniDot101.className = 'w-2 h-2 rounded-full bg-[#10B981]';
+        miniBadge101.className = 'inline-block bg-[#10B981]/10 text-[#10B981] font-label-sm text-label-sm font-semibold px-2 py-0.5 rounded-md';
+        miniBadge101.textContent = 'Available';
+      } else {
+        miniDot101.className = 'w-2 h-2 rounded-full bg-status-danger';
+        miniBadge101.className = 'inline-block bg-status-danger/10 text-status-danger font-label-sm text-label-sm font-semibold px-2 py-0.5 rounded-md';
+        miniBadge101.textContent = 'Đang khóa';
+      }
+    }
+
+    const miniDot103 = document.getElementById('overview-mini-dot-103');
+    const miniBadge103 = document.getElementById('overview-mini-badge-103');
+    if (miniDot103 && miniBadge103 && rooms[103]) {
+      if (rooms[103].status === 'available') {
+        miniDot103.className = 'w-2 h-2 rounded-full bg-[#10B981]';
+        miniBadge103.className = 'inline-block bg-[#10B981]/10 text-[#10B981] font-label-sm text-label-sm font-semibold px-2 py-0.5 rounded-md';
+        miniBadge103.textContent = 'Available';
+      } else {
+        miniDot103.className = 'w-2 h-2 rounded-full bg-secondary';
+        miniBadge103.className = 'inline-block bg-secondary-fixed/50 text-secondary font-label-sm text-label-sm font-semibold px-2 py-0.5 rounded-md';
+        miniBadge103.textContent = 'Đang dọn UV';
+      }
+    }
+  }
+
+  // Cross-tab listener
+  window.addEventListener('storage', (e) => {
+    if (e.key === 'diemchau_rooms_state') {
+      renderAdminRoomsUI();
+    }
+  });
+
+  window.addEventListener('message', (e) => {
+    if (e.data && e.data.type === 'ROOMS_STATE_UPDATED') {
+      renderAdminRoomsUI();
+    }
+  });
+
+  // Run initial render on load
+  document.addEventListener('DOMContentLoaded', () => {
+    renderAdminRoomsUI();
+  });
+
+function old_finishCleaning(roomNumber) {
+    alert('Xác nhận: Phòng ' + roomNumber + ' đã tiệt trùng xong. Trạng thái đã chuyển sang [Available - Sẵn Sàng].');
+    switchTab('tab-rooms');
+  }
+
+  // Xử lý Modal Đổi PIN nội bộ
+  const pinModal = document.getElementById('pin-modal');
+  const btnOpenPin = document.getElementById('btn-open-pin-modal');
+  const btnClosePin = document.getElementById('btn-close-pin-modal');
+  const btnSavePin = document.getElementById('btn-save-pin');
+  const newPinField = document.getElementById('new-pin-input-field');
+  const bannerPinDisplay = document.getElementById('banner-pin-display');
+
+  if (btnOpenPin && pinModal) {
+    btnOpenPin.addEventListener('click', () => pinModal.classList.remove('hidden'));
+  }
+  if (btnClosePin && pinModal) {
+    btnClosePin.addEventListener('click', () => pinModal.classList.add('hidden'));
+  }
+  if (btnSavePin && pinModal) {
+    btnSavePin.addEventListener('click', () => {
+      const val = newPinField ? newPinField.value.trim() : "";
+      if (val.length === 4 && /^\d+$/.test(val)) {
+        currentAdminPin = val;
+        if (bannerPinDisplay) bannerPinDisplay.textContent = val;
+        alert('Mã PIN bảo mật mới (' + val + ') đã được lưu thành công trên hệ thống.');
+        pinModal.classList.add('hidden');
+        resetPinStatus();
+      } else {
+        alert('Vui lòng nhập chính xác 4 chữ số!');
+      }
+    });
+  }
+
+
+  // ==========================================
+  // INVENTORY & BLOG INTERACTIVE MANAGEMENT
+  // ==========================================
+
+  // --- INVENTORY MANAGEMENT ---
+  function openAddInventoryModal() {
+    const modal = document.getElementById('inventory-modal');
+    if (modal) modal.classList.remove('hidden');
+  }
+
+  function closeInventoryModal() {
+    const modal = document.getElementById('inventory-modal');
+    if (modal) modal.classList.add('hidden');
+  }
+
+  function formatMoney(amount) {
+    return new Intl.NumberFormat('vi-VN').format(amount) + 'đ';
+  }
+
+  function handleSaveInventory(e) {
+    e.preventDefault();
+    const name = document.getElementById('inv-name-input').value.trim();
+    const cat = document.getElementById('inv-cat-input').value;
+    const unit = document.getElementById('inv-unit-input').value.trim();
+    const qty = parseInt(document.getElementById('inv-qty-input').value, 10) || 1;
+    const price = parseInt(document.getElementById('inv-price-input').value, 10) || 0;
+    const total = qty * price;
+
+    const tbody = document.getElementById('inventory-table-body');
+    if (tbody) {
+      const rowCount = tbody.children.length + 1;
+      const rowId = 'inv-row-' + Date.now();
+      const tr = document.createElement('tr');
+      tr.id = rowId;
+      tr.className = 'hover:bg-surface-container-low/60 transition-colors animate-fade-in';
+      tr.innerHTML = `
+        <td class="py-3 px-space-md font-mono text-text-muted">${rowCount < 10 ? '0' + rowCount : rowCount}</td>
+        <td class="py-3 px-space-md font-semibold text-primary">${name}</td>
+        <td class="py-3 px-space-md"><span class="bg-surface-container text-on-surface-variant px-2 py-0.5 rounded text-label-sm font-label-sm">${cat}</span></td>
+        <td class="py-3 px-space-md text-center font-mono">${qty} ${unit}</td>
+        <td class="py-3 px-space-md text-right font-mono">${formatMoney(price)}</td>
+        <td class="py-3 px-space-md text-right font-bold text-primary font-mono item-total-val" data-total="${total}">${formatMoney(total)}</td>
+        <td class="py-3 px-space-md text-right">
+          <button type="button" title="Chỉnh sửa" class="text-text-muted hover:text-primary p-1 cursor-pointer" onclick="alert('Đã mở chỉnh sửa cho: ${name}')"><span class="material-symbols-outlined text-[18px]">edit</span></button>
+          <button type="button" title="Xóa" class="text-text-muted hover:text-status-danger p-1 cursor-pointer" onclick="deleteInventoryRow('${rowId}', ${total})"><span class="material-symbols-outlined text-[18px]">delete</span></button>
+        </td>
+      `;
+      tbody.appendChild(tr);
+
+      // Update total cost
+      updateInventoryTotal(total);
+      showToastNotification(`✅ Đã thêm vật tư [${name}] vào kho thành công!`, 3500, 'success');
+    }
+
+    closeInventoryModal();
+    document.getElementById('inventory-form').reset();
+  }
+
+  function deleteInventoryRow(rowId, total) {
+    if (confirm('Bạn có chắc muốn xóa mặt hàng này khỏi kho vật tư?')) {
+      const row = document.getElementById(rowId);
+      if (row) {
+        row.remove();
+        updateInventoryTotal(-total);
+        showToastNotification('🗑️ Đã xóa vật tư khỏi danh mục!', 3000);
+      }
+    }
+  }
+
+  function updateInventoryTotal(diff) {
+    const totalEl = document.getElementById('inventory-total-cost');
+    if (!totalEl) return;
+    let current = 1890000;
+    try {
+      const raw = totalEl.textContent.replace(/[^0-9]/g, '');
+      current = parseInt(raw, 10) || 1890000;
+    } catch(e){}
+    current += diff;
+    if (current < 0) current = 0;
+    totalEl.textContent = formatMoney(current);
+  }
+
+  // --- BLOG MANAGEMENT ---
+  const defaultPosts = [
+    {
+      id: 'post-1',
+      title: 'Kinh Nghiệm Check-in Tự Động Không Gặp Lễ Tân Tại Phú Quốc',
+      desc: 'Hướng dẫn quy trình 7 bước nhận phòng trong 60 giây qua Smart Pass bảo mật tuyệt đối...',
+      cat: 'Trải Nghiệm Tự Động',
+      status: 'published',
+      date: '12/03/2025',
+      reads: '1.840 Lượt đọc',
+      img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAaChHCEl4XtK99cdmbTpmyjL-20fPkC-IVaKWN01LOJc7EWOtXTgCTh32ABIK1tRX0_CKtVGFBvW83dfuOTRK6BxJWR7XmaFK0Fsa07UeK4hFgfb45iosoBQM_LUSgmfG9ky0YZOMlHF0Z3GepPeNOBC0aca0asFAn-IXc5dvXHkvdXiUrs2j7G6d66E5uIvVMJrj7uqsWVv7fJ3xUUUnT8Ta0mU8k4V7dOx7pVKhNj78paL7Iz36O'
+    },
+    {
+      id: 'post-2',
+      title: 'Top 5 Quán Cà Phê Ngắm Hoàng Hôn Gần Nhà Nghỉ Diễm Châu',
+      desc: 'Gợi ý lộ trình thư giãn riêng tư dành cho các cặp đôi ghé đảo ngọc trong 48 giờ...',
+      cat: 'Cẩm Nang Du Lịch',
+      status: 'published',
+      date: '08/03/2025',
+      reads: '920 Lượt đọc',
+      img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBnzyOfM_q2toM1q6ZdXbvVAOnzCOeSy7Pk1wtpfWPFe7NZV9MdT0Sc8FLj0VmtAQkO495aGBLQdsR6zd2213Iu4Vmear97_U419ApZKdcpIBlWUsChM7amTlrnVkAV48tP7nijnsfFFwjYXHMlZ5moZDuyrLRZsVwYGtILhYV25vs4k4vbIfcJNfSMESaifNzC4vM_AfWCpIjgyApz-HaY_L81-L5fWjuLioj2_bvWo-unZ9q4hGnk'
+    },
+    {
+      id: 'post-3',
+      title: 'Tại Sao Du Lịch Khép Kín & Tự Động Hóa Trở Thành Xu Hướng 2025?',
+      desc: 'Sự riêng tư tuyệt đối và trải nghiệm không tương tác trực tiếp giúp du khách tái tạo năng lượng hoàn hảo...',
+      cat: 'Trải Nghiệm Tự Động',
+      status: 'draft',
+      date: 'Lưu nháp: Hôm nay',
+      reads: 'Đang biên tập',
+      img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDVsaS4_MVyegAkUoAN0UkeSGFanSYOYMFPokCBsSPJRg76-3fSrFK1fE1F2ih6361hk3a7rNC_P9c1-J5tEADXicoiQGUn4pWSkyVy2sgxeX3b3kQMw2k-cExbBR1oWl3J76SwCA8w_XbrkAUV9F4N5XUegOaTG51-NOJAtbdq9Kk2fukCTjakSDU3yZC0jxwWVFizLYZjc4xclR6YQdrxqRwI3lWfriVYaIZkBhlSNsJoAi_kEZgm'
+    }
+  ];
+
+  function getStoredBlogPosts() {
+    try {
+      const stored = localStorage.getItem('diemchau_admin_posts');
+      if (stored) return JSON.parse(stored);
+    } catch(e){}
+    return defaultPosts;
+  }
+
+  function saveStoredBlogPosts(posts) {
+    try {
+      localStorage.setItem('diemchau_admin_posts', JSON.stringify(posts));
+    } catch(e){}
+  }
+
+  function renderBlogGrid() {
+    const grid = document.getElementById('blog-posts-grid');
+    if (!grid) return;
+    const posts = getStoredBlogPosts();
+    grid.innerHTML = '';
+
+    posts.forEach(p => {
+      const isPublished = p.status === 'published';
+      const card = document.createElement('div');
+      card.id = p.id;
+      card.className = 'bg-surface-container-lowest rounded-2xl p-space-md shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow';
+      card.innerHTML = `
+        <div>
+          <div class="w-full h-40 rounded-xl overflow-hidden mb-space-sm">
+            <img class="w-full h-full object-cover" src="${p.img || defaultPosts[0].img}" alt="${p.title}">
+          </div>
+          <div class="flex items-center gap-2 mb-2">
+            <span class="inline-block ${isPublished ? 'bg-tertiary-container text-on-tertiary-container' : 'bg-surface-container text-on-surface-variant'} text-label-sm font-label-sm px-2 py-0.5 rounded font-semibold">
+              ${isPublished ? 'Đã Xuất Bản' : 'Bản Nháp (Draft)'}
+            </span>
+            <span class="text-text-muted font-label-sm text-label-sm">${p.reads || 'Vừa cập nhật'}</span>
+          </div>
+          <h4 class="font-headline-sm text-headline-sm text-primary line-clamp-2">${p.title}</h4>
+          <p class="font-body-sm text-body-sm text-text-muted line-clamp-2 mt-1">${p.desc}</p>
+        </div>
+        <div class="flex items-center justify-between mt-space-md pt-space-xs border-t border-surface-container">
+          <span class="font-label-sm text-label-sm text-text-muted">${p.date}</span>
+          <div class="flex items-center gap-1">
+            <button onclick="openEditBlogModal('${p.id}')" type="button" title="Chỉnh sửa bài viết" class="p-1.5 text-text-muted hover:text-primary cursor-pointer transition-colors"><span class="material-symbols-outlined text-[18px]">edit</span></button>
+            <button onclick="deleteBlogPost('${p.id}')" type="button" title="Xóa bài viết" class="p-1.5 text-text-muted hover:text-status-danger cursor-pointer transition-colors"><span class="material-symbols-outlined text-[18px]">delete</span></button>
+          </div>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+  }
+
+  function openCreateBlogModal() {
+    const modal = document.getElementById('blog-modal');
+    if (!modal) return;
+    document.getElementById('blog-modal-title').textContent = 'Tạo Bài Viết SEO Mới';
+    document.getElementById('blog-modal-icon').textContent = 'post_add';
+    document.getElementById('blog-edit-id').value = '';
+    document.getElementById('blog-form').reset();
+    modal.classList.remove('hidden');
+  }
+
+  function openEditBlogModal(postId) {
+    const posts = getStoredBlogPosts();
+    const p = posts.find(item => item.id === postId);
+    if (!p) return;
+
+    const modal = document.getElementById('blog-modal');
+    if (!modal) return;
+
+    document.getElementById('blog-modal-title').textContent = 'Chỉnh Sửa Bài Viết SEO';
+    document.getElementById('blog-modal-icon').textContent = 'edit_note';
+    document.getElementById('blog-edit-id').value = p.id;
+    document.getElementById('blog-title-input').value = p.title;
+    document.getElementById('blog-cat-input').value = p.cat;
+    document.getElementById('blog-status-input').value = p.status;
+    document.getElementById('blog-desc-input').value = p.desc;
+    document.getElementById('blog-keywords-input').value = p.keywords || 'nhà nghỉ phú quốc, du lịch tự động';
+
+    modal.classList.remove('hidden');
+  }
+
+  function closeBlogModal() {
+    const modal = document.getElementById('blog-modal');
+    if (modal) modal.classList.add('hidden');
+  }
+
+  function handleSaveBlogPost(e) {
+    e.preventDefault();
+    const editId = document.getElementById('blog-edit-id').value;
+    const title = document.getElementById('blog-title-input').value.trim();
+    const cat = document.getElementById('blog-cat-input').value;
+    const status = document.getElementById('blog-status-input').value;
+    const desc = document.getElementById('blog-desc-input').value.trim();
+    const keywords = document.getElementById('blog-keywords-input').value.trim();
+
+    let posts = getStoredBlogPosts();
+
+    if (editId) {
+      // Edit existing post
+      const idx = posts.findIndex(item => item.id === editId);
+      if (idx !== -1) {
+        posts[idx].title = title;
+        posts[idx].cat = cat;
+        posts[idx].status = status;
+        posts[idx].desc = desc;
+        posts[idx].keywords = keywords;
+        posts[idx].date = 'Vừa sửa: Hôm nay';
+        showToastNotification(`✏️ Đã cập nhật bài viết [${title}] thành công!`, 3500, 'success');
+      }
+    } else {
+      // Create new post
+      const newPost = {
+        id: 'post-' + Date.now(),
+        title: title,
+        desc: desc,
+        cat: cat,
+        status: status,
+        keywords: keywords,
+        date: 'Vừa đăng: Hôm nay',
+        reads: '0 Lượt đọc',
+        img: defaultPosts[Math.floor(Math.random() * defaultPosts.length)].img
+      };
+      posts.unshift(newPost);
+      showToastNotification(`🚀 Đã xuất bản bài viết SEO [${title}] thành công!`, 3500, 'success');
+    }
+
+    saveStoredBlogPosts(posts);
+    renderBlogGrid();
+    closeBlogModal();
+  }
+
+  function deleteBlogPost(postId) {
+    if (confirm('Bạn có chắc muốn xóa bài viết này khỏi hệ thống?')) {
+      let posts = getStoredBlogPosts();
+      posts = posts.filter(item => item.id !== postId);
+      saveStoredBlogPosts(posts);
+      renderBlogGrid();
+      showToastNotification('🗑️ Đã xóa bài viết thành công!', 3000);
+    }
+  }
+
+  // Initialize blog grid on DOMContentLoaded
+  document.addEventListener('DOMContentLoaded', () => {
+    renderBlogGrid();
+  });
+
+</script>
+<!-- Telegram Configuration Modal -->
+<div id="telegram-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+  <div class="bg-surface-container-lowest rounded-2xl max-w-lg w-full overflow-hidden shadow-2xl border border-outline-variant/30 animate-scale-in">
+    <div class="bg-primary p-space-md text-on-primary flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <span class="material-symbols-outlined text-secondary-container text-[24px]">send</span>
+        <h3 class="font-headline-sm text-headline-sm text-on-primary">Cấu Hình Telegram Thông Báo</h3>
+      </div>
+      <button onclick="closeTelegramModal()" type="button" class="w-8 h-8 rounded-full bg-primary-container text-on-primary flex items-center justify-center hover:bg-status-danger transition-colors cursor-pointer">
+        <span class="material-symbols-outlined text-[18px]">close</span>
+      </button>
+    </div>
+    <div class="p-space-lg flex flex-col gap-space-md">
+      <p class="font-body-sm text-body-sm text-text-muted leading-relaxed">
+        Hệ thống sẽ tự động gửi tin nhắn báo động về kênh Telegram quản lý ngay khi khách trả phòng hoặc khi phòng chuyển sang chế độ <strong>Cleaning Buffer 2 giờ</strong>.
+      </p>
+      <div>
+        <label class="block font-label-sm text-label-sm text-primary font-bold mb-1">Telegram Bot Token:</label>
+        <input id="telegram-bot-token-input" type="text" placeholder="Ví dụ: 7123456789:AAFn_your_bot_token" class="w-full h-11 px-3 rounded-lg border border-outline-variant/60 bg-surface-container-low text-primary font-mono text-sm outline-none focus:border-secondary">
+        <span class="text-[11px] text-text-muted mt-1 block">Tạo bot qua @BotFather trên Telegram để nhận token.</span>
+      </div>
+      <div>
+        <label class="block font-label-sm text-label-sm text-primary font-bold mb-1">Telegram Chat ID / Channel ID:</label>
+        <input id="telegram-chat-id-input" type="text" placeholder="Ví dụ: -1001234567890 hoặc 987654321" class="w-full h-11 px-3 rounded-lg border border-outline-variant/60 bg-surface-container-low text-primary font-mono text-sm outline-none focus:border-secondary">
+        <span class="text-[11px] text-text-muted mt-1 block">ID của nhóm quản lý hoặc người phụ trách buồng phòng.</span>
+      </div>
+      <div class="p-3 rounded-xl bg-surface-container-low border border-outline-variant/30 flex items-start gap-2">
+        <span class="material-symbols-outlined text-secondary text-[20px] shrink-0 mt-0.5">info</span>
+        <span class="text-[12px] text-text-muted leading-snug">Nếu chưa điền token, hệ thống vẫn sẽ lưu thông báo và hiển thị trực quan thông báo mô phỏng (Toast) ngay trên màn hình để anh kiểm tra.</span>
+      </div>
+      <div class="flex items-center justify-end gap-2 pt-2 border-t border-outline-variant/30">
+        <button onclick="testTelegramAlert()" type="button" class="px-4 py-2 rounded-xl bg-surface-container hover:bg-surface-container-high text-primary font-label-sm text-label-sm font-bold transition-all cursor-pointer">
+          Gửi Thử Nghiệm
+        </button>
+        <button onclick="saveTelegramSettings()" type="button" class="px-5 py-2 rounded-xl bg-primary hover:bg-primary-container text-on-primary font-label-sm text-label-sm font-bold transition-all cursor-pointer shadow-sm">
+          Lưu Cấu Hình
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Floating Toast Container -->
+<div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col gap-2 pointer-events-none max-w-md w-full"></div>
+
+
+<!-- Modal Thêm Vật Tư Kho Mới -->
+<div id="inventory-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+  <div class="bg-surface-container-lowest rounded-2xl max-w-lg w-full overflow-hidden shadow-2xl border border-outline-variant/30 animate-scale-in">
+    <div class="bg-primary p-space-md text-on-primary flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <span class="material-symbols-outlined text-secondary-container text-[24px]">inventory_2</span>
+        <h3 class="font-headline-sm text-headline-sm text-on-primary">Thêm Vật Tư Mới Vào Kho</h3>
+      </div>
+      <button onclick="closeInventoryModal()" type="button" class="w-8 h-8 rounded-full bg-primary-container text-on-primary flex items-center justify-center hover:bg-status-danger transition-colors cursor-pointer">
+        <span class="material-symbols-outlined text-[18px]">close</span>
+      </button>
+    </div>
+    <form id="inventory-form" onsubmit="handleSaveInventory(event)" class="p-space-lg flex flex-col gap-space-md">
+      <div>
+        <label class="block font-label-sm text-label-sm text-primary font-bold mb-1">Tên Vật Tư / Mặt Hàng: <span class="text-status-danger">*</span></label>
+        <input id="inv-name-input" type="text" required placeholder="Ví dụ: Nước suối LaVie 500ml, Khăn tắm 70x140..." class="w-full h-11 px-3 rounded-lg border border-outline-variant/60 bg-surface-container-low text-primary text-sm outline-none focus:border-secondary">
+      </div>
+      <div class="grid grid-cols-2 gap-space-sm">
+        <div>
+          <label class="block font-label-sm text-label-sm text-primary font-bold mb-1">Phân Loại:</label>
+          <select id="inv-cat-input" class="w-full h-11 px-3 rounded-lg border border-outline-variant/60 bg-surface-container-low text-primary text-sm outline-none focus:border-secondary cursor-pointer">
+            <option value="Đồ dùng buồng">Đồ dùng buồng</option>
+            <option value="Vệ sinh & Khử khuẩn">Vệ sinh & Khử khuẩn</option>
+            <option value="Đồ uống & Tiêu hao">Đồ uống & Tiêu hao</option>
+            <option value="Thiết bị & Chốt khóa">Thiết bị & Chốt khóa</option>
+          </select>
+        </div>
+        <div>
+          <label class="block font-label-sm text-label-sm text-primary font-bold mb-1">Đơn Vị Tính:</label>
+          <input id="inv-unit-input" type="text" required placeholder="Chai, bộ, cái, cuộn..." value="chai" class="w-full h-11 px-3 rounded-lg border border-outline-variant/60 bg-surface-container-low text-primary text-sm outline-none focus:border-secondary">
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-space-sm">
+        <div>
+          <label class="block font-label-sm text-label-sm text-primary font-bold mb-1">Số Lượng Nhập: <span class="text-status-danger">*</span></label>
+          <input id="inv-qty-input" type="number" min="1" required placeholder="50" value="50" class="w-full h-11 px-3 rounded-lg border border-outline-variant/60 bg-surface-container-low text-primary text-sm outline-none focus:border-secondary">
+        </div>
+        <div>
+          <label class="block font-label-sm text-label-sm text-primary font-bold mb-1">Đơn Giá Nhập (VNĐ): <span class="text-status-danger">*</span></label>
+          <input id="inv-price-input" type="number" min="0" step="500" required placeholder="5000" value="5000" class="w-full h-11 px-3 rounded-lg border border-outline-variant/60 bg-surface-container-low text-primary text-sm outline-none focus:border-secondary">
+        </div>
+      </div>
+      <div class="flex items-center justify-end gap-2 pt-2 border-t border-outline-variant/30">
+        <button onclick="closeInventoryModal()" type="button" class="px-4 py-2 rounded-xl bg-surface-container hover:bg-surface-container-high text-primary font-label-sm text-label-sm font-bold transition-all cursor-pointer">
+          Hủy Bỏ
+        </button>
+        <button type="submit" class="px-5 py-2 rounded-xl bg-primary hover:bg-primary-container text-on-primary font-label-sm text-label-sm font-bold transition-all cursor-pointer shadow-sm flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-[18px]">add_circle</span>
+          Lưu Vật Tư
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal Soạn Thảo / Chỉnh Sửa Bài Viết Blog SEO -->
+<div id="blog-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+  <div class="bg-surface-container-lowest rounded-2xl max-w-xl w-full overflow-hidden shadow-2xl border border-outline-variant/30 animate-scale-in">
+    <div class="bg-primary p-space-md text-on-primary flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <span class="material-symbols-outlined text-secondary-container text-[24px]" id="blog-modal-icon">post_add</span>
+        <h3 class="font-headline-sm text-headline-sm text-on-primary" id="blog-modal-title">Tạo Bài Viết SEO Mới</h3>
+      </div>
+      <button onclick="closeBlogModal()" type="button" class="w-8 h-8 rounded-full bg-primary-container text-on-primary flex items-center justify-center hover:bg-status-danger transition-colors cursor-pointer">
+        <span class="material-symbols-outlined text-[18px]">close</span>
+      </button>
+    </div>
+    <form id="blog-form" onsubmit="handleSaveBlogPost(event)" class="p-space-lg flex flex-col gap-space-md">
+      <input type="hidden" id="blog-edit-id" value="">
+      <div>
+        <label class="block font-label-sm text-label-sm text-primary font-bold mb-1">Tiêu Đề Bài Viết Chuẩn SEO: <span class="text-status-danger">*</span></label>
+        <input id="blog-title-input" type="text" required placeholder="Ví dụ: Top 7 Quán Ăn Đêm Gần Diễm Châu Phú Quốc..." class="w-full h-11 px-3 rounded-lg border border-outline-variant/60 bg-surface-container-low text-primary text-sm outline-none focus:border-secondary">
+      </div>
+      <div class="grid grid-cols-2 gap-space-sm">
+        <div>
+          <label class="block font-label-sm text-label-sm text-primary font-bold mb-1">Chuyên Mục Du Lịch:</label>
+          <select id="blog-cat-input" class="w-full h-11 px-3 rounded-lg border border-outline-variant/60 bg-surface-container-low text-primary text-sm outline-none focus:border-secondary cursor-pointer">
+            <option value="Cẩm Nang Du Lịch">Cẩm Nang Du Lịch</option>
+            <option value="Trải Nghiệm Tự Động">Trải Nghiệm Tự Động</option>
+            <option value="Ẩm Thực Đảo Ngọc">Ẩm Thực Đảo Ngọc</option>
+            <option value="Lộ Trình Cặp Đôi">Lộ Trình Cặp Đôi</option>
+          </select>
+        </div>
+        <div>
+          <label class="block font-label-sm text-label-sm text-primary font-bold mb-1">Trạng Thái:</label>
+          <select id="blog-status-input" class="w-full h-11 px-3 rounded-lg border border-outline-variant/60 bg-surface-container-low text-primary text-sm outline-none focus:border-secondary cursor-pointer">
+            <option value="published">Đã Xuất Bản</option>
+            <option value="draft">Bản Nháp (Draft)</option>
+          </select>
+        </div>
+      </div>
+      <div>
+        <label class="block font-label-sm text-label-sm text-primary font-bold mb-1">Từ Khóa SEO Mục Tiêu (Target Keywords):</label>
+        <input id="blog-keywords-input" type="text" placeholder="nhà nghỉ phú quốc, check in tự động, du lịch riêng tư..." class="w-full h-11 px-3 rounded-lg border border-outline-variant/60 bg-surface-container-low text-primary text-sm outline-none focus:border-secondary">
+      </div>
+      <div>
+        <label class="block font-label-sm text-label-sm text-primary font-bold mb-1">Mô Tả Tóm Tắt (Meta Description): <span class="text-status-danger">*</span></label>
+        <textarea id="blog-desc-input" rows="3" required placeholder="Tóm tắt ngắn gọn 1-2 câu chứa từ khóa để xuất hiện trên kết quả tìm kiếm Google..." class="w-full p-3 rounded-lg border border-outline-variant/60 bg-surface-container-low text-primary text-sm outline-none focus:border-secondary"></textarea>
+      </div>
+      <div class="flex items-center justify-end gap-2 pt-2 border-t border-outline-variant/30">
+        <button onclick="closeBlogModal()" type="button" class="px-4 py-2 rounded-xl bg-surface-container hover:bg-surface-container-high text-primary font-label-sm text-label-sm font-bold transition-all cursor-pointer">
+          Hủy Bỏ
+        </button>
+        <button type="submit" class="px-5 py-2 rounded-xl bg-primary hover:bg-primary-container text-on-primary font-label-sm text-label-sm font-bold transition-all cursor-pointer shadow-sm flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-[18px]">publish</span>
+          Lưu &amp; Xuất Bản
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+</main></div></body></html>

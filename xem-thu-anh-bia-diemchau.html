@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bản Thiết Kế Lại Ảnh Bìa - Nhà Nghỉ Diễm Châu</title>
+  <!-- Google Fonts: Script nghệ thuật bay bổng + Serif sang trọng + Sans hiện đại -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Playfair+Display:ital,wght@0,600;0,800;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              navy: '#133047',
+              navyDark: '#0A1A27',
+              gold: '#D4AF37',
+              goldLight: '#F3E5AB',
+              amberGlow: '#FFA726',
+            },
+            zalo: '#0068FF'
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            serif: ['"Playfair Display"', 'serif'],
+            script: ['"Dancing Script"', 'cursive'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Thanh kính mờ nổi lơ lửng y hệt mẫu Resort Thái Lan */
+    .glassmorphism-bar {
+      background: rgba(10, 26, 39, 0.78);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 30px rgba(212, 175, 55, 0.15);
+    }
+
+    .hero-glow-overlay {
+      background: linear-gradient(90deg, rgba(8, 20, 30, 0.94) 0%, rgba(10, 26, 39, 0.75) 45%, rgba(10, 26, 39, 0.25) 100%);
+    }
+
+    .price-num {
+      font-feature-settings: "tnum";
+      font-variant-numeric: tabular-nums;
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans min-h-screen py-8 px-4 md:px-8">
+
+  <!-- TOP HEADER ĐIỀU HƯỚNG -->
+  <header class="max-w-6xl mx-auto mb-8 border-b border-slate-800 pb-5 flex flex-wrap items-center justify-between gap-4">
+    <div>
+      <div class="flex items-center gap-2 mb-1">
+        <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-500/20 text-brand-gold border border-brand-gold/30">
+          ★ THIẾT KẾ LẠI: CHUẨN PHONG CÁCH RESORT THÁI LAN
+        </span>
+        <span class="text-xs text-slate-400">Tràn viền • Ánh sáng vàng ấm • Chiều sâu tĩnh lặng</span>
+      </div>
+      <h1 class="text-xl md:text-3xl font-black text-white">
+        Bản Thiết Kế Ảnh Bìa Hoàn Chỉnh – Nhà Nghỉ Diễm Châu
+      </h1>
+    </div>
+
+    <div class="flex items-center gap-3">
+      <a href="mockup-thiet-ke-diemchau.html" class="bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 hover:text-white px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5">
+        ← Mở lại trang Web Mockup
+      </a>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto space-y-12">
+
+    <!-- ======================================================== -->
+    <!-- PHẦN CHÍNH: ẢNH BÌA HERO TRÀN VIỀN THEO ĐÚNG MẪU THÁI LAN -->
+    <!-- ======================================================== -->
+    <section class="space-y-4">
+      <div class="flex items-center justify-between">
+        <div>
+          <span class="text-xs font-bold text-brand-gold uppercase tracking-wider">Bản thiết kế mới:</span>
+          <h2 class="text-lg md:text-xl font-extrabold text-white">Ảnh Bìa Hero "Không Gian Ấm Cúng & Riêng Tư Tuyệt Đối"</h2>
+        </div>
+        <span class="text-xs bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-3 py-1 rounded-full font-bold">
+          Bố Cục Tràn Viền Y Hệt Mẫu Tham Khảo
+        </span>
+      </div>
+
+      <!-- KHUNG ẢNH BÌA HERO LỚN -->
+      <div class="relative w-full rounded-3xl overflow-hidden border-2 border-brand-gold/40 shadow-2xl min-h-[580px] md:min-h-[640px] flex flex-col justify-between p-6 md:p-12">
+        
+        <!-- HÌNH NỀN KHÔNG GIAN PHÒNG ẤM ÁP CÓ ÁNH ĐÈN VÀNG & CHIỀU SÂU -->
+        <img src="assets/anh-bia-cinematic.jpg" alt="Không gian Diễm Châu" class="absolute inset-0 w-full h-full object-cover object-center scale-105 filter brightness-95">
+
+        <!-- Lớp phủ ánh sáng bóng đêm bên trái để tôn vinh chữ -->
+        <div class="absolute inset-0 hero-glow-overlay"></div>
+        
+        <!-- Hạt bụi ánh sáng vàng dịu nhẹ (Warm Bokeh) -->
+        <div class="absolute top-1/4 right-1/4 w-80 h-80 bg-amber-500/20 rounded-full blur-3xl pointer-events-none"></div>
+
+        <!-- ======================================================== -->
+        <!-- PHẦN TRÊN: LOGO & CÂU THƠ NGHỆ THUẬT (TYPOGRAPHY NHƯ MẪU THÁI) -->
+        <!-- ======================================================== -->
+        <div class="relative z-10 max-w-2xl space-y-5 pt-4">
+          
+          <!-- CÂU SLOGAN NGHỆ THUẬT BAY BỔNG (FONT SCRIPT NHƯ TIẾNG THÁI) -->
+          <div class="space-y-1">
+            <h2 class="font-script text-4xl sm:text-5xl md:text-6xl text-amber-200 font-bold leading-tight drop-shadow-[0_4px_12px_rgba(0,0,0,0.9)]">
+              Đến lặng lẽ, đi nhẹ nhàng
+            </h2>
+            <p class="font-serif italic text-2xl sm:text-3xl md:text-4xl text-white font-normal drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
+              Không gian là của riêng bạn.
+            </p>
+          </div>
+
+          <!-- Đoạn mô tả gợi cảm xúc thư thái -->
+          <p class="text-xs md:text-sm text-slate-200/90 max-w-lg font-light leading-relaxed drop-shadow">
+            Nơi bạn khép lại những ồn ào phố thị để tìm về một chốn dừng chân ấm cúng, kín đáo và tuyệt đối riêng tư. Check-in tự động, không qua lễ tân.
+          </p>
+
+          <!-- 3 Tiêu chí nhanh -->
+          <div class="flex flex-wrap items-center gap-3 pt-1 text-xs text-amber-100 font-medium drop-shadow">
+            <span class="flex items-center gap-1.5 bg-black/40 px-2.5 py-1 rounded-lg border border-white/10">
+              <span>❄️</span> Máy lạnh Inverter mát sâu
+            </span>
+            <span class="flex items-center gap-1.5 bg-black/40 px-2.5 py-1 rounded-lg border border-white/10">
+              <span>🧼</span> Ga nệm trắng khử khuẩn 100%
+            </span>
+            <span class="flex items-center gap-1.5 bg-black/40 px-2.5 py-1 rounded-lg border border-white/10">
+              <span>🔇</span> Cách âm kín đáo
+            </span>
+          </div>
+
+        </div>
+
+        <!-- ======================================================== -->
+        <!-- PHẦN DƯỚI: THANH ĐẶT PHÒNG KÍNH MỜ NỔI LƠ LỬNG (GLASSMORPHISM BAR) -->
+        <!-- Y hệt như thanh tìm kiếm nổi của mẫu Resort Thái Lan -->
+        <!-- ======================================================== -->
+        <div class="relative z-10 w-full mt-8">
+          
+          <div class="glassmorphism-bar rounded-2xl md:rounded-3xl p-4 md:p-5 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+            
+            <!-- 4 Gói giá niêm yết chuẩn Diễm Châu -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 flex-grow">
+              
+              <!-- 1 Giờ đầu - 80k -->
+              <div class="bg-black/40 border border-brand-gold/40 rounded-xl p-2.5 flex flex-col justify-between shadow-inner">
+                <span class="text-[10px] text-slate-400 uppercase font-medium">Nghỉ nhanh</span>
+                <div class="flex items-baseline justify-between mt-1">
+                  <span class="text-xs font-bold text-white">1 Giờ đầu</span>
+                  <span class="text-sm font-black text-brand-gold price-num">80.000đ</span>
+                </div>
+              </div>
+
+              <!-- 3 Giờ đầu - 100k (Phổ biến) -->
+              <div class="bg-brand-navy/80 border-2 border-brand-gold rounded-xl p-2.5 flex flex-col justify-between shadow-lg relative">
+                <span class="absolute -top-2 right-2 bg-brand-gold text-slate-950 text-[8px] font-black uppercase px-1.5 py-0.2 rounded-full">
+                  Phổ biến
+                </span>
+                <span class="text-[10px] text-amber-200 uppercase font-medium">Thư thái</span>
+                <div class="flex items-baseline justify-between mt-1">
+                  <span class="text-xs font-bold text-white">3 Giờ đầu</span>
+                  <span class="text-sm font-black text-brand-gold price-num">100.000đ</span>
+                </div>
+              </div>
+
+              <!-- 5 Giờ đầu - 140k -->
+              <div class="bg-black/40 border border-slate-700 rounded-xl p-2.5 flex flex-col justify-between">
+                <span class="text-[10px] text-slate-400 uppercase font-medium">Nghỉ trưa</span>
+                <div class="flex items-baseline justify-between mt-1">
+                  <span class="text-xs font-bold text-white">5 Giờ đầu</span>
+                  <span class="text-sm font-black text-brand-gold price-num">140.000đ</span>
+                </div>
+              </div>
+
+              <!-- Qua đêm - 200k -->
+              <div class="bg-black/40 border border-slate-700 rounded-xl p-2.5 flex flex-col justify-between">
+                <span class="text-[10px] text-purple-300 uppercase font-medium">Trọn đêm</span>
+                <div class="flex items-baseline justify-between mt-1">
+                  <span class="text-xs font-bold text-white">1 Đêm</span>
+                  <span class="text-sm font-black text-brand-gold price-num">200.000đ</span>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Cột Hotline & Nút Đặt phòng nổi bật -->
+            <div class="flex items-center gap-3 lg:border-l lg:border-white/10 lg:pl-4 flex-shrink-0">
+              
+              <!-- Hotline Zalo -->
+              <div class="hidden sm:block text-right">
+                <span class="text-[10px] text-slate-400 block uppercase font-medium">Hotline & Zalo:</span>
+                <span class="font-mono text-sm font-bold text-white tracking-wider">0942 81 76 33</span>
+              </div>
+
+              <!-- Nút hành động chính mạ vàng -->
+              <a href="mockup-thiet-ke-diemchau.html#hero-booking" class="w-full sm:w-auto bg-gradient-to-r from-brand-gold to-yellow-500 hover:from-yellow-500 hover:to-brand-gold text-slate-950 font-black px-6 py-3 rounded-xl text-xs md:text-sm shadow-xl shadow-brand-gold/20 flex items-center justify-center gap-2 transition-all">
+                <span>Nhận Mã Phòng Ngay</span>
+                <span class="text-base leading-none">➔</span>
+              </a>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ======================================================== -->
+    <!-- PHẦN 2: ĐỐI CHIẾU TRỰC TIẾP VỚI ẢNH PHÒNG THẬT DIỄM CHÂU -->
+    <!-- ======================================================== -->
+    <section class="bg-slate-900/80 rounded-3xl p-6 md:p-8 border border-slate-800">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+        <div class="max-w-md space-y-2">
+          <span class="text-xs font-bold text-brand-gold uppercase tracking-wider">Sự kết hợp hoàn hảo</span>
+          <h3 class="text-xl font-bold text-white">Ảnh Bìa Nâng Tầm Không Gian Diễm Châu</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            Bức ảnh bìa mới mang lại cảm giác sang trọng, ấm cúng y hệt khu nghỉ dưỡng nhưng vẫn trung thực tuyệt đối với giá trị phòng ngủ sạch sẽ, giường gỗ tự nhiên và mức giá bình dân <strong>80k/1h</strong> của Diễm Châu.
+          </p>
+          <div class="pt-2">
+            <span class="text-xs bg-slate-800 text-slate-300 px-3 py-1.5 rounded-lg border border-slate-700">
+              💡 Bức ảnh bìa này sẽ được gắn làm Header mở màn cho trang web chính.
+            </span>
+          </div>
+        </div>
+
+        <!-- Ảnh phòng thật kế bên -->
+        <div class="w-full md:w-80 rounded-2xl overflow-hidden border-2 border-brand-gold/40 shadow-xl bg-slate-950">
+          <img src="assets/phong-diemchau.jpg" alt="Phòng thật" class="w-full h-48 object-cover">
+          <div class="p-3 bg-slate-950 text-center">
+            <p class="text-xs font-bold text-white">Phòng Thật Tại Nhà Nghỉ Diễm Châu</p>
+            <p class="text-[10px] text-emerald-400 mt-0.5">Sạch sẽ • Ga nệm trắng • 80k/1h</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="max-w-6xl mx-auto mt-12 pt-6 border-t border-slate-800 text-center text-xs text-slate-500">
+    <p>© Nhà Nghỉ Diễm Châu – Bản thiết kế lại ảnh bìa Hero Banner chuẩn phong cách Resort</p>
+  </footer>
+
+</body>
+</html>
