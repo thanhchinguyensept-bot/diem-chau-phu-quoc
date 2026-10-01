@@ -18,9 +18,19 @@ module.exports = async (req, res) => {
   const memo = req.query.memo || (req.body && req.body.memo);
   const room = req.query.room || (req.body && req.body.room);
   const phone = req.query.phone || (req.body && req.body.phone);
+  const after = req.query.after || (req.body && req.body.after);
+  const excludeIds = req.query.exclude || (req.body && req.body.exclude);
 
   if (!amount) {
     return res.status(400).json({ success: false, message: 'Thiếu thông tin số tiền (amount)' });
+  }
+
+  const cleanPhone = (phone || '').toString().replace(/[^0-9]/g, '');
+  if (!cleanPhone || cleanPhone.length < 10) {
+    return res.status(200).json({ 
+      success: false, 
+      message: 'Vui lòng nhập số điện thoại hợp lệ để hệ thống đối soát giao dịch SePAY' 
+    });
   }
 
   // SePAY API Token provided by user
@@ -28,7 +38,7 @@ module.exports = async (req, res) => {
 
   try {
     // Call SePAY API v2 (Official Open API Endpoint)
-    const response = await fetch('https://userapi.sepay.vn/v2/transactions?limit=20', {
+    const response = await fetch('https://userapi.sepay.vn/v2/transactions?limit=25', {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${SEPAY_API_TOKEN}`,
@@ -65,45 +75,62 @@ module.exports = async (req, res) => {
 
     const expectedAmount = parseInt(amount, 10);
     const cleanMemo = (memo || '').toString().replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
-    const cleanPhone = (phone || '').toString().replace(/[^0-9]/g, '');
-    const phoneTail = cleanPhone.length >= 4 ? cleanPhone.slice(-4) : '';
+    const phoneTail = cleanPhone.slice(-4);
     const roomStr = (room || '').toString().replace(/[^0-9]/g, '');
 
-    // Smart Match: Tìm giao dịch khớp số tiền và nội dung chuyển khoản linh hoạt
+    // List of claimed or excluded transaction IDs
+    let excludedList = [];
+    try {
+      const fs = require('fs');
+      if (fs.existsSync('/tmp/admin_room_overrides.json')) {
+        const ov = JSON.parse(fs.readFileSync('/tmp/admin_room_overrides.json', 'utf8'));
+        if (Array.isArray(ov.clearedTxs)) excludedList.push(...ov.clearedTxs);
+      }
+    } catch(e) {}
+    if (excludeIds) {
+      excludedList.push(...String(excludeIds).split(','));
+    }
+
+    // Smart Match: Tìm giao dịch khớp số tiền VÀ thông tin đặt phòng
     const matched = transactions.find(tx => {
-      // Chỉ kiểm tra giao dịch tiền vào (transfer_type == 'in' hoặc amount_in > 0)
+      // Bỏ qua giao dịch đã dùng hoặc bị loại trừ
+      if (excludedList.includes(tx.id)) return false;
+
+      // Chỉ kiểm tra giao dịch tiền vào
       const txAmount = parseInt(tx.amount_in || tx.amount || 0, 10);
       if (txAmount <= 0) return false;
-
-      const rawContent = (tx.transaction_content || tx.description || tx.content || '');
-      const txContent = rawContent.replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
 
       // 1. Kiểm tra khớp số tiền
       const isAmountMatch = Math.abs(txAmount - expectedAmount) < 1000;
       if (!isAmountMatch) return false;
 
-      // 2. Kiểm tra nếu có khớp memo đầy đủ
-      if (cleanMemo && cleanMemo.length >= 6 && txContent.includes(cleanMemo)) {
+      // 2. Kiểm tra mốc thời gian: Giao dịch phải phát sinh sau thời điểm khách tạo phiên
+      if (after && tx.transaction_date) {
+        const txTime = new Date(tx.transaction_date).getTime();
+        const minTime = new Date(after).getTime();
+        // Cho phép dung sai 60 giây do lệch đồng hồ server
+        if (txTime < minTime - 60000) {
+          return false;
+        }
+      }
+
+      const rawContent = (tx.transaction_content || tx.description || tx.content || '');
+      const txContent = rawContent.replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
+
+      // 3. Khớp chính xác memo đầy đủ nếu có
+      if (cleanMemo && cleanMemo.length >= 8 && txContent.includes(cleanMemo)) {
         return true;
       }
 
-      // 3. Kiểm tra từ khóa thương hiệu DIEMCHAU hoặc DC
+      // 4. Kiểm tra từ khóa thương hiệu DIEMCHAU hoặc DC
       const hasBrand = txContent.includes('DIEMCHAU') || txContent.includes('DC');
+      if (!hasBrand) return false;
       
-      // 4. Kiểm tra phòng hoặc số điện thoại
-      const hasRoom = roomStr ? (txContent.includes(`P${roomStr}`) || txContent.includes(roomStr)) : false;
-      const hasPhone = cleanPhone && cleanPhone.length >= 8 ? txContent.includes(cleanPhone) : (phoneTail ? txContent.includes(phoneTail) : false);
+      // 5. Bắt buộc phải khớp đồng thời CẢ Phòng VÀ Số điện thoại
+      const hasRoom = roomStr ? (txContent.includes(`P${roomStr}`) || txContent.includes(`PHONG${roomStr}`) || txContent.includes(roomStr)) : false;
+      const hasPhone = txContent.includes(cleanPhone) || txContent.includes(phoneTail);
 
-      if (hasBrand && (hasRoom || hasPhone)) {
-        return true;
-      }
-
-      // 5. Nếu chuyển đúng số tiền và có chữ DIEMCHAU trong nội dung
-      if (hasBrand) {
-        return true;
-      }
-
-      return false;
+      return hasRoom && hasPhone;
     });
 
     if (matched) {
