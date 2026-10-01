@@ -532,15 +532,16 @@ Check-in từ <span class="font-bold text-primary">12:00</span> ngày đặt ph�
 <div class="w-full mt-space-md p-space-sm rounded-xl bg-primary text-on-primary flex items-center justify-between gap-2 shadow-sm transition-all border border-outline-variant/30" id="sepay-status-box">
   <div class="flex items-center gap-2">
     <span class="relative flex h-3 w-3 shrink-0">
+      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary-container opacity-75" id="sepay-ping-dot"></span>
       <span class="relative inline-flex rounded-full h-3 w-3 bg-secondary-container" id="sepay-status-dot"></span>
     </span>
     <span class="font-label-sm text-label-sm text-secondary-container font-semibold" id="sepay-status-text" data-i18n="sepay_status_idle">
-      Quý khách chuyển khoản theo VietQR rồi bấm nút bên dưới để nhận phòng tức thì.
+      Đang chờ quét VietQR... Hệ thống sẽ tự động cấp mã Smart Pass ngay khi nhận tiền.
     </span>
   </div>
   <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-primary-container text-secondary-container border border-outline-variant/30 hidden sm:inline-block" id="sepay-poll-badge">VietQR SePAY</span>
 </div>
-<button id="btn-manual-verify" onclick="triggerPaymentVerification()" class="w-full mt-2 py-2.5 px-3 rounded-lg bg-secondary-container hover:bg-accent-hover text-on-secondary-container font-label-md text-label-md font-bold flex items-center justify-center gap-1.5 transition-colors cursor-pointer shadow-sm active:scale-[0.99]" type="button">
+<button id="btn-manual-verify" onclick="triggerPaymentVerification()" class="hidden w-full mt-2 py-2.5 px-3 rounded-lg bg-secondary-container hover:bg-accent-hover text-on-secondary-container font-label-md text-label-md font-bold items-center justify-center gap-1.5 transition-colors cursor-pointer shadow-sm active:scale-[0.99]" type="button">
   <span class="material-symbols-outlined text-[18px]">verified</span>
   <span data-i18n="btn_manual_verify">Tôi Đã Chuyển Tiền - Kiểm Tra Ngay</span>
 </button>
@@ -959,12 +960,22 @@ Check-in từ <span class="font-bold text-primary">12:00</span> ngày đặt ph�
         phoneReqBadge.className = 'text-[11px] font-bold text-tertiary-container bg-tertiary-fixed/30 border border-tertiary-fixed/50 px-2 py-0.5 rounded-full shrink-0 ml-2';
         phoneReqBadge.textContent = isEn ? '✓ Entered' : '✓ Đã nhập';
       }
+      // Tự động kích hoạt lắng nghe SePAY thời gian thực, không cần khách bấm nút
+      if (!isPaymentProcessed && !sepayPollingInterval) {
+        startSePayPolling();
+      }
     } else {
       if (phoneInputBox) phoneInputBox.className = 'flex items-center px-3 rounded-lg bg-surface-container-low border-2 border-secondary text-primary focus-within:ring-2 focus-within:ring-secondary relative box-border transition-all';
       if (qrOverlay) qrOverlay.classList.remove('hidden');
       if (phoneReqBadge) {
         phoneReqBadge.className = 'text-[11px] font-bold text-status-danger bg-status-danger/10 border border-status-danger/30 px-2 py-0.5 rounded-full shrink-0 ml-2';
         phoneReqBadge.textContent = isEn ? '* Required' : '* Bắt buộc';
+      }
+      const statusText = document.getElementById('sepay-status-text');
+      if (statusText && !isPaymentProcessed) {
+        statusText.textContent = isEn 
+          ? 'Enter your 10-digit phone number in Step 4 to activate auto-verification.' 
+          : 'Quý khách vui lòng nhập số điện thoại ở Bước 4 để hệ thống tự động theo dõi thanh toán.';
       }
     }
 
@@ -1216,14 +1227,14 @@ Check-in từ <span class="font-bold text-primary">12:00</span> ngày đặt ph�
       statusBox.className = 'w-full mt-space-md p-space-sm rounded-xl bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-between gap-2 shadow-sm transition-all';
       if (statusText) {
         statusText.className = 'font-label-sm text-label-sm font-bold flex items-center gap-1.5';
-        statusText.innerHTML = `<span class="material-symbols-outlined text-[18px]">verified</span> SePAY: Giao dịch thành công (${formatVND(totalAmount)}đ)`;
+        statusText.innerHTML = `<span class="material-symbols-outlined text-[18px]">verified</span> Thanh toán thành công (${formatVND(totalAmount)}đ)! Đang cấp mã Smart Pass...`;
       }
     }
 
     if (toast) {
       toast.classList.remove('hidden');
       toast.classList.add('flex');
-      toast.innerHTML = `<span class="material-symbols-outlined text-[18px]">verified</span> Thanh toán SePAY thành công! Khóa PIN Smart Pass đã kích hoạt.`;
+      toast.innerHTML = `<span class="material-symbols-outlined text-[18px]">verified</span> Thanh toán thành công! Đang tự động chuyển sang Smart Pass...`;
     }
 
     // Cập nhật thông tin Smart Pass trên giao diện
@@ -1278,10 +1289,10 @@ Check-in từ <span class="font-bold text-primary">12:00</span> ngày đặt ph�
       smartPass.scrollIntoView({ behavior: 'smooth' });
     }
 
-    // Auto-redirect to smart-pass.html after 2.5 seconds
+    // Auto-redirect to smart-pass.html after 1.8 seconds
     setTimeout(() => {
       window.location.href = `smart-pass.html?room=${finalRoom}&pin=${pin}&code=${billCode}`;
-    }, 2500);
+    }, 1800);
   }
 
   function simulatePaymentSuccess() {
@@ -1424,22 +1435,44 @@ Check-in từ <span class="font-bold text-primary">12:00</span> ngày đặt ph�
     if (sepayPollingInterval) clearInterval(sepayPollingInterval);
     if (pollingTimeoutTimer) clearTimeout(pollingTimeoutTimer);
 
-    // Quét mỗi 3s một lần
+    // Cập nhật sessionStartedAt nếu chưa có hoặc quá cũ (>30 phút)
+    const nowTime = Date.now();
+    const sessionTime = parseVNTimeToTimestamp(bookingState.sessionStartedAt);
+    if (!sessionTime || (nowTime - sessionTime > 1800000)) {
+      bookingState.sessionStartedAt = new Date().toISOString();
+    }
+
+    const isEn = (localStorage.getItem('diemchau_language') || 'vi') === 'en';
+    const statusText = document.getElementById('sepay-status-text');
+    if (statusText) {
+      statusText.innerHTML = isEn 
+        ? 'Scanning payment in real-time... Smart Pass will auto-unlock upon receiving funds.' 
+        : 'Đang tự động theo dõi chuyển khoản thời gian thực... Mã Smart Pass sẽ tự mở khi nhận tiền.';
+    }
+    const pingDot = document.getElementById('sepay-ping-dot');
+    if (pingDot) pingDot.classList.remove('hidden');
+
+    // Quét ngay lập tức 1 lần
+    checkSePayNow(false);
+
+    // Quét mỗi 2.5s một lần
     sepayPollingInterval = setInterval(() => {
       checkSePayNow(false);
-    }, 3000);
+    }, 2500);
 
-    // Tự động dừng polling sau 3 phút nếu chưa có thanh toán
+    // Tự động dừng polling sau 10 phút nếu chưa có thanh toán
     pollingTimeoutTimer = setTimeout(() => {
       if (sepayPollingInterval) {
         clearInterval(sepayPollingInterval);
         sepayPollingInterval = null;
       }
-      const statusText = document.getElementById('sepay-status-text');
       if (statusText && !isPaymentProcessed) {
-        statusText.innerHTML = 'Đã tạm dừng kiểm tra tự động. Quý khách có thể bấm nút bên dưới để kiểm tra lại.';
+        statusText.innerHTML = isEn 
+          ? 'Auto-scan paused after 10 mins. Please reload page if you have just transferred.' 
+          : 'Đã tạm dừng tự động sau 10 phút. Quý khách vui lòng tải lại trang nếu vừa chuyển khoản.';
       }
-    }, 180000);
+      if (pingDot) pingDot.classList.add('hidden');
+    }, 600000);
   }
 
   document.addEventListener('DOMContentLoaded', () => {
