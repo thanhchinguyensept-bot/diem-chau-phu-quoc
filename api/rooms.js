@@ -5,10 +5,10 @@ const path = require('path');
 const OVERRIDES_FILE = path.join('/tmp', 'admin_room_overrides.json');
 
 const DEFAULT_ROOMS = {
-  101: { name: 'PHÒNG 101 (Deluxe Queen)', short: 'PHÒNG 101', status: 'available', guest: null },
-  102: { name: 'PHÒNG 102 (Deluxe Queen)', short: 'PHÒNG 102', status: 'available', guest: null },
-  103: { name: 'PHÒNG 103 (VIP King Window)', short: 'PHÒNG 103', status: 'available', guest: null },
-  104: { name: 'PHÒNG 104 (Balcony Studio)', short: 'PHÒNG 104', status: 'available', guest: null }
+  101: { name: 'PHÒNG 101 (Deluxe Queen)', short: 'PHÒNG 101', status: 'available', guest: null, pin: '7633' },
+  102: { name: 'PHÒNG 102 (Deluxe Queen)', short: 'PHÒNG 102', status: 'available', guest: null, pin: '8192' },
+  103: { name: 'PHÒNG 103 (VIP King Window)', short: 'PHÒNG 103', status: 'available', guest: null, pin: '3321' },
+  104: { name: 'PHÒNG 104 (Balcony Studio)', short: 'PHÒNG 104', status: 'available', guest: null, pin: '4529' }
 };
 
 function readOverrides() {
@@ -42,7 +42,7 @@ module.exports = async (req, res) => {
 
   const overrides = readOverrides();
 
-  // POST: Admin unlocks or locks a room
+  // POST: Admin unlocks, locks a room or updates Smart Pass PIN
   if (req.method === 'POST') {
     let body = req.body;
     if (typeof body === 'string') {
@@ -50,19 +50,30 @@ module.exports = async (req, res) => {
     }
     const roomId = (body && body.roomId) || req.query.roomId;
     const status = (body && body.status) || req.query.status; // 'available', 'locked', 'occupied'
+    const pin = (body && body.pin) || req.query.pin;
 
-    if (roomId && status) {
-      overrides[roomId] = {
-        status: status,
-        updatedAt: new Date().toISOString()
-      };
+    if (roomId) {
+      overrides[roomId] = overrides[roomId] || {};
+      if (status) {
+        overrides[roomId].status = status;
+      }
+      if (pin) {
+        overrides[roomId].pin = String(pin).trim();
+      }
+      overrides[roomId].updatedAt = new Date().toISOString();
+
       // If admin explicitly marked available, also record cleared transaction ID if provided
       if (body && body.clearedTxId) {
         overrides.clearedTxs = overrides.clearedTxs || [];
         overrides.clearedTxs.push(body.clearedTxId);
       }
       writeOverrides(overrides);
-      return res.status(200).json({ success: true, message: `Cập nhật phòng ${roomId} thành [${status}]`, overrides });
+      return res.status(200).json({ 
+        success: true, 
+        message: `Đã cập nhật phòng ${roomId} thành công`, 
+        room: overrides[roomId],
+        overrides 
+      });
     }
   }
 
@@ -70,6 +81,7 @@ module.exports = async (req, res) => {
   const SEPAY_API_TOKEN = process.env.SEPAY_API_TOKEN || 'M7PITPKYBZR85DDZFFVJ1CR2CZBWH2HVPGOKWNOUBJ3UMD7YLIAWGAUJDQNSHKPN';
   const rooms = JSON.parse(JSON.stringify(DEFAULT_ROOMS));
 
+  let allTransactions = [];
   try {
     // 1. Fetch live transactions from SePAY v2
     const sepayRes = await fetch('https://userapi.sepay.vn/v2/transactions?limit=25', {
@@ -82,7 +94,8 @@ module.exports = async (req, res) => {
 
     if (sepayRes.ok) {
       const sepayData = await sepayRes.json();
-      const transactions = Array.isArray(sepayData.data) ? sepayData.data : (Array.isArray(sepayData) ? sepayData : []);
+      allTransactions = Array.isArray(sepayData.data) ? sepayData.data : (Array.isArray(sepayData) ? sepayData : []);
+      const transactions = allTransactions;
       const clearedTxs = overrides.clearedTxs || [];
 
       // Check transactions from the last 24 hours
@@ -131,11 +144,16 @@ module.exports = async (req, res) => {
 
   // 2. Apply Admin Overrides (takes highest priority)
   [101, 102, 103, 104].forEach(id => {
-    if (overrides[id] && overrides[id].status) {
-      rooms[id].status = overrides[id].status;
-      if (overrides[id].status === 'available') {
-        rooms[id].guest = null;
-        rooms[id].bookedAt = null;
+    if (overrides[id]) {
+      if (overrides[id].status) {
+        rooms[id].status = overrides[id].status;
+        if (overrides[id].status === 'available') {
+          rooms[id].guest = null;
+          rooms[id].bookedAt = null;
+        }
+      }
+      if (overrides[id].pin) {
+        rooms[id].pin = overrides[id].pin;
       }
     }
   });
@@ -143,6 +161,7 @@ module.exports = async (req, res) => {
   return res.status(200).json({
     success: true,
     rooms: rooms,
+    transactions: allTransactions,
     serverTime: new Date().toISOString()
   });
 };

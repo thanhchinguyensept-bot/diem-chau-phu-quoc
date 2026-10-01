@@ -762,6 +762,7 @@ Check-in từ <span class="font-bold text-primary">12:00</span> ngày đặt ph�
       if (res.ok) {
         const data = await res.json();
         if (data.success && data.rooms) {
+          window.remoteRoomsData = data.rooms;
           localStorage.setItem('diemchau_rooms_state', JSON.stringify(data.rooms));
           syncRoomsAvailability();
           updateBookingView();
@@ -770,7 +771,64 @@ Check-in từ <span class="font-bold text-primary">12:00</span> ngày đặt ph�
     } catch(e) {}
   }
 
+  // Khách đặt phòng theo giờ: Giờ nhận phòng phải luôn muộn hơn thời gian thực ít nhất 1 tiếng
+  function updateHourlyTimeOptions() {
+    const timeSelect = document.getElementById('checkin-time-select');
+    if (!timeSelect) return;
+
+    // Tính thời gian hiện tại theo giờ Việt Nam (UTC+7)
+    const now = new Date();
+    const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+    const vnNow = new Date(utc + (3600000 * 7));
+    const currentHour = vnNow.getHours();
+    const y = vnNow.getFullYear();
+    const m = String(vnNow.getMonth() + 1).padStart(2, '0');
+    const d = String(vnNow.getDate()).padStart(2, '0');
+    const todayStr = `${y}-${m}-${d}`;
+
+    const isToday = (bookingState.checkinDate === todayStr);
+    const isEn = (typeof currentLanguage !== 'undefined' && currentLanguage === 'en') || 
+                 localStorage.getItem('diemchau_language') === 'en';
+
+    // Giờ nhận phòng hợp lệ tối thiểu: Giờ hiện tại + 1 tiếng
+    const minAllowedHour = currentHour + 1;
+    let firstValidValue = null;
+
+    Array.from(timeSelect.options).forEach(opt => {
+      const optVal = opt.value;
+      const optHour = parseInt(optVal.split(':')[0], 10);
+
+      let period = '';
+      if (optHour < 11) period = isEn ? 'AM' : 'sáng';
+      else if (optHour < 13) period = isEn ? 'Noon' : 'trưa';
+      else if (optHour < 18) period = isEn ? 'PM' : 'chiều';
+      else if (optHour < 22) period = isEn ? 'Evening' : 'tối';
+      else period = isEn ? 'Night' : 'đêm';
+
+      const baseLabel = `${optVal} ${period}`;
+
+      if (isToday && optHour < minAllowedHour) {
+        opt.disabled = true;
+        opt.textContent = `${baseLabel} (${isEn ? 'Passed' : 'Đã qua'})`;
+        opt.style.color = '#94a3b8';
+      } else {
+        opt.disabled = false;
+        opt.textContent = baseLabel;
+        opt.style.color = '';
+        if (!firstValidValue) firstValidValue = optVal;
+      }
+    });
+
+    // Nếu giờ đang chọn bị rơi vào khung giờ đã qua, tự động nhảy sang mốc giờ hợp lệ sớm nhất
+    const currentSelectedOpt = timeSelect.options[timeSelect.selectedIndex];
+    if (isToday && currentSelectedOpt && currentSelectedOpt.disabled && firstValidValue) {
+      timeSelect.value = firstValidValue;
+      bookingState.checkinTime = firstValidValue;
+    }
+  }
+
   function updateBookingView() {
+    updateHourlyTimeOptions();
     let totalAmount = 200000;
     const isEn = (typeof currentLanguage !== 'undefined' && currentLanguage === 'en') || 
                  localStorage.getItem('diemchau_language') === 'en';
@@ -931,7 +989,9 @@ Check-in từ <span class="font-bold text-primary">12:00</span> ngày đặt ph�
     if (smartpassRoomTitle) smartpassRoomTitle.textContent = bookingState.roomShort;
 
     const smartpassPinCode = document.getElementById('smartpass-pin-code');
-    if (smartpassPinCode) smartpassPinCode.textContent = phoneTail;
+    const currentRoomPin = (window.remoteRoomsData && window.remoteRoomsData[bookingState.roomId]?.pin) || 
+                           (JSON.parse(localStorage.getItem('diemchau_rooms_state') || '{}')[bookingState.roomId]?.pin);
+    if (smartpassPinCode) smartpassPinCode.textContent = currentRoomPin || phoneTail;
 
     const smartpassCheckinDate = document.getElementById('smartpass-checkin-date');
     if (smartpassCheckinDate) smartpassCheckinDate.textContent = cinFormatted;
@@ -1081,8 +1141,22 @@ Check-in từ <span class="font-bold text-primary">12:00</span> ngày đặt ph�
     const finalRoom = txInfo.detectedRoom || bookingState.roomId || '104';
     const guestPhone = (bookingState.phone || txInfo.detectedPhone || '0942817633').replace(/\s+/g, '');
     const phoneTail = guestPhone.slice(-4) || '7633';
-    const pin = phoneTail;
-    const billCode = `DC-${finalRoom}${phoneTail}`;
+
+    // Lấy mã PIN Smart Pass do Quản trị viên đã thiết lập cho phòng này
+    let adminRoomPin = null;
+    try {
+      if (window.remoteRoomsData && window.remoteRoomsData[finalRoom] && window.remoteRoomsData[finalRoom].pin) {
+        adminRoomPin = window.remoteRoomsData[finalRoom].pin;
+      } else {
+        const stored = JSON.parse(localStorage.getItem('diemchau_rooms_state') || '{}');
+        if (stored[finalRoom] && stored[finalRoom].pin) {
+          adminRoomPin = stored[finalRoom].pin;
+        }
+      }
+    } catch(e){}
+
+    const pin = adminRoomPin || phoneTail;
+    const billCode = `DC-${finalRoom}${pin}`;
 
     if (statusBox) {
       statusBox.className = 'w-full mt-space-md p-space-sm rounded-xl bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-between gap-2 shadow-sm transition-all';
@@ -1581,6 +1655,11 @@ Check-in từ <span class="font-bold text-primary">12:00</span> ngày đặt ph�
     setInterval(() => {
       fetchRemoteRoomsState();
     }, 3000);
+
+    // Periodic hourly slots update (30s interval)
+    setInterval(() => {
+      updateHourlyTimeOptions();
+    }, 30000);
 
     // Initialize (DO NOT poll SePAY until guest enters 10-digit phone number)
     syncRoomsAvailability();
