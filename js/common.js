@@ -102,6 +102,7 @@ const TRANSLATIONS = {
     'btn_copy': 'Sao chép',
     'sepay_status_listening': 'Cổng SePAY đang tự động kiểm tra giao dịch (2.5s)...',
     'sepay_status_success': 'Thanh toán thành công qua SePAY! Khóa PIN Smart Pass đã kích hoạt.',
+    'btn_manual_verify': 'Tôi Đã Chuyển Tiền - Kiểm Tra Ngay',
 
     // Smart Pass
     'smartpass_heading': 'Smart Pass Kỹ Thuật Số',
@@ -233,6 +234,7 @@ const TRANSLATIONS = {
     'btn_copy': 'Copy',
     'sepay_status_listening': 'SePAY Gateway checking payment in real-time (2.5s)...',
     'sepay_status_success': 'Payment confirmed via SePAY! Smart Pass door PIN activated.',
+    'btn_manual_verify': 'I Have Transferred - Verify Now',
 
     // Smart Pass
     'smartpass_heading': 'Digital Smart Pass',

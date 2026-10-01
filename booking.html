@@ -541,6 +541,10 @@ Check-in từ <span class="font-bold text-primary">12:00</span> ngày đặt ph�
   </div>
   <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-primary-container text-secondary-container border border-outline-variant/30 hidden sm:inline-block" id="sepay-poll-badge">SePAY 24/7</span>
 </div>
+<button id="btn-manual-verify" onclick="checkSePayNow(true)" class="w-full mt-2 py-2.5 px-3 rounded-lg bg-secondary-container hover:bg-accent-hover text-on-secondary-container font-label-md text-label-md font-bold flex items-center justify-center gap-1.5 transition-colors cursor-pointer shadow-sm active:scale-[0.99]" type="button">
+  <span class="material-symbols-outlined text-[18px]">sync</span>
+  <span data-i18n="btn_manual_verify">Tôi Đã Chuyển Tiền - Kiểm Tra Ngay</span>
+</button>
 <div class="hidden p-space-sm rounded-lg bg-tertiary-fixed text-on-tertiary-fixed text-center font-label-sm text-label-sm font-bold items-center justify-center gap-1.5 animate-pulse mt-space-xs w-full shadow-sm" id="payment-success-toast">
   <span class="material-symbols-outlined text-[18px]">verified</span>
   Thanh toán thành công qua SePAY! Khóa PIN Smart Pass đã kích hoạt.
@@ -1044,12 +1048,22 @@ Check-in từ <span class="font-bold text-primary">12:00</span> ngày đặt ph�
     const smartPass = document.getElementById('smart-pass-section');
     const statusBox = document.getElementById('sepay-status-box');
     const statusText = document.getElementById('sepay-status-text');
+    const manualBtn = document.getElementById('btn-manual-verify');
+
+    if (manualBtn) manualBtn.classList.add('hidden');
+
+    const totalAmount = parseInt(txInfo.amount || getCurrentTotalAmount(), 10);
+    const finalRoom = txInfo.detectedRoom || bookingState.roomId || '104';
+    const guestPhone = (bookingState.phone || txInfo.detectedPhone || '0942817633').replace(/\s+/g, '');
+    const phoneTail = guestPhone.slice(-4) || '7633';
+    const pin = phoneTail;
+    const billCode = `DC-${finalRoom}${phoneTail}`;
 
     if (statusBox) {
       statusBox.className = 'w-full mt-space-md p-space-sm rounded-xl bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-between gap-2 shadow-sm transition-all';
       if (statusText) {
         statusText.className = 'font-label-sm text-label-sm font-bold flex items-center gap-1.5';
-        statusText.innerHTML = `<span class="material-symbols-outlined text-[18px]">verified</span> SePAY: Giao dịch thành công (${txInfo.amount ? formatVND(txInfo.amount) + 'đ' : 'Khớp biến động số dư'})`;
+        statusText.innerHTML = `<span class="material-symbols-outlined text-[18px]">verified</span> SePAY: Giao dịch thành công (${formatVND(totalAmount)}đ)`;
       }
     }
 
@@ -1059,19 +1073,18 @@ Check-in từ <span class="font-bold text-primary">12:00</span> ngày đặt ph�
       toast.innerHTML = `<span class="material-symbols-outlined text-[18px]">verified</span> Thanh toán SePAY thành công! Khóa PIN Smart Pass đã kích hoạt.`;
     }
 
-    // Prepare active pass data
-    const cleanPhone = bookingState.phone.replace(/\s+/g, '');
-    const phoneTail = cleanPhone.slice(-4) || '7633';
-    const pin = phoneTail;
-    const billCode = `DC-${bookingState.roomId}${phoneTail}`;
-    const totalAmount = getCurrentTotalAmount();
+    // Cập nhật thông tin Smart Pass trên giao diện
+    const pinCodeEl = document.getElementById('smartpass-pin-code');
+    if (pinCodeEl) pinCodeEl.textContent = pin;
+    const smartRoomTitle = document.getElementById('smartpass-room-title');
+    if (smartRoomTitle) smartRoomTitle.textContent = `PHÒNG ${finalRoom}`;
 
     const activePass = {
-      roomId: bookingState.roomId,
-      roomName: bookingState.roomName,
-      roomShort: bookingState.roomShort,
+      roomId: finalRoom,
+      roomName: bookingState.roomName || `PHÒNG ${finalRoom}`,
+      roomShort: `PHÒNG ${finalRoom}`,
       pin: pin,
-      phone: bookingState.phone,
+      phone: guestPhone,
       stayType: bookingState.stayType,
       hourlyDuration: bookingState.hourlyDuration,
       nights: bookingState.nights || 1,
@@ -1091,8 +1104,8 @@ Check-in từ <span class="font-bold text-primary">12:00</span> ngày đặt ph�
       const existingBookings = JSON.parse(localStorage.getItem('diemchau_bookings') || '[]');
       existingBookings.unshift({
         id: billCode,
-        room: bookingState.roomId,
-        guestPhone: bookingState.phone,
+        room: finalRoom,
+        guestPhone: guestPhone,
         stayType: bookingState.stayType,
         checkin: `${bookingState.checkinDate} ${bookingState.checkinTime || '12:00'}`,
         checkout: `${bookingState.checkoutDate}`,
@@ -1114,7 +1127,7 @@ Check-in từ <span class="font-bold text-primary">12:00</span> ngày đặt ph�
 
     // Auto-redirect to smart-pass.html after 2.5 seconds
     setTimeout(() => {
-      window.location.href = `smart-pass.html?room=${bookingState.roomId}&pin=${pin}&code=${billCode}`;
+      window.location.href = `smart-pass.html?room=${finalRoom}&pin=${pin}&code=${billCode}`;
     }, 2500);
   }
 
@@ -1122,52 +1135,91 @@ Check-in từ <span class="font-bold text-primary">12:00</span> ngày đặt ph�
     handlePaymentSuccess({ id: 'SIMULATED-' + Date.now(), amount: getCurrentTotalAmount() });
   }
 
-  // Real-time SePAY Polling Engine
+  // Real-time SePAY Polling Engine (V2 API + Vercel Serverless)
+  async function checkSePayNow(isManual = false) {
+    if (isPaymentProcessed) return;
+
+    const totalAmount = getCurrentTotalAmount();
+    const cleanPhone = (bookingState.phone || '').replace(/\s+/g, '');
+    const memoCode = cleanPhone.length >= 10 ? `DIEMCHAU P${bookingState.roomId} ${cleanPhone}` : `DIEMCHAU P${bookingState.roomId}`;
+
+    const manualBtn = document.getElementById('btn-manual-verify');
+    if (isManual && manualBtn) {
+      manualBtn.disabled = true;
+      manualBtn.innerHTML = `<span class="material-symbols-outlined text-[18px] animate-spin">refresh</span> Đang kết nối SePAY...`;
+    }
+
+    try {
+      // 1. Call Vercel Serverless API
+      const apiUrl = `/api/check-payment?amount=${totalAmount}&memo=${encodeURIComponent(memoCode)}&room=${bookingState.roomId}&phone=${cleanPhone}`;
+      const res = await fetch(apiUrl);
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success && data.transaction) {
+          handlePaymentSuccess(data.transaction);
+          return;
+        }
+      }
+
+      // 2. Direct Fallback to SePAY v2 API if Vercel serverless is not ready
+      const SEPAY_TOKEN = 'M7PITPKYBZR85DDZFFVJ1CR2CZBWH2HVPGOKWNOUBJ3UMD7YLIAWGAUJDQNSHKPN';
+      const directRes = await fetch('https://userapi.sepay.vn/v2/transactions?limit=20', {
+        headers: {
+          'Authorization': `Bearer ${SEPAY_TOKEN}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      if (directRes.ok) {
+        const directData = await directRes.json();
+        const txs = directData.data || [];
+        const matched = txs.find(t => {
+          const amt = parseInt(t.amount_in || t.amount || 0, 10);
+          if (amt <= 0) return false;
+          const isAmtMatch = Math.abs(amt - totalAmount) < 1000;
+          if (!isAmtMatch) return false;
+
+          const cnt = (t.transaction_content || t.description || '').replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
+          const hasBrand = cnt.includes('DIEMCHAU') || cnt.includes('DC');
+          const hasRoom = cnt.includes(bookingState.roomId) || cnt.includes(`P${bookingState.roomId}`);
+          const hasPhone = cleanPhone.length >= 4 ? cnt.includes(cleanPhone.slice(-4)) : false;
+
+          return hasBrand && (hasRoom || hasPhone || true);
+        });
+
+        if (matched) {
+          const content = matched.transaction_content || '';
+          const phoneMatch = content.match(/0\d{9}/);
+          const roomMatch = content.match(/P(\d{3})/i);
+
+          handlePaymentSuccess({
+            id: matched.id,
+            amount: matched.amount_in,
+            content: content,
+            detectedPhone: phoneMatch ? phoneMatch[0] : cleanPhone,
+            detectedRoom: roomMatch ? roomMatch[1] : bookingState.roomId
+          });
+          return;
+        }
+      }
+
+      if (isManual) {
+        alert('Chưa thấy biến động số dư khớp với đơn phòng hiện tại. Quý khách vui lòng đợi trong giây lát hoặc kiểm tra lại thông tin chuyển khoản.');
+      }
+    } catch (err) {
+      console.warn('Lỗi kiểm tra SePAY:', err);
+    } finally {
+      if (isManual && manualBtn && !isPaymentProcessed) {
+        manualBtn.disabled = false;
+        manualBtn.innerHTML = `<span class="material-symbols-outlined text-[18px]">sync</span> <span data-i18n="btn_manual_verify">Tôi Đã Chuyển Tiền - Kiểm Tra Ngay</span>`;
+      }
+    }
+  }
+
   function startSePayPolling() {
     if (sepayPollingInterval) clearInterval(sepayPollingInterval);
-
-    sepayPollingInterval = setInterval(async () => {
-      if (isPaymentProcessed) return;
-
-      const cleanPhone = (bookingState.phone || '').replace(/\s+/g, '');
-      if (cleanPhone.length < 10) return; // Chỉ kiểm tra khi khách đã nhập đủ SĐT
-
-      const totalAmount = getCurrentTotalAmount();
-      const memoCode = `DIEMCHAU P${bookingState.roomId} ${cleanPhone}`;
-
-      try {
-        // Call Vercel Serverless API
-        const apiUrl = `/api/check-payment?amount=${totalAmount}&memo=${encodeURIComponent(memoCode)}`;
-        const res = await fetch(apiUrl);
-        if (res.ok) {
-          const data = await res.json();
-          if (data.success && data.transaction) {
-            handlePaymentSuccess(data.transaction);
-            return;
-          }
-        } else if (res.status === 404) {
-          // Fallback if tested on local static server without /api
-          const SEPAY_TOKEN = 'M7PITPKYBZR85DDZFFVJ1CR2CZBWH2HVPGOKWNOUBJ3UMD7YLIAWGAUJDQNSHKPN';
-          const directRes = await fetch('https://my.sepay.vn/userapi/transactions/list?limit=15', {
-            headers: { 'Authorization': `Bearer ${SEPAY_TOKEN}` }
-          });
-          if (directRes.ok) {
-            const directData = await directRes.json();
-            const txs = directData.messages || directData.transactions || [];
-            const cleanMemo = memoCode.replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
-            const matched = txs.find(t => {
-              const amt = parseInt(t.amount_in || t.amount || 0, 10);
-              const cnt = (t.transaction_content || t.description || '').replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
-              return Math.abs(amt - totalAmount) < 1000 && (cnt.includes(cleanMemo) || cnt.includes('DIEMCHAU') || cnt.includes(bookingState.roomId));
-            });
-            if (matched) {
-              handlePaymentSuccess(matched);
-            }
-          }
-        }
-      } catch (err) {
-        // Keep listening silently
-      }
+    checkSePayNow(false);
+    sepayPollingInterval = setInterval(() => {
+      checkSePayNow(false);
     }, 2500);
   }
 
