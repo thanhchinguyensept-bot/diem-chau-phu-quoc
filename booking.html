@@ -57,7 +57,7 @@
 </div>
 <div class="flex flex-col">
 <span class="font-label-sm text-label-sm text-secondary-container font-semibold" data-i18n="step4_title">B.4 Nhập SĐT</span>
-<span class="text-[11px] text-on-primary-container" id="step4-subtext">0942 817 633</span>
+<span class="text-[11px] text-on-primary-container" id="step4-subtext" data-i18n="step4_unentered">Chưa nhập</span>
 </div>
 </div>
 <div class="flex-1 h-0.5 mx-2 bg-secondary-container"></div>
@@ -374,9 +374,9 @@ Check-in từ <span class="font-bold text-primary">12:00</span> ngày đặt ph�
 <span class="font-semibold text-primary truncate"><span data-i18n="label_guest_phone">Số Điện Thoại Nhận PIN</span> <span class="text-status-danger font-bold">*</span></span>
 <span class="text-[11px] font-bold text-status-danger bg-status-danger/10 border border-status-danger/30 px-2 py-0.5 rounded-full shrink-0 ml-2" id="phone-required-badge">* Bắt buộc</span>
 </label>
-<div class="flex items-center px-3 rounded-lg bg-surface-container-low border border-outline-variant/40 text-primary focus-within:ring-2 focus-within:ring-primary-container relative box-border transition-all" id="phone-input-container" style="height: 48px; min-height: 48px; max-height: 48px;">
+<div class="flex items-center px-3 rounded-lg bg-surface-container-low border-2 border-secondary text-primary focus-within:ring-2 focus-within:ring-secondary relative box-border transition-all" id="phone-input-container" style="height: 48px; min-height: 48px; max-height: 48px;">
 <span class="material-symbols-outlined text-[20px] text-secondary mr-2 shrink-0">phone_iphone</span>
-<input class="w-full bg-transparent font-label-md text-label-md outline-none text-primary font-bold tracking-wide m-0 p-0" id="customer-phone-input" placeholder="0942 817 633" style="height: 48px; line-height: 48px; box-sizing: border-box;" type="tel" maxlength="11" value="0942 817 633" required/>
+<input class="w-full bg-transparent font-label-md text-label-md outline-none text-primary font-bold tracking-wide m-0 p-0" id="customer-phone-input" placeholder="Nhập số điện thoại nhận PIN..." style="height: 48px; line-height: 48px; box-sizing: border-box;" type="tel" maxlength="11" value="" required/>
 </div>
 <span class="text-[11px] text-text-muted h-5 leading-5 block truncate" id="phone-hint-text" data-i18n="phone_hint">4 số cuối cài làm mã mở khóa cửa phòng</span>
 </div>
@@ -638,7 +638,7 @@ Check-in từ <span class="font-bold text-primary">12:00</span> ngày đặt ph�
     roomId: '101',
     roomName: 'PHÒNG 101 (Deluxe Queen)',
     roomShort: 'PHÒNG 101',
-    phone: '0942 817 633',
+    phone: '',
     pricePerNight: 200000,
     hourlyPrices: { 1: 80000, 3: 100000, 5: 140000 }
   };
@@ -712,6 +712,7 @@ Check-in từ <span class="font-bold text-primary">12:00</span> ngày đặt ph�
 
       const isRoomAvailable = (r.status === 'available');
       card.dataset.available = isRoomAvailable ? 'true' : 'false';
+      card.dataset.roomStatus = r.status || 'available';
 
       if (isRoomAvailable) {
         availableCount++;
@@ -720,7 +721,7 @@ Check-in từ <span class="font-bold text-primary">12:00</span> ngày đặt ph�
       }
     });
 
-    // If current selected room is locked, automatically auto-switch to first available room!
+    // If current selected room is locked/occupied, automatically auto-switch to first available room!
     const currentRoomAvailable = rooms[bookingState.roomId]?.status === 'available';
     if (!currentRoomAvailable) {
       const firstAvail = [101, 102, 103, 104].find(id => rooms[id]?.status === 'available');
@@ -746,12 +747,26 @@ Check-in từ <span class="font-bold text-primary">12:00</span> ngày đặt ph�
     if (lockedCountEl) {
       if (lockedCount > 0) {
         lockedCountEl.classList.remove('hidden');
-        const label = isEn ? 'Locked' : 'Đã Khóa';
+        const label = isEn ? 'Occupied' : 'Đã Đặt';
         lockedCountEl.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-status-danger"></span> <span>${label} (${lockedCount})</span>`;
       } else {
         lockedCountEl.classList.add('hidden');
       }
     }
+  }
+
+  async function fetchRemoteRoomsState() {
+    try {
+      const res = await fetch('/api/rooms');
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success && data.rooms) {
+          localStorage.setItem('diemchau_rooms_state', JSON.stringify(data.rooms));
+          syncRoomsAvailability();
+          updateBookingView();
+        }
+      }
+    } catch(e) {}
   }
 
   function updateBookingView() {
@@ -898,6 +913,11 @@ Check-in từ <span class="font-bold text-primary">12:00</span> ngày đặt ph�
     const step3Subtext = document.getElementById('step3-subtext');
     if (step3Subtext) step3Subtext.textContent = `P.${bookingState.roomId} ${bookingState.roomName.split('(')[1]?.replace(')', '') || ''}`;
 
+    const step4Subtext = document.getElementById('step4-subtext');
+    if (step4Subtext) {
+      step4Subtext.textContent = isPhoneValid ? bookingState.phone : (isEn ? 'Not entered' : 'Chưa nhập');
+    }
+
     // 6. Dynamic VietQR TPBank Image Generation
     const vietqrImg = document.getElementById('vietqr-image');
     if (vietqrImg) {
@@ -945,17 +965,21 @@ Check-in từ <span class="font-bold text-primary">12:00</span> ngày đặt ph�
       }
 
       if (!isAvailable) {
-        // Room is LOCKED by Admin
-        card.className = 'room-card p-space-md rounded-xl border-2 transition-all bg-status-danger/5 border-status-danger/30 opacity-70 cursor-not-allowed flex flex-col justify-between';
+        // Room is LOCKED or OCCUPIED
+        const specificStatus = card.dataset.roomStatus || 'locked';
+        const isOccupied = (specificStatus === 'occupied');
+        const badgeLabel = isEn ? (isOccupied ? 'Occupied' : 'Locked') : (isOccupied ? 'Đã Đặt' : 'Đã Khóa');
+
+        card.className = 'room-card p-space-md rounded-xl border-2 transition-all bg-status-danger/5 border-status-danger/30 opacity-75 cursor-not-allowed flex flex-col justify-between';
         if (selectedBadge) selectedBadge.classList.add('hidden');
         if (statusBadge) {
           statusBadge.classList.remove('hidden');
           statusBadge.className = 'room-status-badge font-label-sm text-label-sm px-2.5 py-0.5 rounded-full bg-status-danger text-on-primary font-bold';
-          statusBadge.textContent = isEn ? 'Locked' : 'Đã Khóa';
+          statusBadge.textContent = badgeLabel;
         }
         if (actionBtn) {
           actionBtn.className = 'room-action-btn font-label-sm text-label-sm px-3 py-1.5 rounded-lg bg-status-danger/20 text-status-danger font-bold cursor-not-allowed';
-          actionBtn.textContent = isEn ? 'Locked' : 'Đã Khóa';
+          actionBtn.textContent = badgeLabel;
           actionBtn.disabled = true;
         }
       } else if (isSelected) {
@@ -1468,9 +1492,10 @@ Check-in từ <span class="font-bold text-primary">12:00</span> ngày đặt ph�
       card.addEventListener('click', () => {
         if (card.dataset.available === 'false') {
           const isEn = (localStorage.getItem('diemchau_language') || 'vi') === 'en';
+          const isOcc = (card.dataset.roomStatus === 'occupied');
           alert(isEn 
-            ? `Room ${card.dataset.roomId} is currently locked by administrator. Please select another available room!` 
-            : `Phòng ${card.dataset.roomId} hiện đang được quản trị viên tạm khóa. Quý khách vui lòng chọn phòng khác!`);
+            ? (isOcc ? `Room ${card.dataset.roomId} is already booked and occupied. Please select another available room!` : `Room ${card.dataset.roomId} is currently locked by administrator. Please select another available room!`) 
+            : (isOcc ? `Phòng ${card.dataset.roomId} đã có khách đặt và thanh toán. Quý khách vui lòng chọn phòng khác đang trống!` : `Phòng ${card.dataset.roomId} hiện đang được quản trị viên tạm khóa. Quý khách vui lòng chọn phòng khác!`));
           return;
         }
         const rId = card.dataset.roomId;
@@ -1520,9 +1545,15 @@ Check-in từ <span class="font-bold text-primary">12:00</span> ngày đặt ph�
       updateBookingView();
     }, 1500);
 
+    // Periodic server synchronization (3s interval)
+    setInterval(() => {
+      fetchRemoteRoomsState();
+    }, 3000);
+
     // Initialize
     syncRoomsAvailability();
     updateBookingView();
+    fetchRemoteRoomsState();
     startSePayPolling();
   });
 </script></main><footer class="w-full bg-primary-container text-on-primary mt-space-xl"><div class="max-w-[1200px] mx-auto px-margin lg:px-margin-desktop pt-space-xl pb-space-lg"><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-space-xl pb-space-xl"><div class="flex flex-col gap-space-sm"><div class="flex items-center gap-space-sm mb-space-xs"><img alt="logo nên mau thuong hieu.png" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1Vy1hCh2eluTorBOCq7DXwF5b1O2dTZOnU1CI9hjV9Ndznt-LQ1D6izf71Tq7r3D5SbYdpx2o4rrwTS6h90nC399mXdPGoIqPRJuNyQBGbRbe5rqlhTnLxljRusa3872PZdEwBHYecTVvsqHYq2umZCvE1XJ5wA5YKiP12c1DOKD1DgiFa9OYik_SrmAu5xleJnwiB0w-j3ZElNQBt_7g-8WZI9uTwDPXQYKRheQXCbVxWZC6qHnooECTFnGqX_FIhEXAYQeyAHBw"/><span class="font-headline-sm text-headline-sm text-on-primary">DIỄM CHÂU</span></div><p class="font-body-sm text-body-sm text-on-primary-container" data-i18n="footer_about">Nhà nghỉ boutique tiện nghi, phòng sạch tiêu chuẩn, mức giá chỉ từ 80k. Cam kết trải nghiệm riêng tư tuyệt đối, tự động hoá nhận phòng siêu tốc tại Phú Quốc.</p><div class="flex items-center gap-space-xs text-secondary-container mt-space-xs"><span class="material-symbols-outlined text-[20px]">verified_user</span><span class="font-label-sm text-label-sm" data-i18n="stepper_subtitle">Tự Động Hóa 100% - Không Lễ Tân</span></div></div><div class="flex flex-col gap-space-sm"><h3 class="font-headline-sm text-headline-sm text-secondary-container" data-i18n="footer_contact_title">Liên Hệ</h3><div class="flex items-start gap-space-xs text-on-primary-container font-body-sm text-body-sm"><span class="material-symbols-outlined text-[18px] text-secondary-container shrink-0 mt-0.5">location_on</span><span data-i18n="footer_address">Đường Cách Mạng Tháng Tám, Dương Đông, Phú Quốc</span></div><div class="flex items-center gap-space-xs text-on-primary-container font-body-sm text-body-sm"><span class="material-symbols-outlined text-[18px] text-secondary-container shrink-0">call</span><span class="">0942 817 633 (Hỗ trợ 24/7)</span></div><div class="flex items-center gap-space-sm pt-space-xs"><a class="p-space-xs rounded-lg bg-primary hover:bg-secondary-container hover:text-on-secondary-container text-on-primary transition-colors flex items-center justify-center" href="#"><span class="material-symbols-outlined text-[20px]">share</span></a><a class="p-space-xs rounded-lg bg-primary hover:bg-secondary-container hover:text-on-secondary-container text-on-primary transition-colors flex items-center justify-center" href="#"><span class="material-symbols-outlined text-[20px]">map</span></a><a class="p-space-xs rounded-lg bg-primary hover:bg-secondary-container hover:text-on-secondary-container text-on-primary transition-colors flex items-center justify-center" href="#"><span class="material-symbols-outlined text-[20px]">chat</span></a></div></div><div class="flex flex-col gap-space-sm"><h3 class="font-headline-sm text-headline-sm text-secondary-container" data-i18n="footer_policies_title">Chính Sách &amp; Giờ Giấc</h3><ul class="flex flex-col gap-space-xs text-on-primary-container font-body-sm text-body-sm"><li data-i18n="footer_policy_1">Linh hoạt theo giờ &amp; Qua đêm trọn gói (12h - 12h)</li><li data-i18n="footer_policy_2">Check-in tức thì qua Smart Pass (Mã PIN tự sinh)</li><li data-i18n="footer_policy_3">Bảo mật thông tin khách hàng tuyệt đối</li><li data-i18n="footer_policy_4">Hỗ trợ đổi giờ &amp; hủy phòng thuận tiện</li></ul></div><div class="flex flex-col gap-space-sm"><h3 class="font-headline-sm text-headline-sm text-secondary-container" data-i18n="footer_hotline_title">Hotline 24/7</h3><p class="font-body-sm text-body-sm text-on-primary-container" data-i18n="footer_hotline_sub">Đội ngũ kỹ thuật &amp; CSKH luôn sẵn sàng đồng hành cùng kỳ nghỉ của bạn.</p><div class="p-space-md rounded-xl bg-primary flex items-center justify-between"><div class="flex flex-col"><span class="font-label-sm text-label-sm text-secondary-container uppercase" data-i18n="footer_emergency">Khẩn cấp &amp; Đặt chỗ</span><span class="font-headline-sm text-headline-sm text-on-primary">0942 817 633</span></div><span class="material-symbols-outlined text-secondary-container text-[28px]">support_agent</span></div></div></div><div class="pt-space-md flex flex-col md:flex-row items-center justify-between text-on-primary-container font-body-sm text-body-sm gap-space-sm"><p class="">© 2025 Nhà Nghỉ Diễm Châu - Phú Quốc. Toàn bộ quyền được bảo lưu.</p><p class="font-label-sm text-label-sm text-secondary-container">Slogan: Riêng Tư Tuyệt Đối - Đón Tiếp Tận Tâm</p></div></div></footer>

@@ -1461,22 +1461,30 @@ Tạo Mã Nhanh
   }
 
   // Toggle Lock Any Room (101, 102, 103, 104)
-  function toggleRoomLock(roomId) {
+  async function toggleRoomLock(roomId) {
     roomId = parseInt(roomId);
     const rooms = getRoomsState();
     const room = rooms[roomId];
     if (!room) return;
 
-    if (room.status === 'locked' || room.status === 'occupied') {
-      room.status = 'available';
-      room.cleaningUntil = null;
-      room.guest = null;
-      room.package = null;
-      saveRoomsState(rooms);
+    const newStatus = (room.status === 'locked' || room.status === 'occupied') ? 'available' : 'locked';
+    room.status = newStatus;
+    room.cleaningUntil = null;
+    room.guest = null;
+    room.package = null;
+    saveRoomsState(rooms);
+
+    try {
+      await fetch('/api/rooms', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ roomId: roomId, status: newStatus, clearedTxId: room.txId })
+      });
+    } catch(e){}
+
+    if (newStatus === 'available') {
       showToastNotification(`🔓 Phòng ${roomId}: Đã MỞ KHÓA thành công! Trạng thái chuyển sang [Available - Sẵn sàng nhận khách].`, 3500, 'success');
     } else {
-      room.status = 'locked';
-      saveRoomsState(rooms);
       showToastNotification(`🔒 Phòng ${roomId}: Đã KHÓA ĐỎ an toàn! Bên trang Đặt Phòng sẽ tự động khóa phòng này để khách không thể đặt.`, 4000, 'warning');
     }
     renderAdminRoomsUI();
@@ -1556,15 +1564,20 @@ Tạo Mã Nhanh
         }
       } else {
         // Locked / Occupied
+        const isOcc = (r.status === 'occupied');
         if (numBadge) numBadge.className = 'w-12 h-12 rounded-xl bg-status-danger/10 text-status-danger flex items-center justify-center font-bold text-headline-sm transition-all';
         if (statusBadge) {
           statusBadge.className = 'bg-status-danger text-on-primary font-label-sm text-label-sm px-2.5 py-0.5 rounded-full flex items-center gap-1 transition-all';
-          statusBadge.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-on-primary"></span> Locked (Đang Khóa)';
+          statusBadge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-on-primary"></span> ${isOcc ? 'Occupied (Đã Đặt)' : 'Locked (Đang Khóa)'}`;
         }
-        if (subtext) subtext.innerHTML = 'Khóa an toàn đang đóng • <strong class="text-status-danger">Bấm ổ khóa đỏ bên cạnh để mở sang Available</strong>';
+        if (subtext) {
+          subtext.innerHTML = isOcc 
+            ? `Khách: <strong>${r.guest || 'Khách đặt qua SePAY'}</strong> • <strong class="text-status-danger font-semibold">Bấm ổ khóa để trả phòng & Mở lại</strong>`
+            : `Khóa an toàn đang đóng • <strong class="text-status-danger font-semibold">Bấm ổ khóa đỏ bên cạnh để mở sang Available</strong>`;
+        }
         if (lockBtn) {
           lockBtn.className = 'p-2.5 rounded-2xl bg-status-danger/10 hover:bg-status-danger/20 transition-all cursor-pointer hover:scale-110 flex items-center justify-center shadow-sm animate-pulse';
-          lockBtn.title = `Phòng ${id} đang KHÓA ĐỎ. Bấm vào đây để mở khóa sang Available!`;
+          lockBtn.title = `Phòng ${id} đang ${isOcc ? 'CÓ KHÁCH (Occupied)' : 'KHÓA ĐỎ'}. Bấm vào đây để Trả phòng / Mở khóa sang Available!`;
         }
         if (lockIcon) {
           lockIcon.textContent = 'lock';
@@ -1574,10 +1587,23 @@ Tạo Mã Nhanh
         if (miniDot) miniDot.className = 'w-2 h-2 rounded-full bg-status-danger';
         if (miniBadge) {
           miniBadge.className = 'inline-block bg-status-danger/10 text-status-danger font-label-sm text-label-sm font-semibold px-2 py-0.5 rounded-md';
-          miniBadge.textContent = 'Đã khóa';
+          miniBadge.textContent = isOcc ? 'Đã có khách' : 'Đã khóa';
         }
       }
     });
+  }
+
+  async function fetchRemoteAdminRooms() {
+    try {
+      const res = await fetch('/api/rooms');
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success && data.rooms) {
+          localStorage.setItem('diemchau_rooms_state', JSON.stringify(data.rooms));
+          renderAdminRoomsUI();
+        }
+      }
+    } catch(e) {}
   }
 
   // Cross-tab listener
@@ -1596,6 +1622,8 @@ Tạo Mã Nhanh
   // Run initial render on load
   document.addEventListener('DOMContentLoaded', () => {
     renderAdminRoomsUI();
+    fetchRemoteAdminRooms();
+    setInterval(fetchRemoteAdminRooms, 3000);
   });
 
 function old_finishCleaning(roomNumber) {
