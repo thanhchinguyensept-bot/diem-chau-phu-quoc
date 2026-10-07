@@ -1,0 +1,57 @@
+{
+  "name": "Diem Chau Phu Quoc - Nhà Nghỉ Tự Động",
+  "short_name": "Diem Chau",
+  "description": "Nhà nghỉ tự động 24/7 tại Phú Quốc - Riêng tư tuyệt đối, check-in không cần lễ tân.",
+  "start_url": "./index.html",
+  "id": "/index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#012435",
+  "theme_color": "#012435",
+  "lang": "vi",
+  "categories": ["travel", "lifestyle", "utilities"],
+  "icons": [
+    {
+      "src": "images/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "images/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "images/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Đặt Phòng",
+      "short_name": "Đặt Phòng",
+      "description": "Đặt phòng tự động nhanh chóng",
+      "url": "./booking.html",
+      "icons": [{ "src": "images/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Smart Pass",
+      "short_name": "Smart Pass",
+      "description": "Xem mã mở khóa phòng",
+      "url": "./smart-pass.html",
+      "icons": [{ "src": "images/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Phòng Nghỉ",
+      "short_name": "Phòng Nghỉ",
+      "description": "Danh sách phòng nghỉ",
+      "url": "./rooms.html",
+      "icons": [{ "src": "images/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}

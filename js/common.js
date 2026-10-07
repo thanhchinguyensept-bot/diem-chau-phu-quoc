@@ -320,4 +320,128 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (btnVn) btnVn.addEventListener('click', () => setLanguage('vi'));
   if (btnEn) btnEn.addEventListener('click', () => setLanguage('en'));
+
+  // Khởi tạo PWA Service Worker & Nút Cài Đặt Ứng Dụng
+  initPWA();
 });
+
+/* ==========================================================================
+   PWA - Service Worker & Install Prompt Component
+   ========================================================================== */
+let deferredPrompt = null;
+
+function initPWA() {
+  // 1. Đăng ký Service Worker
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js')
+        .then((reg) => {
+          console.log('[PWA] Service Worker registered with scope:', reg.scope);
+        })
+        .catch((err) => {
+          console.warn('[PWA] Service Worker registration failed:', err);
+        });
+    });
+  }
+
+  // 2. Tạo UI Nút bấm Cài đặt ứng dụng (Gắn nổi góc dưới bên phải hoặc thanh header)
+  injectPWAInstallUI();
+
+  // 3. Bắt sự kiện beforeinstallprompt (Chrome / Android / Edge)
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    showInstallPromptBtn();
+  });
+
+  // 4. Bắt sự kiện đã cài đặt thành công
+  window.addEventListener('appinstalled', () => {
+    console.log('[PWA] App successfully installed');
+    deferredPrompt = null;
+    hideInstallPromptBtn();
+  });
+}
+
+function injectPWAInstallUI() {
+  if (document.getElementById('pwa-install-container')) return;
+
+  const container = document.createElement('div');
+  container.id = 'pwa-install-container';
+  container.className = 'fixed bottom-5 right-5 z-50 transition-all duration-300 transform translate-y-24 opacity-0 pointer-events-none';
+  container.innerHTML = `
+    <div class="flex items-center gap-3 bg-[#012435] border border-[#fdcd74]/40 text-white p-3 pr-4 rounded-2xl shadow-2xl backdrop-blur-md">
+      <div class="w-10 h-10 rounded-xl bg-[#fdcd74] flex items-center justify-center text-[#785601] font-bold shadow-sm">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+        </svg>
+      </div>
+      <div class="flex flex-col text-left">
+        <span class="text-xs text-[#fdcd74] font-semibold uppercase tracking-wider">Cài Đặt App</span>
+        <span class="text-sm font-bold text-white leading-tight">Diem Chau Phu Quoc</span>
+      </div>
+      <div class="flex items-center gap-2 ml-2">
+        <button id="pwa-install-btn" class="px-3.5 py-1.5 bg-[#fdcd74] hover:bg-amber-300 text-[#785601] text-xs font-bold rounded-lg shadow transition-all active:scale-95 cursor-pointer">
+          Cài đặt
+        </button>
+        <button id="pwa-dismiss-btn" class="p-1 hover:bg-white/10 rounded-full text-gray-400 hover:text-white transition-colors cursor-pointer" title="Đóng">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(container);
+
+  // Sự kiện khi bấm nút Cài đặt
+  const btnInstall = document.getElementById('pwa-install-btn');
+  if (btnInstall) {
+    btnInstall.addEventListener('click', async () => {
+      if (!deferredPrompt) {
+        // Hướng dẫn nếu là iOS Safari (iOS không hỗ trợ prompt trực tiếp)
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        if (isIOS) {
+          alert('Để cài đặt trên iPhone/iPad: Bạn nhấn vào biểu tượng "Chia sẻ" (Share icon) ở thanh dưới Safari, sau đó chọn "Thêm vào MH chính" (Add to Home Screen).');
+        } else {
+          alert('Để cài đặt ứng dụng: Hãy chọn "Cài đặt ứng dụng" trên menu của trình duyệt.');
+        }
+        return;
+      }
+      deferredPrompt.prompt();
+      const choiceResult = await deferredPrompt.userChoice;
+      if (choiceResult.outcome === 'accepted') {
+        console.log('[PWA] User accepted install prompt');
+      }
+      deferredPrompt = null;
+      hideInstallPromptBtn();
+    });
+  }
+
+  // Nút đóng
+  const btnDismiss = document.getElementById('pwa-dismiss-btn');
+  if (btnDismiss) {
+    btnDismiss.addEventListener('click', () => {
+      hideInstallPromptBtn();
+      sessionStorage.setItem('pwa_prompt_dismissed', 'true');
+    });
+  }
+}
+
+function showInstallPromptBtn() {
+  if (sessionStorage.getItem('pwa_prompt_dismissed') === 'true') return;
+  const container = document.getElementById('pwa-install-container');
+  if (container) {
+    container.classList.remove('translate-y-24', 'opacity-0', 'pointer-events-none');
+    container.classList.add('translate-y-0', 'opacity-100', 'pointer-events-auto');
+  }
+}
+
+function hideInstallPromptBtn() {
+  const container = document.getElementById('pwa-install-container');
+  if (container) {
+    container.classList.remove('translate-y-0', 'opacity-100', 'pointer-events-auto');
+    container.classList.add('translate-y-24', 'opacity-0', 'pointer-events-none');
+  }
+}
+
