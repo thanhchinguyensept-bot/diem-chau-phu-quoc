@@ -445,3 +445,13 @@ function hideInstallPromptBtn() {
   }
 }
 
+// Tự động kích hoạt Chatbot AI Diễm Châu trên các trang công khai
+(function initChatbotLoader() {
+  if (typeof window !== 'undefined' && !document.querySelector('script[src*="chatbot.js"]')) {
+    const script = document.createElement('script');
+    script.src = 'js/chatbot.js';
+    script.defer = true;
+    document.head.appendChild(script);
+  }
+})();
+

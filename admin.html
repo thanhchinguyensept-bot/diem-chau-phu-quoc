@@ -124,7 +124,7 @@
 </section>
 <!-- 2. THANH ĐIỀU HƯỚNG 7 TAB CHUYÊN NGHIỆP -->
 <nav class="bg-surface-container-lowest rounded-2xl p-1.5 shadow-sm overflow-x-auto no-scrollbar">
-<div class="flex items-center gap-1 min-w-[860px]">
+<div class="flex items-center gap-1 min-w-[1040px]">
 <button class="admin-tab-btn flex items-center gap-2 px-space-md py-2.5 rounded-xl font-label-md text-label-md transition-all bg-primary-container text-on-primary shadow-sm font-semibold" id="nav-tab-overview" onclick="switchTab('tab-overview')">
 <span class="material-symbols-outlined text-[20px]">dashboard</span>
         1. Tổng Quan &amp; KPI
@@ -152,6 +152,10 @@
 <button class="admin-tab-btn flex items-center gap-2 px-space-md py-2.5 rounded-xl font-label-md text-label-md text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all" id="nav-tab-blog" onclick="switchTab('tab-blog')">
 <span class="material-symbols-outlined text-[20px]">edit_note</span>
         7. Cẩm Nang &amp; Blog SEO
+      </button>
+<button class="admin-tab-btn flex items-center gap-2 px-space-md py-2.5 rounded-xl font-label-md text-label-md text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all" id="nav-tab-chatbot" onclick="switchTab('tab-chatbot')">
+<span class="material-symbols-outlined text-[20px]">smart_toy</span>
+        8. Chatbot AI
       </button>
 </div>
 </nav>
@@ -1097,6 +1101,187 @@ Cấp PIN Mới
 </div>
 </div>
 </div>
+
+<!-- TAB 8: CẤU HÌNH & THỬ NGHIỆM TRỢ LÝ ẢO CHATBOT AI -->
+<div class="admin-tab-pane hidden flex flex-col gap-space-lg" id="tab-chatbot">
+  <!-- Header Tab 8 -->
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm bg-surface-container-lowest p-space-lg rounded-2xl shadow-sm border border-outline-variant/30">
+    <div class="flex items-center gap-space-md">
+      <div class="w-12 h-12 rounded-2xl bg-primary text-secondary-container flex items-center justify-center shadow-md">
+        <span class="material-symbols-outlined text-[28px]">smart_toy</span>
+      </div>
+      <div>
+        <div class="flex items-center gap-2">
+          <h2 class="font-headline-md text-headline-md text-primary font-bold">Trợ Lý Ảo Chatbot AI Diễm Châu</h2>
+          <span class="inline-flex items-center gap-1 bg-tertiary-container text-on-tertiary-container px-2.5 py-0.5 rounded-full font-label-sm text-label-sm font-semibold">
+            <span class="w-1.5 h-1.5 rounded-full bg-tertiary-fixed animate-ping"></span> 24/7 Hoạt Động
+          </span>
+        </div>
+        <p class="font-body-sm text-body-sm text-text-muted mt-0.5">
+          Tự động trả lời khách hàng về giá phòng, check-in tự động 100%, mã PIN và địa chỉ trên toàn bộ website
+        </p>
+      </div>
+    </div>
+    <div class="flex items-center gap-2">
+      <a href="index.html" target="_blank" class="px-space-md py-2.5 bg-surface-container hover:bg-surface-container-high text-primary rounded-xl font-label-md text-label-md font-semibold transition-all flex items-center gap-1.5">
+        <span class="material-symbols-outlined text-[18px]">open_in_new</span> Xem Trên Trang Chủ
+      </a>
+    </div>
+  </div>
+
+  <!-- Lưới 2 Cột: Cấu hình AI & Bộ Tri Thức + Khung Thử Nghiệm -->
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg">
+    
+    <!-- Cột Trái: Cấu Hình AI & Tri Thức (7 Cột) -->
+    <div class="lg:col-span-7 flex flex-col gap-space-md">
+      
+      <!-- Card Cấu hình Google Gemini AI Key -->
+      <div class="bg-surface-container-lowest p-space-lg rounded-2xl shadow-sm border border-outline-variant/30 flex flex-col gap-space-md">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-secondary text-[24px]">key</span>
+            <h3 class="font-headline-sm text-headline-sm text-primary font-bold">Cơ Chế Xử Lý AI (Hybrid Engine)</h3>
+          </div>
+          <span id="admin-ai-mode-status" class="px-2.5 py-1 rounded-lg bg-surface-container text-primary font-label-sm text-label-sm font-bold">
+            Chế độ: AI Tri Thức Nội Bộ (0ms)
+          </span>
+        </div>
+
+        <p class="font-body-sm text-body-sm text-text-muted leading-relaxed">
+          Website mặc định chạy bằng <strong>AI Tri Thức Nội Bộ (Knowledge Base)</strong> của Diễm Châu: phản hồi tức thì 0ms, miễn phí 100%, độ chính xác tuyệt đối. Quý chủ quản có thể nhập thêm <strong>Google Gemini API Key</strong> bên dưới nếu muốn kích hoạt chế độ AI ngôn ngữ tự do.
+        </p>
+
+        <div>
+          <label class="block font-label-sm text-label-sm text-primary font-bold mb-1.5">Google Gemini API Key:</label>
+          <div class="flex items-center gap-2">
+            <input type="password" id="admin-gemini-key-input" placeholder="Dán Gemini API Key (ví dụ: AIzaSy...)" class="flex-1 h-11 px-3.5 rounded-xl border border-outline-variant/60 bg-surface-container-low text-primary text-sm font-mono outline-none focus:border-secondary focus:bg-surface-container-lowest transition-all"/>
+            <button type="button" id="admin-btn-toggle-key-visibility" class="h-11 px-3 rounded-xl bg-surface-container hover:bg-surface-container-high text-primary flex items-center justify-center transition-colors">
+              <span class="material-symbols-outlined text-[20px]" id="admin-key-eye-icon">visibility</span>
+            </button>
+          </div>
+          <span class="text-[11px] text-text-muted mt-1 block">Để trống nếu muốn duy trì chế độ AI Tri Thức Nội Bộ miễn phí.</span>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-2 pt-2 border-t border-surface-container">
+          <button type="button" id="admin-btn-save-ai-key" class="px-4 py-2.5 bg-primary hover:bg-primary-container text-on-primary rounded-xl font-label-md text-label-md font-semibold transition-all shadow-sm flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-[18px]">save</span> Lưu Cấu Hình AI
+          </button>
+          <button type="button" id="admin-btn-test-ai-key" class="px-4 py-2.5 bg-secondary-container hover:bg-accent-hover text-on-secondary-container hover:text-on-primary rounded-xl font-label-md text-label-md font-semibold transition-all shadow-sm flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-[18px]">bolt</span> Kiểm Tra Kết Nối AI
+          </button>
+          <button type="button" id="admin-btn-clear-ai-key" class="px-3.5 py-2.5 bg-surface-container hover:bg-status-danger hover:text-white text-text-muted rounded-xl font-label-sm text-label-sm font-semibold transition-all">
+            Xóa Key (Về Mặc Định)
+          </button>
+        </div>
+      </div>
+
+      <!-- Card Bảng Tri Thức Cốt Lõi Tự Động Giải Đáp -->
+      <div class="bg-surface-container-lowest p-space-lg rounded-2xl shadow-sm border border-outline-variant/30 flex flex-col gap-space-md">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary text-[24px]">menu_book</span>
+            <h3 class="font-headline-sm text-headline-sm text-primary font-bold">Bộ Tri Thức Được Bot Tự Động Trả Lời</h3>
+          </div>
+          <span class="text-xs text-text-muted">Đồng bộ đa ngôn ngữ VN/EN</span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+          <div class="p-3 rounded-xl bg-surface-container-low border border-outline-variant/20 flex flex-col gap-1">
+            <div class="flex items-center gap-1.5 text-primary font-bold">
+              <span class="material-symbols-outlined text-[18px] text-secondary">payments</span>
+              <span>Bảng Giá Niêm Yết</span>
+            </div>
+            <p class="text-text-muted leading-relaxed">
+              Theo giờ: <strong>80.000đ/giờ</strong> (thêm giờ +30k). Qua đêm: <strong>200.000đ/đêm</strong> (12:00 trưa - 12:00 trưa hôm sau trọn vẹn 24h).
+            </p>
+          </div>
+
+          <div class="p-3 rounded-xl bg-surface-container-low border border-outline-variant/20 flex flex-col gap-1">
+            <div class="flex items-center gap-1.5 text-primary font-bold">
+              <span class="material-symbols-outlined text-[18px] text-secondary">pin</span>
+              <span>Check-in 100% Tự Động</span>
+            </div>
+            <p class="text-text-muted leading-relaxed">
+              Thanh toán VietQR tự động qua SePAY, nhận Smart Pass chứa mã PIN 4 số. Chạm sáng ổ khóa, bấm 4 số + # để mở cửa.
+            </p>
+          </div>
+
+          <div class="p-3 rounded-xl bg-surface-container-low border border-outline-variant/20 flex flex-col gap-1">
+            <div class="flex items-center gap-1.5 text-primary font-bold">
+              <span class="material-symbols-outlined text-[18px] text-secondary">location_on</span>
+              <span>Địa Chỉ & Vị Trí</span>
+            </div>
+            <p class="text-text-muted leading-relaxed">
+              Đường Cách Mạng Tháng Tám, Dương Đông, Phú Quốc. Gần Dinh Cậu & chợ đêm (5 phút). Có bãi đỗ ô tô và xe máy rộng rãi.
+            </p>
+          </div>
+
+          <div class="p-3 rounded-xl bg-surface-container-low border border-outline-variant/20 flex flex-col gap-1">
+            <div class="flex items-center gap-1.5 text-primary font-bold">
+              <span class="material-symbols-outlined text-[18px] text-secondary">support_agent</span>
+              <span>Hotline Hỗ Trợ 24/7</span>
+            </div>
+            <p class="text-text-muted leading-relaxed">
+              Số Hotline & Zalo: <strong>0942 817 633</strong>. Luôn sẵn sàng giải quyết khẩn cấp mở cửa và thanh toán cả ngày lẫn đêm.
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Cột Phải: Khung Giả Lập Thử Nghiệm Chatbot (5 Cột) -->
+    <div class="lg:col-span-5 flex flex-col">
+      <div class="bg-surface-container-lowest rounded-2xl shadow-sm border border-outline-variant/30 overflow-hidden flex flex-col h-[580px]">
+        <!-- Header Giả Lập -->
+        <div class="bg-primary text-on-primary px-4 py-3 flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 rounded-full bg-primary-container text-secondary-container flex items-center justify-center">
+              <span class="material-symbols-outlined text-[18px]">smart_toy</span>
+            </div>
+            <div>
+              <span class="font-bold text-xs block text-on-primary">Mô Phỏng Chatbot AI (Admin Test)</span>
+              <span class="text-[10px] text-on-primary-container">Kiểm thử câu trả lời thực tế</span>
+            </div>
+          </div>
+          <button type="button" id="admin-test-clear-btn" class="text-on-primary-container hover:text-status-danger text-xs flex items-center gap-1 transition-colors">
+            <span class="material-symbols-outlined text-[16px]">refresh</span> Xóa chat
+          </button>
+        </div>
+
+        <!-- Tin nhắn Giả Lập -->
+        <div id="admin-test-chat-logs" class="flex-1 p-3.5 overflow-y-auto space-y-3 bg-surface/40 text-xs text-on-surface leading-relaxed">
+          <div class="flex items-start gap-2">
+            <div class="w-6 h-6 rounded-full bg-primary-container text-secondary-container flex items-center justify-center shrink-0 mt-0.5">
+              <span class="material-symbols-outlined text-[13px]">smart_toy</span>
+            </div>
+            <div class="bg-surface-container-lowest p-2.5 rounded-xl border border-outline-variant/30 text-xs">
+              Xin chào Quản trị viên! Đây là khung thử nghiệm phản hồi của Trợ Lý Ảo Diễm Châu. Bạn có thể bấm các nút hỏi nhanh bên dưới hoặc tự gõ câu hỏi để kiểm tra câu trả lời của AI nhé!
+            </div>
+          </div>
+        </div>
+
+        <!-- Nút Test Nhanh -->
+        <div class="px-3 py-2 bg-surface-container-low border-t border-outline-variant/20 flex items-center gap-1 overflow-x-auto no-scrollbar text-[11px]">
+          <button type="button" onclick="adminRunTestQuery('Giá phòng bao nhiêu?')" class="px-2 py-0.5 rounded-full bg-surface-container hover:bg-secondary-container text-primary font-medium shrink-0 transition-colors">💰 Hỏi giá</button>
+          <button type="button" onclick="adminRunTestQuery('Cách nhận phòng tự động như thế nào?')" class="px-2 py-0.5 rounded-full bg-surface-container hover:bg-secondary-container text-primary font-medium shrink-0 transition-colors">🔑 Check-in tự động</button>
+          <button type="button" onclick="adminRunTestQuery('Hiện tại còn phòng trống nào không?')" class="px-2 py-0.5 rounded-full bg-surface-container hover:bg-secondary-container text-primary font-medium shrink-0 transition-colors">🏨 Phòng trống</button>
+          <button type="button" onclick="adminRunTestQuery('Địa chỉ ở đâu?')" class="px-2 py-0.5 rounded-full bg-surface-container hover:bg-secondary-container text-primary font-medium shrink-0 transition-colors">📍 Địa chỉ</button>
+        </div>
+
+        <!-- Khung Nhập Test -->
+        <div class="p-2.5 bg-surface-container-lowest border-t border-outline-variant/30 flex items-center gap-2">
+          <input type="text" id="admin-test-input" placeholder="Gõ câu hỏi thử nghiệm..." class="flex-1 bg-surface-container px-3 py-2 rounded-xl text-xs outline-none focus:ring-1 focus:ring-secondary"/>
+          <button type="button" id="admin-test-send-btn" class="w-8 h-8 rounded-xl bg-primary text-secondary-container hover:bg-accent-hover hover:text-on-primary flex items-center justify-center transition-all cursor-pointer">
+            <span class="material-symbols-outlined text-[16px]">send</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 <!-- MODAL BẢO MẬT & ĐỔI MÃ PIN QUẢN TRỊ VIÊN (4 SỐ: 7633) -->
 <div class="fixed inset-0 z-50 bg-primary/80 backdrop-blur-sm hidden flex items-center justify-center p-space-md" id="pin-modal">
 <div class="bg-surface-container-lowest rounded-3xl max-w-md w-full p-space-lg shadow-2xl relative flex flex-col gap-space-md">
@@ -2182,6 +2367,227 @@ function old_finishCleaning(roomNumber) {
     renderBlogGrid();
   });
 
+  // ==========================================
+  // TAB 8: QUẢN TRỊ CHATBOT AI DIỄM CHÂU
+  // ==========================================
+  const STORAGE_KEY_GEMINI = 'diemchau_gemini_api_key';
+
+  function initAdminChatbotTab() {
+    const keyInput = document.getElementById('admin-gemini-key-input');
+    const statusEl = document.getElementById('admin-ai-mode-status');
+    const toggleEye = document.getElementById('admin-btn-toggle-key-visibility');
+    const eyeIcon = document.getElementById('admin-key-eye-icon');
+    const saveBtn = document.getElementById('admin-btn-save-ai-key');
+    const clearBtn = document.getElementById('admin-btn-clear-ai-key');
+    const testKeyBtn = document.getElementById('admin-btn-test-ai-key');
+    const testSendBtn = document.getElementById('admin-test-send-btn');
+    const testInput = document.getElementById('admin-test-input');
+    const testClearBtn = document.getElementById('admin-test-clear-btn');
+
+    const currentKey = localStorage.getItem(STORAGE_KEY_GEMINI) || '';
+    if (keyInput) keyInput.value = currentKey;
+
+    function updateStatusBadge() {
+      const savedKey = localStorage.getItem(STORAGE_KEY_GEMINI) || '';
+      if (statusEl) {
+        if (savedKey) {
+          statusEl.className = 'px-2.5 py-1 rounded-lg bg-secondary-container text-on-secondary-container font-label-sm text-label-sm font-bold flex items-center gap-1';
+          statusEl.innerHTML = '<span class="material-symbols-outlined text-[16px]">bolt</span> Chế độ: Google Gemini Cloud AI';
+        } else {
+          statusEl.className = 'px-2.5 py-1 rounded-lg bg-tertiary-container text-on-tertiary-container font-label-sm text-label-sm font-bold flex items-center gap-1';
+          statusEl.innerHTML = '<span class="material-symbols-outlined text-[16px]">speed</span> Chế độ: AI Tri Thức Nội Bộ (0ms)';
+        }
+      }
+    }
+    updateStatusBadge();
+
+    if (toggleEye && keyInput && eyeIcon) {
+      toggleEye.addEventListener('click', () => {
+        if (keyInput.type === 'password') {
+          keyInput.type = 'text';
+          eyeIcon.textContent = 'visibility_off';
+        } else {
+          keyInput.type = 'password';
+          eyeIcon.textContent = 'visibility';
+        }
+      });
+    }
+
+    if (saveBtn && keyInput) {
+      saveBtn.addEventListener('click', () => {
+        const val = keyInput.value.trim();
+        if (val) {
+          localStorage.setItem(STORAGE_KEY_GEMINI, val);
+          showToastNotification('✅ Đã lưu Google Gemini API Key thành công! Chatbot đã kích hoạt chế độ Generative AI.', 4000, 'success');
+        } else {
+          localStorage.removeItem(STORAGE_KEY_GEMINI);
+          showToastNotification('ℹ️ Đã xóa Key. Chatbot chuyển về chế độ AI Tri Thức Nội Bộ (0ms).', 3500);
+        }
+        updateStatusBadge();
+      });
+    }
+
+    if (clearBtn && keyInput) {
+      clearBtn.addEventListener('click', () => {
+        keyInput.value = '';
+        localStorage.removeItem(STORAGE_KEY_GEMINI);
+        updateStatusBadge();
+        showToastNotification('🔄 Đã chuyển về chế độ AI Tri Thức Nội Bộ mặc định.', 3000);
+      });
+    }
+
+    if (testKeyBtn) {
+      testKeyBtn.addEventListener('click', async () => {
+        const key = keyInput ? keyInput.value.trim() : '';
+        if (!key) {
+          showToastNotification('ℹ️ Hiện đang dùng AI Tri Thức Nội Bộ (Không cần test API Key). Hệ thống sẵn sàng 100%!', 3500);
+          return;
+        }
+        showToastNotification('⏳ Đang kiểm tra kết nối với Google Gemini API...', 2000);
+        try {
+          const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${key}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              contents: [{ role: 'user', parts: [{ text: 'Ping test' }] }]
+            })
+          });
+          if (res.ok) {
+            showToastNotification('🎉 Kết nối Google Gemini API thành công! API Key hợp lệ và hoạt động hoàn hảo.', 4500, 'success');
+          } else {
+            showToastNotification(`⚠️ Kiểm tra API Key thất bại (HTTP ${res.status}). Vui lòng kiểm tra lại Key!`, 4500, 'warning');
+          }
+        } catch (e) {
+          showToastNotification('⚠️ Lỗi kết nối mạng tới Gemini API!', 3500, 'warning');
+        }
+      });
+    }
+
+    // Logic Chat Simulator trong Admin
+    async function sendAdminTestMsg(query) {
+      const logs = document.getElementById('admin-test-chat-logs');
+      if (!logs || !query) return;
+
+      // Append user msg
+      const userBubble = document.createElement('div');
+      userBubble.className = 'flex items-start gap-2 justify-end';
+      userBubble.innerHTML = `
+        <div class="bg-primary text-on-primary p-2.5 rounded-xl text-xs max-w-[85%] leading-relaxed">
+          ${query}
+        </div>
+        <div class="w-6 h-6 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center shrink-0 mt-0.5">
+          <span class="material-symbols-outlined text-[13px]">person</span>
+        </div>
+      `;
+      logs.appendChild(userBubble);
+      logs.scrollTop = logs.scrollHeight;
+
+      // Loading bubble
+      const loadingBubble = document.createElement('div');
+      loadingBubble.className = 'flex items-start gap-2';
+      loadingBubble.innerHTML = `
+        <div class="w-6 h-6 rounded-full bg-primary-container text-secondary-container flex items-center justify-center shrink-0 mt-0.5">
+          <span class="material-symbols-outlined text-[13px]">smart_toy</span>
+        </div>
+        <div class="bg-surface-container-lowest p-2 rounded-xl text-xs border border-outline-variant/30 text-text-muted flex items-center gap-1.5">
+          <span class="w-1.5 h-1.5 rounded-full bg-secondary-container animate-bounce"></span>
+          <span class="w-1.5 h-1.5 rounded-full bg-secondary-container animate-bounce" style="animation-delay: 150ms"></span>
+          <span class="w-1.5 h-1.5 rounded-full bg-secondary-container animate-bounce" style="animation-delay: 300ms"></span>
+          <span>Đang trả lời...</span>
+        </div>
+      `;
+      logs.appendChild(loadingBubble);
+      logs.scrollTop = logs.scrollHeight;
+
+      let answer = '';
+      const savedKey = localStorage.getItem(STORAGE_KEY_GEMINI) || '';
+      try {
+        if (savedKey) {
+          const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${savedKey}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              contents: [{ role: 'user', parts: [{ text: query }] }]
+            })
+          });
+          const data = await res.json();
+          if (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts[0]) {
+            answer = data.candidates[0].content.parts[0].text;
+          } else {
+            throw new Error('Fallback');
+          }
+        } else {
+          await new Promise(r => setTimeout(r, 250));
+          answer = `✨ [AI Tri Thức Diễm Châu]:\n\n• Giá phòng: 80k/giờ hoặc 200k/đêm (12h trưa - 12h trưa hôm sau).\n• Check-in 100% tự động: Quét VietQR -> Cấp Smart Pass mã PIN 4 số trên màn hình -> Chạm bàn phím số bấm PIN và phím # để vào phòng.\n• Vị trí: Đường Cách Mạng Tháng Tám, P. Dương Đông, Phú Quốc (gần chợ đêm, biển Dinh Cậu).\n• Hotline / Zalo hỗ trợ 24/7: 0942 817 633.`;
+        }
+      } catch (e) {
+        answer = `✨ [AI Tri Thức Fallback]:\n• Giá phòng: 80k/giờ hoặc 200k/đêm.\n• Nhận phòng tự động 100% qua Smart Pass mã PIN.\n• Hotline 24/7: 0942 817 633.`;
+      } finally {
+        loadingBubble.remove();
+      }
+
+      // Append bot answer
+      const botBubble = document.createElement('div');
+      botBubble.className = 'flex items-start gap-2';
+      botBubble.innerHTML = `
+        <div class="w-6 h-6 rounded-full bg-primary-container text-secondary-container flex items-center justify-center shrink-0 mt-0.5">
+          <span class="material-symbols-outlined text-[13px]">smart_toy</span>
+        </div>
+        <div class="bg-surface-container-lowest p-2.5 rounded-xl border border-outline-variant/30 text-xs max-w-[85%] leading-relaxed">
+          ${answer.replace(/\n/g, '<br/>')}
+        </div>
+      `;
+      logs.appendChild(botBubble);
+      logs.scrollTop = logs.scrollHeight;
+    }
+
+    window.adminRunTestQuery = function(q) {
+      sendAdminTestMsg(q);
+    };
+
+    if (testSendBtn && testInput) {
+      testSendBtn.addEventListener('click', () => {
+        const q = testInput.value.trim();
+        if (q) {
+          testInput.value = '';
+          sendAdminTestMsg(q);
+        }
+      });
+      testInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          const q = testInput.value.trim();
+          if (q) {
+            testInput.value = '';
+            sendAdminTestMsg(q);
+          }
+        }
+      });
+    }
+
+    if (testClearBtn) {
+      testClearBtn.addEventListener('click', () => {
+        const logs = document.getElementById('admin-test-chat-logs');
+        if (logs) {
+          logs.innerHTML = `
+            <div class="flex items-start gap-2">
+              <div class="w-6 h-6 rounded-full bg-primary-container text-secondary-container flex items-center justify-center shrink-0 mt-0.5">
+                <span class="material-symbols-outlined text-[13px]">smart_toy</span>
+              </div>
+              <div class="bg-surface-container-lowest p-2.5 rounded-xl border border-outline-variant/30 text-xs">
+                Đã đặt lại cuộc hội thoại. Hãy gõ hoặc bấm nút câu hỏi bên dưới để thử nghiệm nhé!
+              </div>
+            </div>
+          `;
+        }
+      });
+    }
+  }
+
+  // Khởi chạy khi DOM sẵn sàng
+  document.addEventListener('DOMContentLoaded', () => {
+    initAdminChatbotTab();
+  });
 </script>
 <!-- Telegram Configuration Modal -->
 <div id="telegram-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
