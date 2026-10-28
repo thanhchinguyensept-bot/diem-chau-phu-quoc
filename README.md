@@ -54,7 +54,7 @@ Dự án website chính thức của **Nhà Nghỉ Diễm Châu Phú Quốc** �
 2. Thử đặt phòng tại `booking.html`:
    - Chọn loại phòng mong muốn.
    - Chọn gói nghỉ (theo giờ hoặc qua đêm).
-   - Nhập số điện thoại `0942 817 633`.
+   - Nhập số điện thoại `0815 718 502`.
    - Xem mã QR tự động cập nhật số tiền chính xác.
    - Bấm nút **"Xác Nhận Đã Thanh Toán"** để mô phỏng nhận vé **Smart Pass** tức thì.
 3. Truy cập `admin.html`:

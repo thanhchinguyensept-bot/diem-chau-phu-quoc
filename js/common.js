@@ -119,7 +119,7 @@ const TRANSLATIONS = {
     'smartpass_checkout_label': 'Trả phòng',
     'btn_download_pass': 'Tải Smart Pass',
     'btn_screenshot_pass': 'Chụp Màn Hình',
-    'support_emergency': 'Hỗ trợ khẩn cấp mở cửa tại phòng: 0942 817 633 (Phục vụ 24/7)',
+    'support_emergency': 'Hỗ trợ khẩn cấp mở cửa tại phòng: 0815 718 502 (Phục vụ 24/7)',
 
     // Footer
     'footer_about': 'Nhà nghỉ boutique tiện nghi, phòng sạch tiêu chuẩn, mức giá chỉ từ 80k. Cam kết trải nghiệm riêng tư tuyệt đối, tự động hoá nhận phòng siêu tốc tại Phú Quốc.',
@@ -252,7 +252,7 @@ const TRANSLATIONS = {
     'smartpass_checkout_label': 'Check-out',
     'btn_download_pass': 'Download Pass',
     'btn_screenshot_pass': 'Screenshot',
-    'support_emergency': '24/7 Room Emergency Assistance: 0942 817 633',
+    'support_emergency': '24/7 Room Emergency Assistance: 0815 718 502',
 
     // Footer
     'footer_about': 'Boutique accommodation, hygienic standards, starting from 80k. Guaranteed absolute privacy and lightning-fast automated check-in in Phu Quoc.',

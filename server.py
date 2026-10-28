@@ -457,7 +457,7 @@ class DiễmChâuRequestHandler(BaseHTTPRequestHandler):
         if path == '/api/test-payment':
             amount = body.get('amount', 100000)
             room = str(body.get('room', '101'))
-            phone = body.get('phone', '0942817633')
+            phone = body.get('phone', '0815718502')
             content = f"DIEMCHAU P{room} {phone}"
 
             event_data = {

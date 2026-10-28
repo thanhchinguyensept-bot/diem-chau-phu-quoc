@@ -620,7 +620,7 @@ Cấp PIN Mới
                 <div class="font-label-sm text-label-sm text-text-muted font-sans">13:42:09 Hôm nay</div>
 </td>
 <td class="py-3.5 px-space-md">
-<span class="font-label-md text-label-md text-primary font-semibold">0942 817 633</span>
+<span class="font-label-md text-label-md text-primary font-semibold">0815 718 502</span>
 <div class="text-text-muted font-body-sm text-body-sm">Anh Hùng (TP.HCM)</div>
 </td>
 <td class="py-3.5 px-space-md">
@@ -725,7 +725,7 @@ Cấp PIN Mới
             H
           </div>
 <div>
-<h4 class="font-headline-sm text-headline-sm text-primary">0942 817 633</h4>
+<h4 class="font-headline-sm text-headline-sm text-primary">0815 718 502</h4>
 <span class="text-text-muted font-label-sm text-label-sm">Anh Hùng • 6 lượt ghé</span>
 </div>
 </div>
@@ -1222,7 +1222,7 @@ Cấp PIN Mới
               <span>Hotline Hỗ Trợ 24/7</span>
             </div>
             <p class="text-text-muted leading-relaxed">
-              Số Hotline & Zalo: <strong>0942 817 633</strong>. Luôn sẵn sàng giải quyết khẩn cấp mở cửa và thanh toán cả ngày lẫn đêm.
+              Số Hotline & Zalo: <strong>0815 718 502</strong>. Luôn sẵn sàng giải quyết khẩn cấp mở cửa và thanh toán cả ngày lẫn đêm.
             </p>
           </div>
         </div>
@@ -1886,7 +1886,7 @@ Cấp PIN Mới
 
       const phoneMatch = rawContent.match(/0\d{9}/);
       const roomMatch = rawContent.match(/P(\d{3})/i) || rawContent.match(/(101|102|103|104)/);
-      const guestPhone = phoneMatch ? phoneMatch[0] : '0942 817 633';
+      const guestPhone = phoneMatch ? phoneMatch[0] : '0815 718 502';
       const roomNum = roomMatch ? roomMatch[1] : '104';
 
       validTxs.push({
@@ -1975,7 +1975,7 @@ Cấp PIN Mới
           </td>
           <td class="py-3.5 px-space-md">
             <span class="font-label-md text-label-md text-primary font-semibold">${t.phone}</span>
-            <div class="text-text-muted font-body-sm text-body-sm">${t.phone === '0942817633' ? 'Anh Hùng (TP.HCM)' : 'Khách thanh toán SePAY'}</div>
+            <div class="text-text-muted font-body-sm text-body-sm">${t.phone === '0815718502' ? 'Anh Hùng (TP.HCM)' : 'Khách thanh toán SePAY'}</div>
           </td>
           <td class="py-3.5 px-space-md">
             <span class="inline-block bg-primary-fixed text-primary px-2 py-0.5 rounded font-label-sm text-label-sm font-bold">Phòng ${t.room}</span>
@@ -2016,7 +2016,7 @@ Cấp PIN Mới
               </div>
               <div>
                 <h4 class="font-headline-sm text-headline-sm text-primary">${c.phone}</h4>
-                <span class="text-text-muted font-label-sm text-label-sm">${c.visits} lượt ghé • ${c.phone === '0942817633' ? 'Anh Hùng' : 'Khách đặt phòng'}</span>
+                <span class="text-text-muted font-label-sm text-label-sm">${c.visits} lượt ghé • ${c.phone === '0815718502' ? 'Anh Hùng' : 'Khách đặt phòng'}</span>
               </div>
             </div>
             <div class="my-space-md p-space-sm bg-surface-container-low rounded-xl">
@@ -2518,10 +2518,10 @@ function old_finishCleaning(roomNumber) {
           }
         } else {
           await new Promise(r => setTimeout(r, 250));
-          answer = `✨ [AI Tri Thức Diễm Châu]:\n\n• Giá phòng: 80k/giờ hoặc 200k/đêm (12h trưa - 12h trưa hôm sau).\n• Check-in 100% tự động: Quét VietQR -> Cấp Smart Pass mã PIN 4 số trên màn hình -> Chạm bàn phím số bấm PIN và phím # để vào phòng.\n• Vị trí: Đường Cách Mạng Tháng Tám, P. Dương Đông, Phú Quốc (gần chợ đêm, biển Dinh Cậu).\n• Hotline / Zalo hỗ trợ 24/7: 0942 817 633.`;
+          answer = `✨ [AI Tri Thức Diễm Châu]:\n\n• Giá phòng: 80k/giờ hoặc 200k/đêm (12h trưa - 12h trưa hôm sau).\n• Check-in 100% tự động: Quét VietQR -> Cấp Smart Pass mã PIN 4 số trên màn hình -> Chạm bàn phím số bấm PIN và phím # để vào phòng.\n• Vị trí: Đường Cách Mạng Tháng Tám, P. Dương Đông, Phú Quốc (gần chợ đêm, biển Dinh Cậu).\n• Hotline / Zalo hỗ trợ 24/7: 0815 718 502.`;
         }
       } catch (e) {
-        answer = `✨ [AI Tri Thức Fallback]:\n• Giá phòng: 80k/giờ hoặc 200k/đêm.\n• Nhận phòng tự động 100% qua Smart Pass mã PIN.\n• Hotline 24/7: 0942 817 633.`;
+        answer = `✨ [AI Tri Thức Fallback]:\n• Giá phòng: 80k/giờ hoặc 200k/đêm.\n• Nhận phòng tự động 100% qua Smart Pass mã PIN.\n• Hotline 24/7: 0815 718 502.`;
       } finally {
         loadingBubble.remove();
       }
