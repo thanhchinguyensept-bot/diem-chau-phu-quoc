@@ -13,8 +13,8 @@
   // Khởi tạo trạng thái chatbot
   const STORAGE_KEY_GEMINI = 'diemchau_gemini_api_key';
   const STORAGE_KEY_HISTORY = 'diemchau_chat_history';
-  const HOTLINE_NUMBER = '0815 718 502';
-  const ZALO_LINK = 'https://zalo.me/0815718502';
+  const HOTLINE_NUMBER = '0815 719 502';
+  const ZALO_LINK = 'https://zalo.me/0815719502';
 
   // Dữ liệu tri thức nội bộ chuẩn hóa của Diễm Châu Phú Quốc
   const KNOWLEDGE_BASE = {
@@ -193,7 +193,7 @@ Thông tin chính thống của nhà nghỉ:
 - Trạng thái phòng hiện tại: Các phòng đang trống có thể đặt là: ${availableRooms.join(', ')}.
 - Check-in tự động 100%: Khách đặt phòng trên website booking.html, thanh toán VietQR tự động qua SePAY, hệ thống cấp thẻ Smart Pass có chứa mã PIN 4 số của phòng. Khách đến cửa chỉ cần chạm màn hình khóa số điện tử, gõ 4 số PIN và bấm phím # để vào phòng. Không tiếp xúc lễ tân, nhận phòng 24/7.
 - Địa chỉ: Đường Cách Mạng Tháng Tám, Phường Dương Đông, TP. Phú Quốc. Rất gần trung tâm, Dinh Cậu, chợ đêm.
-- Hotline / Zalo hỗ trợ 24/7: 0815 718 502.
+- Hotline / Zalo hỗ trợ 24/7: 0815 719 502.
 - Tiện nghi: Máy lạnh Inverter, nước nóng 24/24, Wifi 6 miễn phí, nước suối miễn phí, khăn tắm, bàn chải, khử trùng tia cực tím UV.
 Hãy trả lời khách bằng ngôn ngữ: ${isEn ? 'English' : 'Tiếng Việt'}. Ngắn gọn, súc tích, định dạng markdown đẹp mắt (in đậm, danh sách), và luôn hướng khách đặt phòng hoặc gọi hotline khi cần.`;
 
@@ -364,9 +364,9 @@ Hãy trả lời khách bằng ngôn ngữ: ${isEn ? 'English' : 'Tiếng Việt
               <span class="material-symbols-outlined text-[14px]">calendar_month</span>
               <span id="chatbot-quick-book">Đặt Phòng Online</span>
             </a>
-            <a href="tel:0815718502" class="inline-flex items-center gap-1 text-on-primary hover:text-secondary-container transition-colors">
+            <a href="tel:0815719502" class="inline-flex items-center gap-1 text-on-primary hover:text-secondary-container transition-colors">
               <span class="material-symbols-outlined text-[14px] text-secondary-container">call</span>
-              <span>0815 718 502</span>
+              <span>0815 719 502</span>
             </a>
           </div>
 

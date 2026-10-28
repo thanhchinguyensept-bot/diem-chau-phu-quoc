@@ -39,7 +39,7 @@
 | Hạng mục | Giá trị |
 |----------|---------|
 | **Địa chỉ** | Đường Cách Mạng Tháng Tám, Phú Quốc, An Giang 92000, Vietnam |
-| **SĐT** | 0815 718 502 |
+| **SĐT** | 0815 719 502 |
 | **Facebook** | https://www.facebook.com/nhanghidiemchauphuquoc |
 | **TikTok** | https://www.tiktok.com/@nhanghidiemchau |
 | **Google Maps** | [Link bản đồ](https://www.google.com/maps/place/Nh%C3%A0+ngh%E1%BB%89+Di%E1%BB%85m+Ch%C3%A2u/@10.2303061,103.9685939,18z) |
@@ -308,7 +308,7 @@
 │  LIÊN HỆ DIỄM CHÂU                                  │
 │                                                      │
 │  ┌──────────────────┐  ┌──────────────────────────┐  │
-│  │ 📱 0815 718 502   │  │                          │  │
+│  │ 📱 0815 719 502   │  │                          │  │
 │  │ 📍 Đường CMT8,    │  │   [GOOGLE MAPS EMBED]    │  │
 │  │    Phú Quốc       │  │   (iframe nhúng trực     │  │
 │  │                   │  │    tiếp bản đồ Google)   │  │
