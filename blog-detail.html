@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <!-- PWA Meta & Icons -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#012435">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Diem Chau">
+  <link rel="apple-touch-icon" href="images/icon-192.png">
+  <link rel="icon" type="image/png" href="images/icon-192.png">
+
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title id="page-title">Chi Tiết Bài Viết - Nhà Nghỉ Diễm Châu Phú Quốc</title>
+
+  <!-- Google Fonts: Be Vietnam Pro & JetBrains Mono -->
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&amp;family=JetBrains+Mono:wght@700&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+
+  <!-- Core Scripts -->
+  <script src="js/common.js"></script>
+  <script src="js/chatbot.js" defer></script>
+  <script src="js/blog-data.js"></script>
+
+  <style>
+    @layer base {
+      html, body { margin: 0; padding: 0; }
+      body { overscroll-behavior: none; }
+    }
+    ::-webkit-scrollbar { display: none; }
+  </style>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "tertiary-fixed": "#6ffbbe",
+            "accent-hover": "#C09540",
+            "inverse-primary": "#accbe0",
+            "background-main": "#FFFFFF",
+            "on-background": "#1b1c1c",
+            "surface-tint": "#446274",
+            "inverse-on-surface": "#f3f0f0",
+            "secondary-fixed-dim": "#eec068",
+            "surface-variant": "#e4e2e1",
+            "tertiary-container": "#003f29",
+            "on-surface-variant": "#42474c",
+            "secondary-fixed": "#ffdea6",
+            "on-primary-fixed": "#001e2d",
+            "surface-bright": "#fcf9f8",
+            "status-danger": "#EF4444",
+            "on-tertiary-fixed": "#002113",
+            "surface": "#fcf9f8",
+            "primary": "#012435",
+            "on-error-container": "#93000a",
+            "secondary": "#7b5804",
+            "on-error": "#ffffff",
+            "on-primary-container": "#85a4b8",
+            "background-subtle": "#F7F7F7",
+            "on-surface": "#1b1c1c",
+            "surface-container-low": "#f6f3f2",
+            "secondary-container": "#fdcd74",
+            "outline": "#72787c",
+            "tertiary-fixed-dim": "#4edea3",
+            "on-secondary-fixed": "#271900",
+            "inverse-surface": "#303030",
+            "primary-container": "#1b3a4b",
+            "primary-fixed-dim": "#accbe0",
+            "error": "#ba1a1a",
+            "surface-container-highest": "#e4e2e1",
+            "outline-variant": "#c2c7cc",
+            "on-primary": "#ffffff",
+            "text-muted": "#6B7280",
+            "primary-fixed": "#c8e7fd",
+            "tertiary": "#002718",
+            "on-secondary-container": "#785601",
+            "surface-container-high": "#eae7e7",
+            "surface-container": "#f0eded",
+            "on-primary-fixed-variant": "#2c4a5c",
+            "surface-dim": "#dcd9d9",
+            "on-tertiary-container": "#01b57e",
+            "on-secondary": "#ffffff",
+            "error-container": "#ffdad6",
+            "on-tertiary": "#ffffff",
+            "on-secondary-fixed-variant": "#5d4200",
+            "surface-container-lowest": "#ffffff",
+            "on-tertiary-fixed-variant": "#005236",
+            "background": "#fcf9f8"
+          },
+          borderRadius: {
+            DEFAULT: "0.25rem",
+            lg: "0.5rem",
+            xl: "0.75rem",
+            full: "9999px"
+          },
+          spacing: {
+            margin: "1rem",
+            "margin-desktop": "2.5rem",
+            "space-lg": "1.5rem",
+            "space-md": "1rem",
+            "space-xs": "0.25rem",
+            "gutter-desktop": "1.5rem",
+            gutter: "1rem",
+            "space-sm": "0.5rem",
+            "space-xl": "2.5rem"
+          },
+          fontFamily: {
+            "headline-sm": ["Be Vietnam Pro", "sans-serif"],
+            "body-lg": ["Be Vietnam Pro", "sans-serif"],
+            "display-hero-mobile": ["Be Vietnam Pro", "sans-serif"],
+            "body-sm": ["Be Vietnam Pro", "sans-serif"],
+            "headline-md": ["Be Vietnam Pro", "sans-serif"],
+            "headline-lg-mobile": ["Be Vietnam Pro", "sans-serif"],
+            "body-md": ["Be Vietnam Pro", "sans-serif"],
+            "label-md": ["Be Vietnam Pro", "sans-serif"],
+            "headline-lg": ["Be Vietnam Pro", "sans-serif"],
+            "code-ticket": ["JetBrains Mono", "monospace"],
+            "label-sm": ["Be Vietnam Pro", "sans-serif"],
+            "display-hero": ["Be Vietnam Pro", "sans-serif"],
+            sans: ["Be Vietnam Pro", "sans-serif"]
+          }
+        }
+      }
+    };
+  </script>
+</head>
+
+<body class="bg-surface font-body-md text-on-surface">
+
+  <!-- HEADER SHELL -->
+  <header class="fixed top-0 left-0 w-full z-50 bg-primary-container shadow-[0_12px_28px_-4px_rgba(27,58,75,0.12)]">
+    <div class="h-20 max-w-[1200px] mx-auto px-margin lg:px-margin-desktop flex items-center justify-between">
+      <div class="flex items-center gap-space-sm">
+        <a href="index.html" class="flex items-center gap-space-sm">
+          <img alt="logo-diemchau.png" class="h-8 w-auto object-contain" src="images/logo-diemchau.png"/>
+          <div class="flex flex-col">
+            <span class="font-headline-sm text-headline-sm tracking-wide text-on-primary">DIỄM CHÂU</span>
+            <span class="font-label-sm text-label-sm uppercase tracking-widest text-secondary-container" data-i18n="brand_slogan">Riêng Tư Tuyệt Đối</span>
+          </div>
+        </a>
+      </div>
+
+      <nav class="hidden lg:flex items-center gap-space-lg">
+        <a class="font-label-md text-label-md text-on-primary-container hover:text-on-primary transition-colors py-space-xs" data-path="trang-chu" data-i18n="nav_home" href="index.html">Trang Chủ</a>
+        <a class="font-label-md text-label-md text-on-primary-container hover:text-on-primary transition-colors py-space-xs" data-path="phong-nghi" data-i18n="nav_rooms" href="rooms.html">Phòng Nghỉ</a>
+        <a class="font-label-md text-label-md text-on-primary-container hover:text-on-primary transition-colors py-space-xs" data-path="dat-phong" data-i18n="nav_booking" href="booking.html">Đặt Phòng</a>
+        <a class="font-label-md text-label-md text-secondary-container font-semibold border-b-2 border-secondary-container py-space-xs" data-path="blog" data-i18n="nav_blog" href="blog.html">Blog</a>
+        <a class="font-label-md text-label-md text-on-primary-container hover:text-on-primary transition-colors py-space-xs" data-path="lien-he" data-i18n="nav_contact" href="contact.html">Liên Hệ</a>
+      </nav>
+
+      <div class="flex items-center gap-space-md">
+        <div class="flex items-center gap-space-xs px-space-sm py-space-xs rounded-lg bg-primary text-on-primary font-label-sm text-label-sm">
+          <span class="material-symbols-outlined text-[16px] text-secondary-container">language</span>
+          <button type="button" id="btn-lang-vn" class="text-secondary-container font-bold cursor-pointer transition-colors">VN</button>
+          <span class="text-outline">|</span>
+          <button type="button" id="btn-lang-en" class="text-outline-variant hover:text-on-primary cursor-pointer transition-colors">EN</button>
+        </div>
+        <a class="hidden sm:inline-flex items-center justify-center h-12 px-space-lg rounded-xl bg-secondary-container hover:bg-accent-hover text-on-secondary-container hover:text-on-primary font-label-md text-label-md tracking-wider transition-all shadow-[0_2px_8px_-2px_rgba(27,58,75,0.06)]" href="booking.html">ĐẶT NGAY</a>
+        <a href="admin.html" title="Quản trị viên Admin" class="w-8 h-8 rounded-lg bg-primary hover:bg-secondary-container hover:text-on-secondary-container text-on-primary flex items-center justify-center transition-all cursor-pointer shadow-sm">
+          <span class="material-symbols-outlined text-[18px]">person</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN WRAPPER -->
+  <main class="w-full pt-28 pb-16 bg-surface">
+    <div class="max-w-[1200px] mx-auto px-margin lg:px-margin-desktop">
+
+      <!-- BREADCRUMBS -->
+      <nav class="flex items-center gap-2 text-sm text-text-muted mb-6 flex-wrap">
+        <a href="index.html" class="hover:text-primary transition-colors flex items-center gap-1">
+          <span class="material-symbols-outlined text-[16px]">home</span>
+          Trang Chủ
+        </a>
+        <span>/</span>
+        <a href="blog.html" class="hover:text-primary transition-colors">Blog Cẩm Nang</a>
+        <span>/</span>
+        <span id="breadcrumb-title" class="text-primary font-medium truncate max-w-xs sm:max-w-md">Chi Tiết Bài Viết</span>
+      </nav>
+
+      <!-- ARTICLE CONTENT GRID -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+        <!-- MAIN POST COLUMN (8 Cols) -->
+        <article class="lg:col-span-8 bg-surface-container-lowest rounded-2xl p-6 sm:p-10 shadow-sm border border-outline-variant/30">
+
+          <!-- Category Chip & Meta -->
+          <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+            <span id="post-category" class="px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-xs font-bold uppercase tracking-wider">
+              Cẩm Nang Du Lịch
+            </span>
+            <div class="flex items-center gap-3 text-text-muted text-xs">
+              <span class="flex items-center gap-1">
+                <span class="material-symbols-outlined text-[16px]">calendar_today</span>
+                <span id="post-date">01/10/2026</span>
+              </span>
+              <span>•</span>
+              <span class="flex items-center gap-1">
+                <span class="material-symbols-outlined text-[16px]">schedule</span>
+                <span id="post-readtime">5 phút đọc</span>
+              </span>
+            </div>
+          </div>
+
+          <!-- Title -->
+          <h1 id="post-title" class="font-headline-lg text-2xl sm:text-3xl lg:text-4xl font-bold text-primary leading-tight mb-6 tracking-tight">
+            Đang tải bài viết...
+          </h1>
+
+          <!-- Author Info Bar -->
+          <div class="flex items-center justify-between border-y border-outline-variant/30 py-4 mb-8">
+            <div class="flex items-center gap-3">
+              <div class="w-11 h-11 rounded-full bg-primary-container text-secondary-container flex items-center justify-center font-bold text-sm">
+                DC
+              </div>
+              <div>
+                <p id="post-author" class="font-semibold text-primary text-sm">Diễm Châu CSKH</p>
+                <p id="post-author-role" class="text-text-muted text-xs">Chuyên gia lưu trú Phú Quốc</p>
+              </div>
+            </div>
+
+            <!-- Share Buttons -->
+            <div class="flex items-center gap-2">
+              <button onclick="copyCurrentUrl()" class="p-2 rounded-lg bg-surface-container hover:bg-surface-container-high text-primary transition-colors" title="Sao chép link">
+                <span class="material-symbols-outlined text-[18px]">share</span>
+              </button>
+              <a href="https://zalo.me/0815719502" target="_blank" class="p-2 rounded-lg bg-[#0068FF]/10 hover:bg-[#0068FF]/20 text-[#0068FF] font-bold text-xs transition-colors flex items-center gap-1" title="Hỏi qua Zalo">
+                <span class="material-symbols-outlined text-[18px]">chat</span>
+                <span class="hidden sm:inline">Zalo</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Featured Banner Image -->
+          <div class="w-full rounded-2xl overflow-hidden mb-8 shadow-md">
+            <img id="post-image" class="w-full h-[260px] sm:h-[400px] object-cover" src="" alt="Bài viết Diễm Châu"/>
+          </div>
+
+          <!-- Excerpt Lead Box -->
+          <div class="p-5 rounded-2xl bg-surface-container-low border-l-4 border-secondary mb-8">
+            <p id="post-excerpt" class="font-medium text-primary text-base italic leading-relaxed">
+              ...
+            </p>
+          </div>
+
+          <!-- Rich Content Body -->
+          <div id="post-content" class="prose max-w-none text-on-surface leading-relaxed text-base space-y-4">
+            <!-- Dynamic Content Injected Here -->
+          </div>
+
+          <!-- Bottom Article Booking CTA Box -->
+          <div class="mt-12 p-6 sm:p-8 rounded-2xl bg-primary text-on-primary shadow-xl flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div class="space-y-2 text-center sm:text-left">
+              <span class="px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container text-xs font-bold uppercase">Ưu đãi hôm nay</span>
+              <h3 class="text-xl sm:text-2xl font-bold text-white">Trải Nghiệm Phòng Nghỉ Tiện Nghi</h3>
+              <p class="text-on-primary-container text-sm">Chỉ từ 80k/giờ • Khóa PIN tự động 24/7 • Riêng tư 100%</p>
+            </div>
+            <div class="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+              <a href="booking.html" class="px-6 py-3 rounded-xl bg-secondary-container hover:bg-accent-hover text-on-secondary-container hover:text-on-primary font-bold text-sm text-center transition-all shadow-md">
+                ĐẶT PHÒNG NGAY
+              </a>
+              <a href="tel:0815719502" class="px-6 py-3 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-sm text-center transition-all flex items-center justify-center gap-1">
+                <span class="material-symbols-outlined text-[18px]">call</span>
+                0815 719 502
+              </a>
+            </div>
+          </div>
+
+          <!-- Back to Blog Button -->
+          <div class="mt-8 pt-6 border-t border-outline-variant/30 flex items-center justify-between">
+            <a href="blog.html" class="inline-flex items-center gap-2 text-secondary font-semibold hover:text-accent-hover transition-colors">
+              <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+              Quay lại danh sách bài viết
+            </a>
+            <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="text-text-muted hover:text-primary text-sm flex items-center gap-1 transition-colors">
+              <span>Lên đầu trang</span>
+              <span class="material-symbols-outlined text-[16px]">arrow_upward</span>
+            </button>
+          </div>
+
+        </article>
+
+        <!-- SIDEBAR COLUMN (4 Cols) -->
+        <aside class="lg:col-span-4 space-y-6">
+
+          <!-- Quick Booking Card Widget -->
+          <div class="bg-primary text-on-primary rounded-2xl p-6 shadow-lg border border-secondary-container/20">
+            <div class="flex items-center gap-2 mb-3">
+              <span class="material-symbols-outlined text-secondary-container text-[22px]">hotel</span>
+              <span class="font-bold text-secondary-container text-sm uppercase tracking-wider">Đặt Phòng Siêu Tốc</span>
+            </div>
+            <h4 class="text-lg font-bold text-white mb-2">Nhà Nghỉ Diễm Châu Phú Quốc</h4>
+            <p class="text-on-primary-container text-xs leading-relaxed mb-4">
+              Không cần gặp lễ tân. Nhận mã PIN tức thì qua điện thoại, tự do check-in mọi lúc.
+            </p>
+            <div class="space-y-2 mb-6 bg-surface/10 p-3 rounded-xl text-xs">
+              <div class="flex justify-between items-center text-white/90">
+                <span>Gói 1 giờ đầu:</span>
+                <span class="font-bold text-secondary-container">80.000đ</span>
+              </div>
+              <div class="flex justify-between items-center text-white/90">
+                <span>Gói 3 giờ nghỉ trưa:</span>
+                <span class="font-bold text-secondary-container">120.000đ</span>
+              </div>
+              <div class="flex justify-between items-center text-white/90">
+                <span>Gói qua đêm (Trọn đêm):</span>
+                <span class="font-bold text-secondary-container">Từ 200.000đ</span>
+              </div>
+            </div>
+            <a href="booking.html" class="w-full py-3 px-4 rounded-xl bg-secondary-container hover:bg-accent-hover text-on-secondary-container hover:text-on-primary font-bold text-sm flex items-center justify-center gap-2 transition-all shadow-md">
+              <span>CHỌN PHÒNG & ĐẶT NGAY</span>
+              <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+            </a>
+            <div class="mt-4 pt-4 border-t border-white/10 text-center">
+              <p class="text-xs text-on-primary-container">Hotline / Zalo hỗ trợ 24/7:</p>
+              <a href="tel:0815719502" class="text-base font-bold text-secondary-container tracking-wider hover:underline">
+                0815 719 502
+              </a>
+            </div>
+          </div>
+
+          <!-- Related Posts Widget -->
+          <div class="bg-surface-container-lowest rounded-2xl p-6 shadow-sm border border-outline-variant/30">
+            <h4 class="font-headline-sm text-base font-bold text-primary mb-4 pb-3 border-b border-outline-variant/30 flex items-center gap-2">
+              <span class="material-symbols-outlined text-secondary text-[20px]">library_books</span>
+              Bài Viết Khác Cùng Chuyên Mục
+            </h4>
+            <div id="related-posts-list" class="space-y-4">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+
+          <!-- Hotel Amenities Quick Highlights -->
+          <div class="bg-surface-container-lowest rounded-2xl p-6 shadow-sm border border-outline-variant/30">
+            <h4 class="font-headline-sm text-base font-bold text-primary mb-3">Vì Sao Chọn Diễm Châu?</h4>
+            <ul class="space-y-2.5 text-xs text-on-surface-variant">
+              <li class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-secondary text-[16px]">lock</span>
+                <span>Khóa số PIN thông minh bảo mật tuyệt đối</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-secondary text-[16px]">cleaning_services</span>
+                <span>Ga nệm trắng sạch tinh tươm thay mới 100%</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-secondary text-[16px]">location_on</span>
+                <span>Ngay trung tâm Dương Đông, cách chợ đêm 5p</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-secondary text-[16px]">wifi</span>
+                <span>Wifi tốc độ cao, nước nóng, máy lạnh mát sâu</span>
+              </li>
+            </ul>
+          </div>
+
+        </aside>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- FOOTER SHELL -->
+  <footer class="w-full bg-primary-container text-on-primary">
+    <div class="max-w-[1200px] mx-auto px-margin lg:px-margin-desktop pt-space-xl pb-space-lg">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-space-xl pb-space-xl">
+        <div class="flex flex-col gap-space-sm">
+          <div class="flex items-center gap-space-sm mb-space-xs">
+            <img alt="logo-diemchau.png" class="h-8 w-auto object-contain" src="images/logo-diemchau.png"/>
+            <span class="font-headline-sm text-headline-sm text-on-primary">DIỄM CHÂU</span>
+          </div>
+          <p class="font-body-sm text-body-sm text-on-primary-container">
+            Nhà nghỉ boutique tiện nghi, phòng sạch tiêu chuẩn, mức giá chỉ từ 80k. Cam kết trải nghiệm riêng tư tuyệt đối, tự động hoá nhận phòng siêu tốc tại Phú Quốc.
+          </p>
+          <div class="flex items-center gap-space-xs text-secondary-container mt-space-xs">
+            <span class="material-symbols-outlined text-[20px]">verified_user</span>
+            <span class="font-label-sm text-label-sm">Tự Động Hóa 100% - Không Lễ Tân</span>
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-space-sm">
+          <h3 class="font-headline-sm text-headline-sm text-secondary-container">Liên Hệ</h3>
+          <div class="flex items-start gap-space-xs text-on-primary-container font-body-sm text-body-sm">
+            <span class="material-symbols-outlined text-[18px] text-secondary-container shrink-0 mt-0.5">location_on</span>
+            <span>Đường Cách Mạng Tháng Tám, Dương Đông, Phú Quốc</span>
+          </div>
+          <div class="flex items-center gap-space-xs text-on-primary-container font-body-sm text-body-sm">
+            <span class="material-symbols-outlined text-[18px] text-secondary-container shrink-0">call</span>
+            <a href="tel:0815719502" class="hover:text-secondary-container transition-colors">0815 719 502 (Hỗ trợ 24/7)</a>
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-space-sm">
+          <h3 class="font-headline-sm text-headline-sm text-secondary-container">Chính Sách &amp; Giờ Giấc</h3>
+          <ul class="flex flex-col gap-space-xs text-on-primary-container font-body-sm text-body-sm">
+            <li>Linh hoạt theo giờ: 1h / 3h / 5h / Qua đêm</li>
+            <li>Check-in tức thì qua Smart Pass (Mã PIN tự sinh)</li>
+            <li>Bảo mật thông tin khách hàng tuyệt đối</li>
+            <li>Hỗ trợ đổi giờ &amp; hủy phòng thuận tiện</li>
+          </ul>
+        </div>
+
+        <div class="flex flex-col gap-space-sm">
+          <h3 class="font-headline-sm text-headline-sm text-secondary-container">Hotline 24/7</h3>
+          <p class="font-body-sm text-body-sm text-on-primary-container">
+            Đội ngũ kỹ thuật &amp; CSKH luôn sẵn sàng đồng hành cùng kỳ nghỉ của bạn.
+          </p>
+          <div class="p-space-md rounded-xl bg-primary flex items-center justify-between">
+            <div class="flex flex-col">
+              <span class="font-label-sm text-label-sm text-secondary-container uppercase">Khẩn cấp &amp; Đặt chỗ</span>
+              <a href="tel:0815719502" class="font-headline-sm text-headline-sm text-on-primary hover:text-secondary-container">0815 719 502</a>
+            </div>
+            <span class="material-symbols-outlined text-secondary-container text-[28px]">support_agent</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="pt-space-md flex flex-col md:flex-row items-center justify-between text-on-primary-container font-body-sm text-body-sm gap-space-sm">
+        <p>© 2025 Nhà Nghỉ Diễm Châu - Phú Quốc. Toàn bộ quyền được bảo lưu.</p>
+        <p class="font-label-sm text-label-sm text-secondary-container">Slogan: Riêng Tư Tuyệt Đối - Đón Tiếp Tận Tâm</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- SCRIPT RENDER DYNAMIC ARTICLE & RELATED LIST -->
+  <script>
+    function copyCurrentUrl() {
+      navigator.clipboard.writeText(window.location.href).then(() => {
+        alert('Đã sao chép liên kết bài viết vào bộ nhớ tạm!');
+      }).catch(() => {
+        prompt('Sao chép liên kết:', window.location.href);
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      let postId = urlParams.get('id');
+
+      if (!postId || !BLOG_POSTS[postId]) {
+        postId = 'huong-dan-smart-pass';
+      }
+
+      const post = BLOG_POSTS[postId];
+
+      // Update Page Meta & Elements
+      document.title = post.title + " | Nhà Nghỉ Diễm Châu";
+      document.getElementById('breadcrumb-title').textContent = post.title;
+      document.getElementById('post-category').textContent = post.category;
+      document.getElementById('post-date').textContent = post.date;
+      document.getElementById('post-readtime').textContent = post.readTime;
+      document.getElementById('post-title').textContent = post.title;
+      document.getElementById('post-author').textContent = post.author;
+      document.getElementById('post-author-role').textContent = post.authorRole;
+      document.getElementById('post-image').src = post.image;
+      document.getElementById('post-image').alt = post.title;
+      document.getElementById('post-excerpt').textContent = post.excerpt;
+      document.getElementById('post-content').innerHTML = post.content;
+
+      // Render Related Posts in Sidebar
+      const relatedContainer = document.getElementById('related-posts-list');
+      const allIds = Object.keys(BLOG_POSTS);
+      const otherPosts = allIds.filter(id => id !== postId);
+
+      relatedContainer.innerHTML = otherPosts.map(id => {
+        const item = BLOG_POSTS[id];
+        return `
+          <a href="blog-detail.html?id=${item.id}" class="flex gap-3 group items-center p-2 rounded-xl hover:bg-surface-container transition-all">
+            <img src="${item.image}" alt="${item.title}" class="w-16 h-16 rounded-lg object-cover shrink-0 group-hover:scale-105 transition-transform duration-300">
+            <div class="flex-1 min-w-0">
+              <span class="text-[10px] font-semibold text-secondary uppercase block mb-0.5">${item.category}</span>
+              <h5 class="text-xs font-bold text-primary group-hover:text-secondary transition-colors line-clamp-2 leading-snug">
+                ${item.title}
+              </h5>
+              <span class="text-[10px] text-text-muted mt-1 block">${item.date}</span>
+            </div>
+          </a>
+        `;
+      }).join('');
+    });
+  </script>
+</body>
+</html>
