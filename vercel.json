@@ -8,11 +8,13 @@
     },
     {
       "src": "/phong-nghi",
-      "dest": "/rooms.html"
+      "status": 308,
+      "headers": { "Location": "/rooms" }
     },
     {
       "src": "/dat-phong",
-      "dest": "/booking.html"
+      "status": 308,
+      "headers": { "Location": "/booking" }
     },
     {
       "src": "/smart-pass",
@@ -24,7 +26,8 @@
     },
     {
       "src": "/lien-he",
-      "dest": "/contact.html"
+      "status": 308,
+      "headers": { "Location": "/contact" }
     },
     {
       "src": "/admin",
