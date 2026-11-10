@@ -1,16 +1,15 @@
 // sw.js – Service Worker cho Diem Chau Phu Quoc PWA
-const CACHE_NAME = 'diemchau-pwa-v1';
+const CACHE_NAME = 'diemchau-pwa-v2';
 
 // Danh sách các tài nguyên tĩnh cốt lõi cần cache ngay khi cài đặt
 const PRECACHE_ASSETS = [
   './',
-  './index.html',
-  './rooms.html',
-  './booking.html',
-  './smart-pass.html',
-  './contact.html',
-  './blog.html',
-  './offline.html',
+  '/rooms',
+  '/booking',
+  '/smart-pass',
+  '/contact',
+  '/blog',
+  '/offline',
   './manifest.json',
   './js/common.js',
   './images/logo-diemchau.png',
@@ -53,7 +52,7 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(request.url);
 
   // Không cache API hoặc external analytics / POST requests
-  if (request.method !== 'GET' || url.pathname.startsWith('/api/')) {
+  if (request.method !== 'GET' || url.origin !== self.location.origin || url.pathname.startsWith('/api/') || /^\/admin(?:\.html)?(?:\/|$)/.test(url.pathname)) {
     return;
   }
 
@@ -63,8 +62,10 @@ self.addEventListener('fetch', (event) => {
       fetch(request)
         .then((response) => {
           // Lưu bản sao vào cache để lần sau xem offline
-          const clone = response.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(request, clone));
+          if (response.ok) {
+            const clone = response.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(request, clone));
+          }
           return response;
         })
         .catch(async () => {
@@ -73,7 +74,7 @@ self.addEventListener('fetch', (event) => {
           if (cachedResponse) {
             return cachedResponse;
           }
-          return caches.match('./offline.html');
+          return caches.match('/offline');
         })
     );
     return;

@@ -1,47 +1,6 @@
 {
   "version": 2,
   "cleanUrls": true,
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "/api/$1"
-    },
-    {
-      "src": "/phong-nghi",
-      "status": 308,
-      "headers": { "Location": "/rooms" }
-    },
-    {
-      "src": "/dat-phong",
-      "status": 308,
-      "headers": { "Location": "/booking" }
-    },
-    {
-      "src": "/smart-pass",
-      "dest": "/smart-pass.html"
-    },
-    {
-      "src": "/blog",
-      "dest": "/blog.html"
-    },
-    {
-      "src": "/lien-he",
-      "status": 308,
-      "headers": { "Location": "/contact" }
-    },
-    {
-      "src": "/admin",
-      "dest": "/admin.html"
-    },
-    {
-      "src": "/prototype",
-      "dest": "/prototype.html"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/$1"
-    }
-  ],
   "headers": [
     {
       "source": "/(.*)",
@@ -59,6 +18,135 @@
           "value": "1; mode=block"
         }
       ]
+    },
+    {
+      "source": "/admin",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, follow"
+        }
+      ]
+    },
+    {
+      "source": "/offline",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, follow"
+        }
+      ]
+    },
+    {
+      "source": "/smart-pass",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, follow"
+        }
+      ]
+    }
+  ],
+  "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/phong-nghi",
+      "destination": "/rooms",
+      "permanent": true
+    },
+    {
+      "source": "/dat-phong",
+      "destination": "/booking",
+      "permanent": true
+    },
+    {
+      "source": "/lien-he",
+      "destination": "/contact",
+      "permanent": true
+    },
+    {
+      "source": "/:legacy(blog-detail|blog-detail\\.html)",
+      "has": [
+        {
+          "type": "query",
+          "key": "id",
+          "value": "bi-quyet-thue-phong-theo-gio"
+        }
+      ],
+      "destination": "/blog/thue-phong-theo-gio-duong-dong",
+      "permanent": true
+    },
+    {
+      "source": "/:legacy(blog-detail|blog-detail\\.html)",
+      "has": [
+        {
+          "type": "query",
+          "key": "id",
+          "value": "top-5-quan-hai-san-dem"
+        }
+      ],
+      "destination": "/blog/an-hai-san-buoi-toi-duong-dong",
+      "permanent": true
+    },
+    {
+      "source": "/:legacy(blog-detail|blog-detail\\.html)",
+      "has": [
+        {
+          "type": "query",
+          "key": "id",
+          "value": "lich-trinh-phuot-phu-quoc-3n2d"
+        }
+      ],
+      "destination": "/blog/lap-lich-phu-quoc-3-ngay-2-dem",
+      "permanent": true
+    },
+    {
+      "source": "/:legacy(blog-detail|blog-detail\\.html)",
+      "has": [
+        {
+          "type": "query",
+          "key": "id",
+          "value": "tai-sao-mo-hinh-tu-dong-hoa-smart-lock"
+        }
+      ],
+      "destination": "/blog/nhan-phong-tai-diem-chau",
+      "permanent": true
+    },
+    {
+      "source": "/:legacy(blog-detail|blog-detail\\.html)",
+      "has": [
+        {
+          "type": "query",
+          "key": "id",
+          "value": "checklist-hanh-ly-phu-quoc"
+        }
+      ],
+      "destination": "/blog/checklist-hanh-ly-phu-quoc",
+      "permanent": true
+    },
+    {
+      "source": "/:legacy(blog-detail|blog-detail\\.html)",
+      "has": [
+        {
+          "type": "query",
+          "key": "id",
+          "value": "quy-trinh-khu-khuan-phong-diem-chau"
+        }
+      ],
+      "destination": "/blog/xem-anh-va-tien-nghi-phong",
+      "permanent": true
+    },
+    {
+      "source": "/:legacy(blog-detail|blog-detail\\.html)",
+      "has": [
+        {
+          "type": "query",
+          "key": "id",
+          "value": "huong-dan-smart-pass"
+        }
+      ],
+      "destination": "/blog/huong-dan-smart-pass",
+      "permanent": true
     }
   ]
 }

@@ -334,7 +334,7 @@ function initPWA() {
   // 1. Đăng ký Service Worker
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-      navigator.serviceWorker.register('./sw.js')
+      navigator.serviceWorker.register('/sw.js')
         .then((reg) => {
           console.log('[PWA] Service Worker registered with scope:', reg.scope);
         })
@@ -449,7 +449,7 @@ function hideInstallPromptBtn() {
 (function initChatbotLoader() {
   if (typeof window !== 'undefined' && !document.querySelector('script[src*="chatbot.js"]')) {
     const script = document.createElement('script');
-    script.src = 'js/chatbot.js';
+    script.src = '/js/chatbot.js';
     script.defer = true;
     document.head.appendChild(script);
   }
