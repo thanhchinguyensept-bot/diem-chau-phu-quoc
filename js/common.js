@@ -445,13 +445,34 @@ function hideInstallPromptBtn() {
   }
 }
 
-// Tự động kích hoạt Chatbot AI Diễm Châu trên các trang công khai
-(function initChatbotLoader() {
-  if (typeof window !== 'undefined' && !document.querySelector('script[src*="chatbot.js"]')) {
+// Keep a small help button; load the chat interface only when requested.
+document.addEventListener('DOMContentLoaded', () => {
+  if (!document.querySelector('link[href^="/css/"]')) return;
+  const launcher = document.createElement('a');
+  launcher.id = 'chatbot-launcher';
+  launcher.href = '/contact';
+  launcher.className = 'fixed bottom-5 right-5 z-[99] w-14 h-14 rounded-full bg-primary text-secondary-container border border-secondary-container/30 shadow-xl flex items-center justify-center';
+  const label = () => launcher.setAttribute('aria-label', currentLanguage === 'en' ? 'Open guesthouse assistant' : 'Mở trợ lý Nhà nghỉ Diễm Châu');
+  label();
+  window.addEventListener('languageChanged', label);
+  launcher.innerHTML = '<span class="material-symbols-outlined text-[28px]" aria-hidden="true">smart_toy</span><span class="absolute top-1 right-1 h-2.5 w-2.5 rounded-full bg-[#10B981]" aria-hidden="true"></span>';
+  let loading = false;
+  launcher.addEventListener('click', (event) => {
+    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    event.preventDefault();
+    if (loading) return;
+    loading = true;
+    launcher.setAttribute('aria-busy', 'true');
     const script = document.createElement('script');
-    script.src = '/js/chatbot.js';
-    script.defer = true;
+    script.src = '/js/chatbot.js?v=3';
+    script.onload = () => {
+      if (!window.diemChauChatbot) { location.assign(launcher.href); return; }
+      window.removeEventListener('languageChanged', label);
+      launcher.remove();
+      window.diemChauChatbot.openChat();
+    };
+    script.onerror = () => location.assign(launcher.href);
     document.head.appendChild(script);
-  }
-})();
-
+  });
+  document.body.appendChild(launcher);
+});

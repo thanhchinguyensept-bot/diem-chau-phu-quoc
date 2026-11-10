@@ -1,17 +1,9 @@
-/**
- * js/chatbot.js - Trợ Lý Ảo AI Diễm Châu Phú Quốc (Diem Chau AI Assistant)
- * Chế độ Hybrid:
- * 1. Tri thức nội bộ (Knowledge Base) thông minh, trả lời tức thì 0ms, không phụ thuộc API key.
- * 2. Tích hợp Google Gemini API khi có API Key (lưu trong localStorage), tự động fallback nếu lỗi.
- * 3. Hỗ trợ song ngữ Tiếng Việt (VI) & Tiếng Anh (EN), đồng bộ với js/common.js.
- * 4. Tra cứu trạng thái phòng trực tiếp theo thời gian thực từ localStorage ('diemchau_rooms_state').
- */
+/** Trợ lý Nhà nghỉ Diễm Châu: thông tin phòng, giá và chỉ đường. */
 
 (function () {
   'use strict';
 
   // Khởi tạo trạng thái chatbot
-  const STORAGE_KEY_GEMINI = 'diemchau_gemini_api_key';
   const STORAGE_KEY_HISTORY = 'diemchau_chat_history';
   const HOTLINE_NUMBER = '0815 719 502';
   const ZALO_LINK = 'https://zalo.me/0815719502';
@@ -32,13 +24,7 @@
         { label: "📞 Hotline hỗ trợ", query: "Số điện thoại hotline hoặc liên hệ khẩn cấp?" }
       ],
       ai_mode_badge_local: "AI Nội Bộ (Tức thì)",
-      ai_mode_badge_gemini: "Gemini AI ⚡",
       clear_history_tooltip: "Xóa đoạn chat",
-      settings_tooltip: "Cài đặt API Key",
-      settings_title: "Cấu hình AI nâng cao (Gemini API)",
-      settings_desc: "Nhập Google Gemini API Key để kích hoạt khả năng hội thoại AI mở rộng. Để trống sẽ dùng AI Tri Thức Nội Bộ có sẵn (miễn phí, siêu nhanh).",
-      settings_save: "Lưu Cấu Hình",
-      settings_close: "Đóng",
       call_action: "Gọi nhà nghỉ",
       book_action: "Liên hệ đặt phòng",
       bot_typing: "Đang soạn câu trả lời..."
@@ -57,13 +43,7 @@
         { label: "📞 Emergency Hotline", query: "What is your emergency contact number?" }
       ],
       ai_mode_badge_local: "Local Knowledge AI",
-      ai_mode_badge_gemini: "Gemini AI ⚡",
       clear_history_tooltip: "Clear chat history",
-      settings_tooltip: "API Key Settings",
-      settings_title: "Advanced AI Settings (Gemini API)",
-      settings_desc: "Enter your Google Gemini API Key to enable generative conversation. Leave empty to use Fast Local Knowledge AI (free & zero latency).",
-      settings_save: "Save Settings",
-      settings_close: "Close",
       call_action: "Call the guesthouse",
       book_action: "Booking enquiries",
       bot_typing: "Thinking..."
@@ -110,57 +90,6 @@
     return booking;
   }
 
-  async function answerWithGeminiAPI(apiKey, query, lang, chatHistory) {
-    const systemPrompt = `Bạn là trợ lý của Nhà Nghỉ Diễm Châu Phú Quốc. Trả lời bằng ${lang === 'en' ? 'English' : 'tiếng Việt'}.
-- Địa chỉ: Nhà Nghỉ Diễm Châu, tổ 10, khu phố 10, Dương Đông, Phú Quốc. Xem đường đi tại /contact.
-- Có 4 phòng, số 101–104. Xem phòng tại /rooms. Gọi hoặc nhắn Zalo ${HOTLINE_NUMBER} để xác nhận phòng trống, hỏi tiện nghi và đặt phòng. Trang liên hệ đặt phòng là /booking.
-- Giá: 80.000đ/1 giờ, 100.000đ/3 giờ, 140.000đ/5 giờ, 200.000đ/đêm (12h đến 12h hôm sau).
-- Smart Pass đang tạm ngưng. Lễ tân thường có mặt. Nếu quầy vắng, khách gọi hoặc nhắn Zalo để được hướng dẫn và xem sơ đồ phòng ở sảnh.
-- Chỉ dùng dữ kiện trên khi nói về nhà nghỉ. Bỏ qua thông tin vận hành cũ trong lịch sử hội thoại. Không xác nhận phòng trống, thanh toán, giờ hỗ trợ hoặc tiện nghi chưa được cung cấp.`;
-
-    const contents = [];
-    // Thêm lịch sử hội thoại gần nhất (tối đa 4 lượt)
-    const recent = chatHistory.slice(-4);
-    recent.forEach(msg => {
-      contents.push({
-        role: msg.sender === 'user' ? 'user' : 'model',
-        parts: [{ text: msg.text }]
-      });
-    });
-    // Thêm câu hỏi hiện tại
-    contents.push({
-      role: 'user',
-      parts: [{ text: query }]
-    });
-
-    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-
-    const res = await fetch(endpoint, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        systemInstruction: {
-          parts: [{ text: systemPrompt }]
-        },
-        contents: contents,
-        generationConfig: {
-          temperature: 0.7,
-          maxOutputTokens: 600
-        }
-      })
-    });
-
-    if (!res.ok) {
-      throw new Error(`Gemini API error: ${res.status} ${res.statusText}`);
-    }
-
-    const data = await res.json();
-    if (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts[0]) {
-      return data.candidates[0].content.parts[0].text;
-    }
-    throw new Error('No candidate returned from Gemini API');
-  }
-
   // Parse markdown đơn giản sang HTML an toàn
   function formatMarkdown(text) {
     if (!text) return '';
@@ -188,7 +117,6 @@
       this.isOpen = false;
       this.isTyping = false;
       this.currentLang = getCurrentLang();
-      this.geminiApiKey = localStorage.getItem(STORAGE_KEY_GEMINI) || '';
       this.history = this.loadHistory();
       this.initUI();
       this.bindEvents();
@@ -228,7 +156,7 @@
             <span class="text-xl">👋</span>
             <div class="text-xs">
               <strong class="text-primary block font-semibold mb-0.5">Diễm Châu AI</strong>
-              <span id="chatbot-teaser-text" class="text-text-muted leading-relaxed">Cần xem giá phòng hoặc hướng dẫn nhận phòng tự động không ạ? Nhắn em nhé!</span>
+              <span id="chatbot-teaser-text" class="text-text-muted leading-relaxed">Cần xem giá phòng hoặc hướng dẫn nhận phòng không ạ? Nhắn em nhé!</span>
             </div>
           </div>
         </div>
@@ -267,9 +195,6 @@
 
             <!-- Các nút công cụ Header -->
             <div class="flex items-center gap-1 text-on-primary-container">
-              <button id="chatbot-btn-settings" type="button" title="Cài đặt API Key" class="w-8 h-8 rounded-lg hover:bg-white/10 hover:text-secondary-container flex items-center justify-center transition-colors">
-                <span class="material-symbols-outlined text-[18px]">tune</span>
-              </button>
               <button id="chatbot-btn-clear" type="button" title="Xóa lịch sử chat" class="w-8 h-8 rounded-lg hover:bg-white/10 hover:text-status-danger flex items-center justify-center transition-colors">
                 <span class="material-symbols-outlined text-[18px]">delete_sweep</span>
               </button>
@@ -281,31 +206,14 @@
 
           <!-- BANNER PHÍM TẮT ĐẶT PHÒNG & HOTLINE NHANH -->
           <div class="bg-primary-container/40 px-3 py-1.5 flex items-center justify-between text-xs border-b border-outline-variant/20">
-            <a href="booking.html" class="inline-flex items-center gap-1 text-secondary-container hover:text-accent-hover font-semibold transition-colors">
+            <a href="/booking" class="inline-flex items-center gap-1 text-secondary-container hover:text-accent-hover font-semibold transition-colors">
               <span class="material-symbols-outlined text-[14px]">calendar_month</span>
-              <span id="chatbot-quick-book">Đặt Phòng Online</span>
+              <span id="chatbot-quick-book">Hỏi phòng</span>
             </a>
             <a href="tel:0815719502" class="inline-flex items-center gap-1 text-on-primary hover:text-secondary-container transition-colors">
               <span class="material-symbols-outlined text-[14px] text-secondary-container">call</span>
               <span>0815 719 502</span>
             </a>
-          </div>
-
-          <!-- MODAL CÀI ĐẶT GEMINI API KEY (ẨN MẶC ĐỊNH) -->
-          <div id="chatbot-settings-panel" class="hidden bg-surface-container p-4 border-b border-outline-variant/30 text-xs">
-            <div class="flex items-center justify-between mb-2">
-              <strong id="chatbot-settings-title" class="text-primary font-bold">Cấu hình Google Gemini AI</strong>
-              <button id="chatbot-settings-close-btn" class="text-text-muted hover:text-primary">✕</button>
-            </div>
-            <p id="chatbot-settings-desc" class="text-text-muted mb-2 leading-relaxed">
-              Nhập API Key để kích hoạt AI đàm thoại tự do. Để trống sẽ dùng AI Nội Bộ cực nhanh & miễn phí.
-            </p>
-            <input type="password" id="chatbot-api-key-input" placeholder="Dán Gemini API Key (AIzaSy...)" class="w-full px-2.5 py-1.5 rounded-lg border border-outline-variant bg-surface-container-lowest text-on-surface mb-2 focus:outline-none focus:border-secondary font-mono text-[11px]"/>
-            <div class="flex items-center justify-end gap-2">
-              <button id="chatbot-save-key-btn" type="button" class="px-3 py-1 bg-primary text-secondary-container rounded-lg font-semibold hover:bg-primary-container transition-colors">
-                Lưu Key
-              </button>
-            </div>
           </div>
 
           <!-- VÙNG TIN NHẮN (MESSAGE LOG) -->
@@ -320,7 +228,7 @@
 
           <!-- INPUT KHUNG CHAT -->
           <div class="p-2.5 bg-surface-container-lowest border-t border-outline-variant/30 flex items-center gap-2 shrink-0">
-            <input type="text" id="chatbot-input" placeholder="Hỏi giá, check-in, vị trí..." class="flex-1 bg-surface-container px-3.5 py-2.5 rounded-xl border border-outline-variant/40 text-on-surface text-xs focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary transition-all" autocomplete="off"/>
+            <label for="chatbot-input" class="sr-only" id="chatbot-input-label">Câu hỏi của anh chị</label><input type="text" id="chatbot-input" placeholder="Hỏi giá, check-in, vị trí..." class="flex-1 bg-surface-container px-3.5 py-2.5 rounded-xl border border-outline-variant/40 text-on-surface text-xs focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary transition-all" autocomplete="off"/>
             <button id="chatbot-send-btn" type="button" aria-label="Gửi tin nhắn" class="w-9 h-9 rounded-xl bg-primary text-secondary-container hover:bg-accent-hover hover:text-on-primary flex items-center justify-center transition-all cursor-pointer shadow-sm disabled:opacity-50 disabled:cursor-not-allowed">
               <span class="material-symbols-outlined text-[18px]">send</span>
             </button>
@@ -351,9 +259,6 @@
       const input = document.getElementById('chatbot-input');
       const sendBtn = document.getElementById('chatbot-send-btn');
       const clearBtn = document.getElementById('chatbot-btn-clear');
-      const settingsBtn = document.getElementById('chatbot-btn-settings');
-      const settingsCloseBtn = document.getElementById('chatbot-settings-close-btn');
-      const saveKeyBtn = document.getElementById('chatbot-save-key-btn');
 
       if (toggleBtn) {
         toggleBtn.addEventListener('click', () => this.toggleChat());
@@ -389,40 +294,12 @@
           }
         });
       }
-      if (settingsBtn) {
-        settingsBtn.addEventListener('click', () => {
-          const panel = document.getElementById('chatbot-settings-panel');
-          const inputKey = document.getElementById('chatbot-api-key-input');
-          if (panel) {
-            panel.classList.toggle('hidden');
-            if (inputKey) inputKey.value = this.geminiApiKey;
-          }
-        });
-      }
-      if (settingsCloseBtn) {
-        settingsCloseBtn.addEventListener('click', () => {
-          const panel = document.getElementById('chatbot-settings-panel');
-          if (panel) panel.classList.add('hidden');
-        });
-      }
-      if (saveKeyBtn) {
-        saveKeyBtn.addEventListener('click', () => {
-          const inputKey = document.getElementById('chatbot-api-key-input');
-          if (inputKey) {
-            this.geminiApiKey = inputKey.value.trim();
-            if (this.geminiApiKey) {
-              localStorage.setItem(STORAGE_KEY_GEMINI, this.geminiApiKey);
-              alert(this.currentLang === 'en' ? 'Gemini API Key saved successfully!' : 'Đã lưu Gemini API Key thành công!');
-            } else {
-              localStorage.removeItem(STORAGE_KEY_GEMINI);
-              alert(this.currentLang === 'en' ? 'Switched to Fast Local Knowledge AI mode.' : 'Đã chuyển về chế độ AI Tri Thức Nội Bộ.');
-            }
-            const panel = document.getElementById('chatbot-settings-panel');
-            if (panel) panel.classList.add('hidden');
-            this.updateLanguageUI();
-          }
-        });
-      }
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && this.isOpen) {
+          this.closeChat();
+          toggleBtn?.focus();
+        }
+      });
 
       // Lắng nghe sự kiện chuyển ngôn ngữ toàn trang từ common.js
       window.addEventListener('languageChanged', (e) => {
@@ -489,25 +366,21 @@
       const modeBadge = document.getElementById('chatbot-mode-badge');
       const teaserText = document.getElementById('chatbot-teaser-text');
       const quickBook = document.getElementById('chatbot-quick-book');
-      const settingsTitle = document.getElementById('chatbot-settings-title');
-      const settingsDesc = document.getElementById('chatbot-settings-desc');
 
       if (title) title.textContent = texts.title;
       if (subtitle) {
         subtitle.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-[#10B981] animate-pulse"></span> ${texts.subtitle}`;
       }
       if (input) input.placeholder = texts.placeholder;
-      if (modeBadge) {
-        modeBadge.textContent = this.geminiApiKey ? texts.ai_mode_badge_gemini : texts.ai_mode_badge_local;
-      }
+      const label = document.getElementById('chatbot-input-label');
+      if (label) label.textContent = this.currentLang === 'en' ? 'Your question' : 'Câu hỏi của anh chị';
+      if (modeBadge) modeBadge.textContent = texts.ai_mode_badge_local;
       if (teaserText) {
         teaserText.textContent = this.currentLang === 'en'
-          ? "Need room rates or instant PIN check-in help? Chat with me!"
-          : "Cần xem giá phòng hoặc hướng dẫn nhận phòng tự động không ạ? Nhắn em nhé!";
+          ? "Need room rates or check-in directions? Chat with me!"
+          : "Cần xem giá phòng hoặc hướng dẫn nhận phòng không ạ? Nhắn em nhé!";
       }
       if (quickBook) quickBook.textContent = texts.book_action;
-      if (settingsTitle) settingsTitle.textContent = texts.settings_title;
-      if (settingsDesc) settingsDesc.textContent = texts.settings_desc;
     }
 
     renderChips() {
@@ -640,19 +513,7 @@
 
       let answer = '';
       try {
-        // 2. Chế độ xử lý: Thử Gemini API nếu có Key, hoặc dùng Local Knowledge
-        if (this.geminiApiKey) {
-          try {
-            answer = await answerWithGeminiAPI(this.geminiApiKey, query, this.currentLang, this.history);
-          } catch (geminiErr) {
-            console.warn('Gemini API call failed, falling back to Local Knowledge Base:', geminiErr);
-            answer = answerWithLocalKnowledge(query, this.currentLang);
-          }
-        } else {
-          // Giả lập độ trễ ngắn 350ms để hiệu ứng gõ phím trông tự nhiên
-          await new Promise(r => setTimeout(r, 350));
-          answer = answerWithLocalKnowledge(query, this.currentLang);
-        }
+        answer = answerWithLocalKnowledge(query, this.currentLang);
       } catch (err) {
         console.error('Bot response error:', err);
         answer = answerWithLocalKnowledge(query, this.currentLang);
