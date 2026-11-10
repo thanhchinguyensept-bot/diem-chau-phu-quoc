@@ -1,0 +1,48 @@
+@media (max-width: 1023.98px) {
+  :root {
+    scroll-padding-top: 7.5rem;
+  }
+
+  .site-navigation-header {
+    position: sticky;
+  }
+
+  .site-navigation-header > div {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    height: auto;
+    padding-block: 0.5rem 0.25rem;
+  }
+
+  .site-navigation-header nav {
+    grid-row: 2;
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 0;
+  }
+
+  .site-navigation-header nav a {
+    display: grid;
+    place-items: center;
+    min-height: 44px;
+    padding: 0.25rem 0.125rem;
+    font-size: 0.75rem;
+    line-height: 1.2;
+    text-align: center;
+  }
+
+  .site-navigation-header nav a:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: -2px;
+    border-radius: 0.25rem;
+  }
+
+  .site-navigation-header + main.pt-20 {
+    padding-top: 0;
+  }
+
+  .site-navigation-header + main.pt-24 {
+    padding-top: 1rem;
+  }
+}
