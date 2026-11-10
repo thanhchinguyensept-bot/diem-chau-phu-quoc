@@ -129,7 +129,7 @@ const TRANSLATIONS = {
     'footer_policy_1': 'Linh hoạt theo giờ & Qua đêm trọn gói (12h - 12h)',
     'footer_policy_2': 'Lễ tân hướng dẫn nhận phòng. Nếu quầy vắng, hãy gọi hoặc nhắn Zalo.',
     'footer_policy_3': 'Bảo mật thông tin khách hàng tuyệt đối',
-    'footer_policy_4': 'Hỗ trợ đổi giờ & hủy phòng thuận tiện',
+    'footer_policy_4': 'Đổi phòng hoặc hủy phòng không phụ thu khi báo trước 3 tiếng',
     'footer_hotline_title': 'Liên hệ đặt phòng',
     'footer_hotline_sub': 'Đội ngũ kỹ thuật & CSKH luôn sẵn sàng đồng hành cùng kỳ nghỉ của bạn.',
     'footer_emergency': 'Khẩn cấp & Đặt chỗ'
@@ -262,7 +262,7 @@ const TRANSLATIONS = {
     'footer_policy_1': 'Flexible hourly & Overnight packages (12h - 12h)',
     'footer_policy_2': 'Reception usually welcomes guests. If the desk is unattended, call or message us on Zalo.',
     'footer_policy_3': 'Strict customer data confidentiality',
-    'footer_policy_4': 'Convenient schedule change & cancellation',
+    'footer_policy_4': 'Room changes or cancellations are free with 3 hours’ notice',
     'footer_hotline_title': 'Booking enquiries',
     'footer_hotline_sub': 'Technical and guest support team always ready to assist your stay.',
     'footer_emergency': 'Emergency & Bookings'
