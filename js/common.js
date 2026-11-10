@@ -124,7 +124,7 @@ const TRANSLATIONS = {
     // Footer
     'footer_about': 'Nhà nghỉ boutique tiện nghi, phòng sạch tiêu chuẩn, mức giá chỉ từ 80k. Cam kết trải nghiệm riêng tư tuyệt đối, tự động hoá nhận phòng siêu tốc tại Phú Quốc.',
     'footer_contact_title': 'Liên Hệ',
-    'footer_address': 'Đường Cách Mạng Tháng Tám, Dương Đông, Phú Quốc',
+    'footer_address': 'Nhà Nghỉ Diễm Châu, tổ 10, khu phố 10, Dương Đông, Phú Quốc',
     'footer_policies_title': 'Chính Sách & Giờ Giấc',
     'footer_policy_1': 'Linh hoạt theo giờ & Qua đêm trọn gói (12h - 12h)',
     'footer_policy_2': 'Check-in tức thì qua Smart Pass (Mã PIN tự sinh)',
@@ -257,7 +257,7 @@ const TRANSLATIONS = {
     // Footer
     'footer_about': 'Boutique accommodation, hygienic standards, starting from 80k. Guaranteed absolute privacy and lightning-fast automated check-in in Phu Quoc.',
     'footer_contact_title': 'Contact Us',
-    'footer_address': 'Cach Mang Thang Tam St, Duong Dong, Phu Quoc',
+    'footer_address': 'Diem Chau Guesthouse, Group 10, Quarter 10, Duong Dong, Phu Quoc',
     'footer_policies_title': 'Policies & Hours',
     'footer_policy_1': 'Flexible hourly & Overnight packages (12h - 12h)',
     'footer_policy_2': 'Instant check-in via automated Smart Pass PIN',

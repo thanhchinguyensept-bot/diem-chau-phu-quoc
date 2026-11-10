@@ -19,13 +19,13 @@
   // Dữ liệu tri thức nội bộ chuẩn hóa của Diễm Châu Phú Quốc
   const KNOWLEDGE_BASE = {
     vi: {
-      greeting: "Xin chào quý khách! Tôi là **Trợ lý Ảo Diễm Châu Phú Quốc** 🤖. Tôi có thể hỗ trợ quý khách kiểm tra phòng trống, bảng giá, quy trình nhận phòng tự động 100% bằng mã PIN hoặc hỗ trợ đặt phòng. Quý khách cần thông tin gì ạ?",
+      greeting: "Xin chào! Em có thể giúp anh chị xem giá, hỏi phòng và tìm đường đến Nhà Nghỉ Diễm Châu.",
       placeholder: "Nhập câu hỏi (giá phòng, check-in, vị trí...)...",
       title: "Trợ Lý Ảo Diễm Châu",
-      subtitle: "Trực tuyến 24/7 • Check-in Tự Động",
+      subtitle: "Thông tin phòng và nhận phòng",
       quick_chips: [
         { label: "💰 Bảng giá phòng", query: "Giá phòng tại Diễm Châu là bao nhiêu?" },
-        { label: "🔑 Cách nhận phòng tự động?", query: "Hướng dẫn cách check-in tự động 100% không cần lễ tân?" },
+        { label: "🔑 Cách nhận phòng?", query: "Khi đến thì nhận phòng thế nào?" },
         { label: "🏨 Kiểm tra phòng trống", query: "Hiện tại còn phòng trống nào không?" },
         { label: "📍 Địa chỉ & Đường đi", query: "Địa chỉ nhà nghỉ ở đâu và đi đến như thế nào?" },
         { label: "📶 Tiện nghi phòng", query: "Phòng nghỉ có những tiện nghi gì?" },
@@ -39,18 +39,18 @@
       settings_desc: "Nhập Google Gemini API Key để kích hoạt khả năng hội thoại AI mở rộng. Để trống sẽ dùng AI Tri Thức Nội Bộ có sẵn (miễn phí, siêu nhanh).",
       settings_save: "Lưu Cấu Hình",
       settings_close: "Đóng",
-      call_action: "Gọi Hotline 24/7",
-      book_action: "Đặt Phòng Trực Tuyến",
+      call_action: "Gọi nhà nghỉ",
+      book_action: "Liên hệ đặt phòng",
       bot_typing: "Đang soạn câu trả lời..."
     },
     en: {
-      greeting: "Hello and welcome! I am the **Diem Chau AI Assistant** 🤖. I am here 24/7 to assist you with room rates, 100% contactless Smart Pass PIN check-in, real-time availability, and instant bookings. How may I help you today?",
+      greeting: "Welcome! I can help with rates, room enquiries and directions to Diem Chau Guesthouse.",
       placeholder: "Ask about rates, check-in, location...",
       title: "Diem Chau AI Assistant",
-      subtitle: "Online 24/7 • Smart Self Check-in",
+      subtitle: "Room and check-in information",
       quick_chips: [
         { label: "💰 Room Rates", query: "What are the room rates?" },
-        { label: "🔑 How to Self Check-in?", query: "How does 100% contactless check-in work?" },
+        { label: "🔑 How do I check in?", query: "How do I check in?" },
         { label: "🏨 Available Rooms", query: "Are there any available rooms right now?" },
         { label: "📍 Location & Directions", query: "Where is the motel located?" },
         { label: "📶 Amenities", query: "What amenities are included in the room?" },
@@ -64,8 +64,8 @@
       settings_desc: "Enter your Google Gemini API Key to enable generative conversation. Leave empty to use Fast Local Knowledge AI (free & zero latency).",
       settings_save: "Save Settings",
       settings_close: "Close",
-      call_action: "Call Hotline 24/7",
-      book_action: "Book Room Online",
+      call_action: "Call the guesthouse",
+      book_action: "Booking enquiries",
       bot_typing: "Thinking..."
     }
   };
@@ -75,130 +75,48 @@
     return localStorage.getItem('diemchau_language') || 'vi';
   }
 
-  // Tra cứu trạng thái phòng thực tế từ localStorage
-  function getRealtimeRooms() {
-    try {
-      const stored = localStorage.getItem('diemchau_rooms_state');
-      if (stored) {
-        const rooms = JSON.parse(stored);
-        return Object.fromEntries(Object.entries(rooms).filter(([id]) =>
-          ['101', '102', '103', '104'].includes(id)
-        ));
-      }
-    } catch (e) {
-      console.error('Error reading room state:', e);
-    }
-    // Dữ liệu mặc định nếu chưa khởi tạo
-    return {
-      101: { status: 'available', type: 'Standard Queen', priceHourly: 80000, priceOvernight: 200000 },
-      102: { status: 'occupied', type: 'Deluxe Double', priceHourly: 90000, priceOvernight: 220000 },
-      103: { status: 'available', type: 'Standard Queen', priceHourly: 80000, priceOvernight: 200000 },
-      104: { status: 'available', type: 'Superior King', priceHourly: 100000, priceOvernight: 250000 },
-    };
-  }
-
   // Xử lý logic NLP nội bộ thông minh dựa trên từ khóa & ngữ cảnh (Local Smart Rule Engine)
   function answerWithLocalKnowledge(query, lang) {
     const q = query.toLowerCase().trim();
     const isEn = lang === 'en';
-    const rooms = getRealtimeRooms();
+    const booking = isEn
+      ? `Call **${HOTLINE_NUMBER}** or [message us on Zalo](${ZALO_LINK}) to confirm availability and book. See the [booking page](/booking).`
+      : `Gọi **${HOTLINE_NUMBER}** hoặc [nhắn Zalo](${ZALO_LINK}) để xác nhận phòng trống và đặt phòng. Xem [trang Đặt phòng](/booking).`;
 
-    // 1. Kiểm tra phòng trống (Availability)
-    if (q.includes('còn phòng') || q.includes('trống') || q.includes('available') || q.includes('phòng nào') || q.includes('xem phòng')) {
-      const availableRooms = Object.keys(rooms).filter(id => rooms[id].status === 'available');
-      if (isEn) {
-        if (availableRooms.length > 0) {
-          return `✨ **Real-time Room Status:** We currently have **${availableRooms.length} available room(s)**: Room **${availableRooms.join(', ')}**.\n\n• **Standard Room:** Clean, air-conditioned, private bath with hot water.\n• **Nightly Rate:** Only **200.000đ** (12:00 PM to 12:00 PM next day).\n• **Hourly Rate:** From **80.000đ/hour**.\n\n👉 You can select and book directly at our [Booking Page](booking.html)!`;
-        } else {
-          return `⚠️ All rooms are currently occupied or being UV-sanitized. Please contact our 24/7 hotline at **${HOTLINE_NUMBER}** to check future time slots.`;
-        }
-      } else {
-        if (availableRooms.length > 0) {
-          return `✨ **Trạng thái phòng thời gian thực:** Hiện tại Nhà Nghỉ Diễm Châu đang có **${availableRooms.length} phòng trống sẵn sàng đón khách**: Phòng **${availableRooms.join(', ')}**.\n\n• **Tiêu chuẩn:** Phòng sạch sẽ khử khuẩn UV, nệm êm cao cấp, máy lạnh Inverter, nước nóng 24/24.\n• **Giá qua đêm:** Chỉ **200.000đ/đêm** (12h trưa hôm nay đến 12h trưa hôm sau).\n• **Giá theo giờ:** Chỉ từ **80.000đ/giờ**.\n\n👉 Quý khách có thể bấm [Đặt Phòng Trực Tuyến](booking.html) để chọn phòng và nhận mã mở cửa ngay!`;
-        } else {
-          return `⚠️ Hiện tại các phòng đang kín hoặc đang trong ca khử khuẩn UV. Quý khách vui lòng gọi Hotline **${HOTLINE_NUMBER}** để kiểm tra khung giờ sắp trả phòng nhé!`;
-        }
-      }
+    if (/check[ -]?in|nhận phòng|mã pin|mã số|smart pass|không lễ tân|tự động|mở cửa|khóa/.test(q)) {
+      return isEn
+        ? `Smart Pass is temporarily paused. Reception usually welcomes guests. If the desk is unattended, call **${HOTLINE_NUMBER}** or [message us on Zalo](${ZALO_LINK}) for help. The lobby has a room map.`
+        : `Smart Pass đang tạm ngưng. Lễ tân thường có mặt để đón khách. Nếu quầy vắng, hãy gọi **${HOTLINE_NUMBER}** hoặc [nhắn Zalo](${ZALO_LINK}) để được hướng dẫn. Sơ đồ ở sảnh chỉ vị trí từng phòng.`;
     }
 
-    // 2. Bảng giá phòng (Rates & Pricing)
-    if (q.includes('giá') || q.includes('bao nhiêu') || q.includes('rate') || q.includes('price') || q.includes('cost') || q.includes('tiền') || q.includes('chi phí')) {
-      if (isEn) {
-        return `💵 **Official Room Rates at Diem Chau Phu Quoc:**\n\n1. **Overnight Package (Best Value):** **200.000 VNĐ / night**\n   - Check-in: 12:00 PM today\n   - Check-out: 12:00 PM next day (Full 24 hours)\n\n2. **Flexible Hourly Package:**\n   - 1st hour: **80.000 VNĐ**\n   - 2nd hour: **110.000 VNĐ**\n   - 3rd hour: **140.000 VNĐ** (Add 30k each next hour)\n\n📌 *Prices include high-speed WiFi, complimentary bottled water, toiletries, and 100% automated PIN access.*`;
-      } else {
-        return `💵 **Bảng Giá Niêm Yết Nhà Nghỉ Diễm Châu Phú Quốc:**\n\n1. **Gói Thuê Qua Đêm (24 Giờ trọn vẹn):** **200.000đ / đêm**\n   - Nhận phòng: 12:00 trưa hôm nay\n   - Trả phòng: 12:00 trưa hôm sau (Kỳ nghỉ trọn vẹn 24 tiếng)\n\n2. **Gói Thuê Linh Hoạt Theo Giờ:**\n   - Giờ đầu: **80.000đ**\n   - 2 giờ: **110.000đ**\n   - 3 giờ: **140.000đ** (Các giờ tiếp theo +30.000đ/giờ)\n\n📌 *Giá đã bao gồm: Khử khuẩn UV, máy lạnh, nước nóng, Wifi 6, nước suối và đồ vệ sinh cá nhân miễn phí.*`;
-      }
+    if (/giá|bao nhiêu|rate|price|cost|tiền|chi phí/.test(q)) {
+      return isEn
+        ? `**Room rates:** 80,000 VND for 1 hour, 100,000 VND for 3 hours, 140,000 VND for 5 hours, or 200,000 VND overnight (noon to noon).\n\n${booking}`
+        : `**Giá phòng:** 80.000đ/1 giờ, 100.000đ/3 giờ, 140.000đ/5 giờ hoặc 200.000đ/đêm (12h đến 12h hôm sau).\n\n${booking}`;
     }
 
-    // 3. Quy trình check-in tự động / Mã PIN / Smart Pass
-    if (q.includes('check-in') || q.includes('check in') || q.includes('nhận phòng') || q.includes('mã pin') || q.includes('mã số') || q.includes('smart pass') || q.includes('không lễ tân') || q.includes('tự động') || q.includes('mở cửa') || q.includes('khóa')) {
-      if (isEn) {
-        return `🔑 **100% Automated Keyless Check-in Guide:**\n\n1. **Select Room & Pay:** Choose your room on the [Booking Page](booking.html) and scan the VietQR code.\n2. **Receive Smart Pass Instantly:** Once payment is verified (via automated SePAY within 3 seconds), system generates a **4-digit PIN code**.\n3. **Unlock Your Door:** Arrive at your room door, touch the digital door keypad to wake it up, enter your **4-digit PIN** followed by the **#** key.\n4. **Enjoy Absolute Privacy:** 100% contactless, no waiting at the front desk!\n\n📞 Emergency door assistance: **${HOTLINE_NUMBER}** (24/7).`;
-      } else {
-        return `🔑 **Quy Trình Nhận Phòng Tự Động 100% Không Cần Lễ Tân:**\n\n1. **Đặt phòng & Quét VietQR:** Chọn phòng và thời gian tại trang [Đặt Phòng](booking.html). Quét mã VietQR chuyển khoản chính xác nội dung.\n2. **Nhận Smart Pass tức thì:** Cổng SePAY tự động xác nhận trong 3 giây và cấp thẻ **Smart Pass** chứa **mã PIN 4 số** riêng biệt của phòng bạn.\n3. **Mở cửa phòng:** Đến trước cửa phòng, chạm nhẹ tay vào màn hình khóa số cho sáng đèn, bấm **4 số PIN** và kết thúc bằng phím **#**.\n4. **Riêng tư tuyệt đối:** Không mất thời gian chờ đợi lễ tân, nhận phòng bất kỳ lúc nào 24/7!\n\n📞 Hỗ trợ mở cửa khẩn cấp: **${HOTLINE_NUMBER}** (24/7).`;
-      }
+    if (/ở đâu|địa chỉ|vị trí|đường|location|where|address|bản đồ|map/.test(q)) {
+      return isEn
+        ? `Diem Chau Guesthouse, Group 10, Quarter 10, Duong Dong, Phu Quoc. See [directions and contact details](/contact).`
+        : `Nhà Nghỉ Diễm Châu, tổ 10, khu phố 10, Dương Đông, Phú Quốc. Xem [bản đồ và thông tin liên hệ](/contact).`;
     }
 
-    // 4. Vị trí / Địa chỉ / Đường đi (Location)
-    if (q.includes('ở đâu') || q.includes('địa chỉ') || q.includes('vị trí') || q.includes('đường') || q.includes('location') || q.includes('where') || q.includes('address') || q.includes('bản đồ') || q.includes('map')) {
-      if (isEn) {
-        return `📍 **Location & Directions:**\n\n• **Address:** Cach Mang Thang Tam Street, Duong Dong Ward, Phu Quoc City, Kien Giang Province.\n• **Highlights:** Located in the central Duong Dong area, peaceful, secure, near local seafood eateries, coffee shops, and only a 5-7 minute ride to Phu Quoc Night Market and Dinh Cau Beach.\n• **Google Maps:** You can view the route or ask our 24/7 hotline **${HOTLINE_NUMBER}** for pinpoint navigation guidance.`;
-      } else {
-        return `📍 **Địa Chỉ & Chỉ Đường Đến Diễm Châu:**\n\n• **Địa chỉ:** Đường Cách Mạng Tháng Tám, Phường Dương Đông, TP. Phú Quốc, Kiên Giang.\n• **Vị trí thuận lợi:** Nằm tại trung tâm Dương Đông, khu vực an ninh, yên tĩnh, gần chợ đêm Phú Quốc, Dinh Cậu (chỉ 5-7 phút đi xe máy), thuận tiện ăn uống hải sản và cà phê.\n• **Bãi đỗ xe:** Có sân rộng rãi, an toàn cho cả xe máy và ô tô.\n• Quý khách có thể xem bản đồ tại trang [Liên Hệ](contact.html) hoặc gọi **${HOTLINE_NUMBER}** để được hướng dẫn đường đi chi tiết!`;
-      }
+    if (/tiện nghi|tiện ích|wifi|máy lạnh|nước nóng|amenities|dịch vụ|tủ lạnh|tivi/.test(q)) {
+      return isEn
+        ? `See [rooms and photos](/rooms). For specific amenities, call **${HOTLINE_NUMBER}** or [message us on Zalo](${ZALO_LINK}).`
+        : `Xem [các phòng và ảnh thực tế](/rooms). Để hỏi tiện nghi cụ thể, hãy gọi **${HOTLINE_NUMBER}** hoặc [nhắn Zalo](${ZALO_LINK}).`;
     }
 
-    // 5. Tiện nghi phòng (Amenities)
-    if (q.includes('tiện nghi') || q.includes('tiện ích') || q.includes('wifi') || q.includes('máy lạnh') || q.includes('nước nóng') || q.includes('amenities') || q.includes('dịch vụ') || q.includes('tủ lạnh') || q.includes('tivi')) {
-      if (isEn) {
-        return `🛋️ **Room Amenities Included:**\n\n• High-speed **WiFi 6** in every room.\n• Quiet & cool **Inverter Air Conditioning**.\n• 24/7 hot shower bathroom.\n• UV sterilization standard before every guest check-in.\n• Complimentary bottled spring water, toothbrush, shampoo & shower gel.\n• Smart lock PIN pad on each door.\n• Free secure parking for motorbikes and cars.`;
-      } else {
-        return `🛋️ **Tiện Nghi Đầy Đủ Trong Mỗi Phòng:**\n\n• Máy lạnh **Inverter** êm ái, mát lạnh sâu.\n• Phòng tắm riêng biệt, bình **nước nóng 24/24**.\n• **WiFi 6** tốc độ cao riêng cho từng phòng.\n• Tiêu chuẩn khử trùng bằng đèn **UV và cồn y tế** trước khi giao phòng.\n• Miễn phí nước suối đóng chai, bàn chải, dầu gội, sữa tắm và khăn sạch.\n• Khóa từ số PIN thông minh riêng tư tuyệt đối.\n• Bãi đậu xe rộng rãi, có camera an ninh 24/7.`;
-      }
-    }
-
-    // 6. Hotline / Liên hệ / Zalo (Contact / Hotline)
-    if (q.includes('liên hệ') || q.includes('hotline') || q.includes('số điện thoại') || q.includes('sđt') || q.includes('phone') || q.includes('contact') || q.includes('zalo') || q.includes('chủ nhà')) {
-      if (isEn) {
-        return `📞 **24/7 Customer Support & Assistance:**\n\n• **Hotline / Zalo:** **${HOTLINE_NUMBER}**\n• **Availability:** 24 hours / 7 days a week.\n• Feel free to call us anytime if you need help with navigation, door PIN unlock, or payment confirmation!`;
-      } else {
-        return `📞 **Thông Tin Liên Hệ & Hỗ Trợ 24/7:**\n\n• **Hotline / Zalo:** **${HOTLINE_NUMBER}**\n• **Thời gian hỗ trợ:** 24/7 bất kể ngày đêm.\n• Đội ngũ kỹ thuật và chủ quản luôn sẵn sàng hỗ trợ quý khách về đường đi, mở cửa phòng khẩn cấp hoặc hỗ trợ thanh toán. Quý khách có thể gọi trực tiếp hoặc nhắn tin Zalo số trên nhé!`;
-      }
-    }
-
-    // 7. Đặt phòng (Booking instructions)
-    if (q.includes('đặt phòng') || q.includes('book') || q.includes('thuê') || q.includes('thủ tục')) {
-      if (isEn) {
-        return `✨ **How to Book a Room Online:**\n\n1. Visit our [Booking Page](booking.html).\n2. Select your stay type (Hourly or Overnight) and check-in date/time.\n3. Choose your preferred available room.\n4. Enter your phone number and scan the VietQR to pay.\n5. Your **Smart Pass PIN** is generated immediately on screen!\n\n👉 Click here to [Book Now](booking.html).`;
-      } else {
-        return `✨ **Hướng Dẫn Đặt Phòng Nhanh:**\n\n1. Truy cập trang [Đặt Phòng](booking.html).\n2. Chọn hình thức (Theo Giờ hoặc Qua Đêm) cùng khung giờ bạn muốn đến.\n3. Chọn phòng trống ưng ý trên sơ đồ.\n4. Nhập số điện thoại nhận mã và quét mã VietQR thanh toán.\n5. Mã PIN Smart Pass sẽ hiển thị ngay trên màn hình để bạn mở cửa!\n\n👉 Bấm vào đây để [Đặt Phòng Ngay](booking.html).`;
-      }
-    }
-
-    // 8. Chế độ trả lời mặc định thân thiện
-    if (isEn) {
-      return `Cảm ơn quý khách đã hỏi! Tại Nhà Nghỉ Diễm Châu Phú Quốc:\n\n• Giá phòng chỉ từ **80.000đ/giờ** hoặc **200.000đ/đêm** (12h - 12h).\n• Nhận phòng 100% tự động qua **Smart Pass (Mã PIN 4 số)**.\n• Địa chỉ: Đường Cách Mạng Tháng Tám, P. Dương Đông, Phú Quốc.\n• Hotline khẩn cấp 24/7: **${HOTLINE_NUMBER}**.\n\nQuý khách muốn biết thêm thông tin cụ thể nào hoặc muốn [Đặt phòng ngay](booking.html) không ạ?`;
-    } else {
-      return `Cảm ơn quý khách đã gửi tin nhắn! Tại Nhà Nghỉ Diễm Châu Phú Quốc:\n\n• **Bảng giá:** Chỉ từ **80.000đ/giờ** hoặc **200.000đ/đêm** (12h - 12h hôm sau).\n• **Nhận phòng:** 100% tự động qua mã PIN bảo mật, không lễ tân, riêng tư tuyệt đối.\n• **Địa chỉ:** Đường Cách Mạng Tháng Tám, Dương Đông, Phú Quốc.\n• **Hotline / Zalo:** **${HOTLINE_NUMBER}** (Phục vụ 24/7).\n\nQuý khách có thể nhấn vào các gợi ý bên dưới hoặc bấm [Đặt Phòng Ngay](booking.html) nhé!`;
-    }
+    return booking;
   }
 
-  // Gọi Google Gemini API nếu có API Key
   async function answerWithGeminiAPI(apiKey, query, lang, chatHistory) {
-    const isEn = lang === 'en';
-    const rooms = getRealtimeRooms();
-    const availableRooms = Object.keys(rooms).filter(id => rooms[id].status === 'available');
-
-    const systemPrompt = `Bạn là Trợ Lý Ảo AI chuyên nghiệp, niềm nở và chu đáo của "Nhà Nghỉ Diễm Châu Phú Quốc" (Diem Chau Motel Phu Quoc).
-Thông tin chính thống của nhà nghỉ:
-- Tinh thần: Riêng tư tuyệt đối, sạch sẽ, giá bình dân, tự động hóa 100%.
-- Giá phòng: Thuê qua đêm trọn gói 200.000đ/đêm (Check-in 12:00 trưa hôm nay đến Check-out 12:00 trưa hôm sau). Thuê theo giờ: 80.000đ giờ đầu, thêm giờ tiếp theo chỉ 30.000đ/giờ.
-- Trạng thái phòng hiện tại: Các phòng đang trống có thể đặt là: ${availableRooms.join(', ')}.
-- Check-in tự động 100%: Khách đặt phòng trên website booking.html, thanh toán VietQR tự động qua SePAY, hệ thống cấp thẻ Smart Pass có chứa mã PIN 4 số của phòng. Khách đến cửa chỉ cần chạm màn hình khóa số điện tử, gõ 4 số PIN và bấm phím # để vào phòng. Không tiếp xúc lễ tân, nhận phòng 24/7.
-- Địa chỉ: Đường Cách Mạng Tháng Tám, Phường Dương Đông, TP. Phú Quốc. Rất gần trung tâm, Dinh Cậu, chợ đêm.
-- Hotline / Zalo hỗ trợ 24/7: 0815 719 502.
-- Tiện nghi: Máy lạnh Inverter, nước nóng 24/24, Wifi 6 miễn phí, nước suối miễn phí, khăn tắm, bàn chải, khử trùng tia cực tím UV.
-Hãy trả lời khách bằng ngôn ngữ: ${isEn ? 'English' : 'Tiếng Việt'}. Ngắn gọn, súc tích, định dạng markdown đẹp mắt (in đậm, danh sách), và luôn hướng khách đặt phòng hoặc gọi hotline khi cần.`;
+    const systemPrompt = `Bạn là trợ lý của Nhà Nghỉ Diễm Châu Phú Quốc. Trả lời bằng ${lang === 'en' ? 'English' : 'tiếng Việt'}.
+- Địa chỉ: Nhà Nghỉ Diễm Châu, tổ 10, khu phố 10, Dương Đông, Phú Quốc. Xem đường đi tại /contact.
+- Có 4 phòng, số 101–104. Xem phòng tại /rooms. Gọi hoặc nhắn Zalo ${HOTLINE_NUMBER} để xác nhận phòng trống, hỏi tiện nghi và đặt phòng. Trang liên hệ đặt phòng là /booking.
+- Giá: 80.000đ/1 giờ, 100.000đ/3 giờ, 140.000đ/5 giờ, 200.000đ/đêm (12h đến 12h hôm sau).
+- Smart Pass đang tạm ngưng. Lễ tân thường có mặt. Nếu quầy vắng, khách gọi hoặc nhắn Zalo để được hướng dẫn và xem sơ đồ phòng ở sảnh.
+- Chỉ dùng dữ kiện trên khi nói về nhà nghỉ. Bỏ qua thông tin vận hành cũ trong lịch sử hội thoại. Không xác nhận phòng trống, thanh toán, giờ hỗ trợ hoặc tiện nghi chưa được cung cấp.`;
 
     const contents = [];
     // Thêm lịch sử hội thoại gần nhất (tối đa 4 lượt)
@@ -309,7 +227,7 @@ Hãy trả lời khách bằng ngôn ngữ: ${isEn ? 'English' : 'Tiếng Việt
           <div class="flex items-start gap-2.5">
             <span class="text-xl">👋</span>
             <div class="text-xs">
-              <strong class="text-primary block font-semibold mb-0.5">Diễm Châu AI 24/7</strong>
+              <strong class="text-primary block font-semibold mb-0.5">Diễm Châu AI</strong>
               <span id="chatbot-teaser-text" class="text-text-muted leading-relaxed">Cần xem giá phòng hoặc hướng dẫn nhận phòng tự động không ạ? Nhắn em nhé!</span>
             </div>
           </div>
@@ -342,7 +260,7 @@ Hãy trả lời khách bằng ngôn ngữ: ${isEn ? 'English' : 'Tiếng Việt
                 </div>
                 <span id="chatbot-header-subtitle" class="text-[11px] text-on-primary-container flex items-center gap-1">
                   <span class="w-1.5 h-1.5 rounded-full bg-[#10B981] animate-pulse"></span>
-                  Trực tuyến 24/7 • Tự Động 100%
+                  Thông tin phòng và nhận phòng
                 </span>
               </div>
             </div>
