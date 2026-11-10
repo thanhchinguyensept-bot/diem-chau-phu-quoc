@@ -79,7 +79,12 @@
   function getRealtimeRooms() {
     try {
       const stored = localStorage.getItem('diemchau_rooms_state');
-      if (stored) return JSON.parse(stored);
+      if (stored) {
+        const rooms = JSON.parse(stored);
+        return Object.fromEntries(Object.entries(rooms).filter(([id]) =>
+          ['101', '102', '103', '104'].includes(id)
+        ));
+      }
     } catch (e) {
       console.error('Error reading room state:', e);
     }
@@ -89,8 +94,6 @@
       102: { status: 'occupied', type: 'Deluxe Double', priceHourly: 90000, priceOvernight: 220000 },
       103: { status: 'available', type: 'Standard Queen', priceHourly: 80000, priceOvernight: 200000 },
       104: { status: 'available', type: 'Superior King', priceHourly: 100000, priceOvernight: 250000 },
-      105: { status: 'occupied', type: 'Standard Queen', priceHourly: 80000, priceOvernight: 200000 },
-      106: { status: 'available', type: 'Deluxe Twin', priceHourly: 95000, priceOvernight: 230000 }
     };
   }
 
