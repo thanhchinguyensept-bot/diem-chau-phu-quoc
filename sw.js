@@ -1,5 +1,5 @@
 // sw.js – Service Worker cho Diem Chau Phu Quoc PWA
-const CACHE_NAME = 'diemchau-pwa-v14';
+const CACHE_NAME = 'diemchau-pwa-v15';
 
 // Danh sách các tài nguyên tĩnh cốt lõi cần cache ngay khi cài đặt
 const PRECACHE_ASSETS = [
@@ -17,6 +17,7 @@ const PRECACHE_ASSETS = [
   '/css/article-v1.css',
   '/css/mobile-navigation.css',
   '/css/ui-refresh.css?v=2',
+  '/css/rooms-target.css?v=1',
   '/css/home-target.css?v=1',
   '/css/booking-refresh.css?v=2',
   '/css/booking-reference.css?v=1',
