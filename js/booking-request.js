@@ -28,6 +28,7 @@
       $('sum-checkout').textContent = `${displayDate(date && h+state.hours>=24 ? addDays(date,1) : date)} · ${end}`;
     }
     $('sum-total').textContent = money(amount);
+    $('mobile-sum-total').textContent = money(amount);
     return amount;
   };
   const today = dateVN();
@@ -47,7 +48,8 @@
     $('hourly-date').value = $('overnight-in').value = query.get('date');
     $('overnight-out').value = addDays(query.get('date'),1);
   }
-  if (/^([01]\d|2[0-3]):[0-5]\d$/.test(query.get('time') || '')) $('hourly-time').value = query.get('time');
+  if (/^\d{4}-\d{2}-\d{2}$/.test(query.get('checkout') || '') && query.get('checkout') > $('overnight-in').value) $('overnight-out').value = query.get('checkout');
+  if (/^([01]\d|2[0-3]):[0-5]\d$/.test(query.get('time') || '') && ($('hourly-date').value > today || query.get('time') >= currentTime)) $('hourly-time').value = query.get('time');
   if (query.get('stay') === 'qua đêm') state.mode='overnight';
   const stayHours = Number((query.get('stay') || '').replace(' giờ',''));
   if (priceByHours[stayHours]) state.hours=stayHours;

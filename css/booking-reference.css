@@ -1,0 +1,77 @@
+/* Reference booking layout: light canvas, compact heading and a receipt column. */
+.reference-booking{background:#fcf9f8;max-width:100%;overflow-x:clip}
+.reference-booking .intro{background:#fcf9f8;color:#0c2535;padding:32px 0 18px}
+.reference-booking .intro .crumbs,.reference-booking .intro .eyebrow{display:none}
+.reference-booking .intro h1{font-size:36px;max-width:none;margin:0 0 6px}
+.reference-booking .intro p{color:#52616b;font-size:14px;max-width:740px}
+.reference-booking .booking-layout{margin-top:0;grid-template-columns:minmax(0,800px) minmax(300px,384px);gap:32px;max-width:1216px;padding-bottom:44px}
+.reference-booking .panel,.reference-booking .summary{border-radius:16px;box-shadow:0 9px 26px #11344a0d}
+.reference-booking .panel{padding:28px}
+.reference-booking .section-title{border-bottom:1px solid #e7e2d9;padding-bottom:18px;margin-bottom:18px}
+.reference-booking .section-title .step{background:#11344a;color:#fff}
+.reference-booking .panel h2,.reference-booking .summary h2{font-size:22px}
+.reference-booking .mode-row{background:#f0eded;padding:5px;border-radius:12px}
+.reference-booking .choice{border:0;background:transparent;min-height:64px}
+.reference-booking .choice[aria-pressed=true]{background:white;box-shadow:0 2px 7px #11344a1f}
+.reference-booking .hour-choice[aria-pressed=true],.reference-booking .room-choice[aria-pressed=true]{background:#fffaf0;border-color:#d4a853}
+.reference-booking .summary{overflow:hidden;padding:24px 20px;border:1px solid #e4d2ae;background:linear-gradient(#11344a 0 91px,#fff 91px);top:96px}
+.reference-booking .summary .eyebrow{color:#f2cf84!important;font-size:11px}
+.reference-booking .summary h2{color:#fff;margin-bottom:30px}
+.reference-booking .summary-row{font-size:13px}
+.reference-booking .total{background:#fffaf0;border:1px solid #ecd6a7;border-radius:12px;padding:14px;margin-top:20px}
+.reference-booking .total strong{font-family:'Playfair Display',Georgia,serif}
+.booking-mobile-sticky{display:none}
+.booking-back{display:none}
+@media(max-width:900px){
+ .reference-booking .booking-layout{grid-template-columns:1fr;max-width:760px;gap:18px}
+ .reference-booking .summary{position:static}
+}
+@media(max-width:620px){
+ html,body.reference-booking{width:100%;max-width:100%;overflow-x:clip}
+ .reference-booking .site-head{height:64px;background:#fcf9f8;color:#0c2535;box-shadow:0 3px 12px #11344a12}
+ .reference-booking .head-inner{min-height:64px;gap:8px}
+ .booking-back{display:inline-grid;place-items:center;font-size:26px;text-decoration:none;color:#0c2535;line-height:1;width:28px;flex:none}
+ .reference-booking .brand{margin-right:auto}
+ .reference-booking .brand img{width:34px;height:34px;filter:brightness(0) saturate(100%) invert(13%) sepia(28%) saturate(929%) hue-rotate(154deg) brightness(87%)}
+ .reference-booking .brand span{font-size:16px;white-space:nowrap;color:#0c2535}
+ .reference-booking .head-actions{gap:7px}
+ .reference-booking .head-actions .pill-call{display:inline-grid;place-items:center;width:38px;height:38px;padding:0;border-radius:50%;font-size:0;background:#ffcf73;color:#0c2535}
+ .reference-booking .head-actions .pill-call::before{content:'☎';font-size:19px}
+ .reference-booking .menu-button{display:inline-grid;place-items:center;width:38px;height:38px;padding:0;border-radius:50%;background:#0c2535;color:white;font-size:0}
+ .reference-booking .menu-button::before{content:'☰';font-size:18px}
+ .reference-booking .main-nav{top:64px}
+ .reference-booking .intro{position:absolute;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+ .reference-booking .intro h1{font-size:24px;line-height:1.2;margin:0}
+ .reference-booking .intro p{font-size:12px;line-height:1.4;margin-top:6px}
+ .reference-booking .booking-layout{width:calc(100% - 24px);margin:12px 12px 0;padding-bottom:120px}
+ .reference-booking .panel{padding:14px;border-radius:15px}
+ .reference-booking .panel h2{font-size:19px}
+ .reference-booking .section-title{padding-bottom:8px;margin-bottom:12px}
+ .reference-booking .section-title .step{width:29px;height:29px}
+ .reference-booking .panel .sub{font-size:12px;margin-bottom:12px}
+ .reference-booking .mode-row{gap:4px;margin-bottom:13px}
+ .reference-booking .choice{min-height:61px;padding:9px 7px;text-align:center;font-size:13px}
+ .reference-booking .choice small{font-size:10px}
+ .reference-booking .choice[aria-pressed=true]{background:#042a3b;color:white}
+ .reference-booking .choice[aria-pressed=true] small{color:#f6ca6e}
+ .reference-booking .field-grid{grid-template-columns:1fr 1fr;gap:7px}
+ .reference-booking .field{font-size:11px;min-width:0}
+ .reference-booking .field input{width:100%;min-width:0;font-size:12px;padding:7px}
+ .reference-booking .hour-options{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin-top:13px}
+ .reference-booking .hour-choice{font-size:12px;min-width:0}
+ .reference-booking .hour-choice span{font-size:10px}
+ .reference-booking .hour-choice[aria-pressed=true]{background:#042a3b;color:white}
+ .reference-booking .hour-choice[aria-pressed=true] span{color:#ffcf73}
+ .reference-booking .hint{font-size:11px;margin-top:11px}
+ .reference-booking .room-grid{grid-template-columns:1fr;gap:8px}
+ .reference-booking .room-choice.auto{grid-column:auto}
+ .reference-booking .room-choice{min-width:0}
+ .reference-booking .summary{display:none}
+ .reference-booking main>section:last-child{padding:0 16px 100px!important;font-size:13px}
+ .reference-booking .booking-mobile-sticky{display:flex;align-items:center;justify-content:space-between;gap:10px;position:fixed;bottom:0;left:0;right:0;z-index:40;background:#fff;box-shadow:0 -7px 23px #11344a20;padding:10px 14px max(10px,env(safe-area-inset-bottom))}
+ .booking-mobile-sticky div{display:grid;gap:1px;min-width:0}
+ .booking-mobile-sticky small{font-size:10px;color:#52616b}
+ .booking-mobile-sticky strong{font-family:'Playfair Display',Georgia,serif;font-size:20px;color:#0c2535}
+ .booking-mobile-sticky span{font-size:10px;color:#8b620c}
+ .booking-mobile-sticky a{min-width:150px;min-height:44px;display:grid;place-items:center;background:#ffcf73;color:#0c2535;text-decoration:none;border-radius:10px;font-weight:700;font-size:12px}
+}
