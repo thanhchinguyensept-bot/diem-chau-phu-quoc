@@ -1,7 +1,7 @@
 (() => {
   const $ = (id) => document.getElementById(id);
   const priceByHours = {1: 80000, 2: 100000, 3: 100000, 4: 140000, 5: 140000, 6: 180000};
-  const state = {mode: 'hourly', hours: 3, room: 'auto', busy: false};
+  const state = {mode: 'hourly', hours: 3, room: 'auto'};
   const dateVN = () => {
     const parts = Object.fromEntries(new Intl.DateTimeFormat('en-US', {timeZone: 'Asia/Ho_Chi_Minh', year: 'numeric', month: '2-digit', day: '2-digit'}).formatToParts(new Date()).map(p => [p.type, p.value]));
     return `${parts.year}-${parts.month}-${parts.day}`;
@@ -69,36 +69,6 @@
   $('menu-button').addEventListener('click', () => {
     const open = $('main-nav').classList.toggle('is-open');
     $('menu-button').setAttribute('aria-expanded', String(open));
-  });
-  $('booking-form').addEventListener('submit', async (event) => {
-    event.preventDefault();
-    if (state.busy) return;
-    const status = $('form-status');
-    status.textContent = '';
-    $('booking-result').hidden = true;
-    const name = $('guest-name').value.trim();
-    const phone = $('guest-phone').value.replace(/\D/g,'');
-    if (name.length < 2) {status.textContent='Vui lòng nhập họ tên từ 2 ký tự.';$('guest-name').focus();return;}
-    if (!/^0\d{9}$/.test(phone)) {status.textContent='Vui lòng nhập số điện thoại Việt Nam gồm 10 chữ số.';$('guest-phone').focus();return;}
-    const payload = {name,phone,room:state.room,mode:state.mode,hours:state.mode==='hourly'?state.hours:null,checkInDate:state.mode==='hourly'?$('hourly-date').value:$('overnight-in').value,checkInTime:state.mode==='hourly'?$('hourly-time').value:'12:00',checkOutDate:state.mode==='overnight'?$('overnight-out').value:null,contactMethod:$('contact-method').value,guests:Number($('guest-count').value),note:$('guest-note').value.trim()};
-    if (!payload.checkInDate || payload.checkInDate < dateVN()) {status.textContent='Vui lòng chọn ngày nhận phòng từ hôm nay.';return;}
-    if (state.mode==='hourly' && !payload.checkInTime) {status.textContent='Vui lòng chọn giờ đến.';return;}
-    if (state.mode==='hourly' && payload.checkInDate===dateVN() && payload.checkInTime<currentTime) {status.textContent='Giờ đến đã qua. Vui lòng chọn giờ mới.';return;}
-    if (state.mode==='overnight' && (!payload.checkOutDate || nights()<1)) {status.textContent='Ngày trả phòng phải sau ngày nhận phòng.';return;}
-    state.busy=true; $('submit-booking').disabled=true; $('submit-booking').textContent='Đang gửi yêu cầu…';
-    try {
-      const response = await fetch('/api/booking-requests', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
-      const result = await response.json();
-      if (!response.ok || !result.success || !result.id) throw new Error(result.message || 'Không gửi được yêu cầu.');
-      $('request-code').textContent=result.id;
-      $('booking-result').hidden=false;
-      $('booking-result').focus();
-      status.textContent='';
-    } catch (error) {
-      status.textContent='Chưa gửi được yêu cầu. Vui lòng gọi 0815 719 502 hoặc nhắn Zalo để hỏi phòng.';
-    } finally {
-      state.busy=false; $('submit-booking').disabled=false; $('submit-booking').textContent='Gửi yêu cầu đặt phòng';
-    }
   });
   sync();
 })();

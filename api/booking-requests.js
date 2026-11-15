@@ -28,6 +28,7 @@ const fail = (res, status, message) => res.status(status).json({success:false,me
 module.exports = async (req,res) => {
   res.setHeader('Cache-Control','no-store');
   res.setHeader('X-Content-Type-Options','nosniff');
+  if (process.env.BOOKING_REQUESTS_ENABLED !== 'true') return fail(res,503,'Yêu cầu đặt phòng trực tuyến chưa được mở. Vui lòng gọi hoặc nhắn Zalo.');
   if (!redisUrl() || !redisToken()) return fail(res,503,'Hệ thống nhận yêu cầu chưa được cấu hình.');
   if (req.method === 'GET') {
     const key = (req.headers.authorization || '').replace(/^Bearer\s+/i,'');
