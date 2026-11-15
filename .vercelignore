@@ -4,3 +4,9 @@ stitch_admin_raw.html
 stitch_brand_ui_design_system/
 xem-thu-anh-bia-diemchau.html
 tools/public-css/
+backups/
+diemchau.db
+server.py
+README.md
+BOOKING_REDIS_SETUP.md
+tools/

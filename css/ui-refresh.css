@@ -1,0 +1,22 @@
+/* Trang chủ và phòng nghỉ: bố cục dựa trên mẫu giao diện, giữ nội dung và ảnh thật của Diễm Châu. */
+.refreshed-home,.refreshed-rooms{font-family:'Be Vietnam Pro',system-ui,sans-serif}
+.refreshed-home h1,.refreshed-home h2,.refreshed-home h3,.refreshed-rooms h1,.refreshed-rooms h2,.refreshed-rooms h3{letter-spacing:-.02em}
+.refreshed-home #room-list article,.refreshed-rooms #room-list-title+ p + div article{padding:0;overflow:hidden;border:1px solid #e7e2d9;box-shadow:0 8px 24px #11344a0d;gap:0}
+.refreshed-home #room-list article img,.refreshed-rooms #room-list-title+ p + div article>img{border-radius:0;width:100%;aspect-ratio:4/3;object-fit:cover}
+.refreshed-home #room-list article h3,.refreshed-home #room-list article p,.refreshed-home #room-list article a{margin-left:18px;margin-right:18px}
+.refreshed-home #room-list article h3,.refreshed-rooms #room-list-title+ p + div article h3{margin-top:16px}
+.refreshed-home #room-list article p{color:#52616b;line-height:1.6;flex:1}
+.refreshed-home #room-list article a,.refreshed-rooms #room-list-title+ p + div article>a{margin-bottom:18px;margin-top:16px;text-decoration:none;min-height:46px;display:grid;place-items:center}
+.refreshed-rooms #room-list-title+ p + div article{display:flex;flex-direction:column}
+.refreshed-rooms #room-list-title+ p + div article h3,.refreshed-rooms #room-list-title+ p + div article p,.refreshed-rooms #room-list-title+ p + div article figure,.refreshed-rooms #room-list-title+ p + div article>a{margin-left:18px;margin-right:18px}
+.refreshed-rooms #room-list-title+ p + div article p{color:#52616b;line-height:1.6;flex:1}
+.refreshed-home #quick-booking>div{border:1px solid #e7e2d9;box-shadow:0 18px 40px #11344a26}
+.refreshed-home #quick-booking button,.refreshed-home #room-list article a,.refreshed-rooms #room-list-title+ p + div article>a{transition:background .2s,transform .2s}
+.refreshed-home #quick-booking button:hover,.refreshed-home #room-list article a:hover,.refreshed-rooms #room-list-title+ p + div article>a:hover{background:#f2bd59;transform:translateY(-1px)}
+.refreshed-home .home-kicker{display:inline-flex;color:#fbd787;background:#ffffff1f;border:1px solid #ffffff30;border-radius:40px;padding:7px 13px;font-size:12px;text-transform:uppercase;letter-spacing:.1em;font-weight:700}
+.refreshed-home .hero-tagline{font-style:italic;font-family:Georgia,serif;display:block;font-size:clamp(26px,3vw,40px);font-weight:400;color:#f5f0e8;margin-bottom:8px}
+.refreshed-home .hero-main{display:block;max-width:750px;font-family:Georgia,serif;font-size:clamp(36px,5vw,62px);line-height:1.12}
+.refreshed-home .home-answer{background:#fff;border-radius:18px;padding:28px;margin-top:26px;box-shadow:0 8px 26px #11344a0a}
+.refreshed-rooms .room-price-strip{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+.refreshed-rooms .room-price-strip span{padding:9px 13px;border-radius:30px;background:#ffffff1f;border:1px solid #ffffff4a;color:white;font-weight:600;font-size:13px}
+@media(max-width:640px){.refreshed-home .home-answer{padding:19px}.refreshed-home #room-list article,.refreshed-rooms #room-list-title+ p + div article{max-width:430px;margin:auto;width:100%}}
