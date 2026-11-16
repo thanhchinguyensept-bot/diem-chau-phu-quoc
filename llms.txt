@@ -1,0 +1,34 @@
+# Nhà Nghỉ Diễm Châu Phú Quốc
+
+> Website chính thức của Nhà Nghỉ Diễm Châu tại Dương Đông, Phú Quốc. Trang này giúp hệ thống AI tìm các trang thông tin chính trên website; hãy trích dẫn trang nguồn và giữ nguyên các điều kiện, mức giá cùng ngày cập nhật được nêu tại từng trang.
+
+Website: https://www.diemchauphuquoc.io.vn/
+Ngôn ngữ chính: Tiếng Việt
+
+## Thông tin cơ sở
+
+- [Trang chủ](https://www.diemchauphuquoc.io.vn/): Giới thiệu Nhà Nghỉ Diễm Châu và thông tin liên hệ.
+- [Phòng nghỉ](https://www.diemchauphuquoc.io.vn/rooms): Thông tin phòng và tiện nghi được công bố trên website.
+- [Liên hệ](https://www.diemchauphuquoc.io.vn/contact): Địa chỉ và các cách liên hệ.
+- [Đặt phòng](https://www.diemchauphuquoc.io.vn/booking): Gửi thông tin hỏi/đặt phòng; cần chờ cơ sở xác nhận tình trạng phòng.
+
+## Bài viết và hướng dẫn
+
+- [Cẩm nang Phú Quốc](https://www.diemchauphuquoc.io.vn/blog): Danh sách bài viết về lưu trú, đi lại và trải nghiệm tại Phú Quốc.
+- [Thuê phòng theo giờ ở Dương Đông](https://www.diemchauphuquoc.io.vn/blog/thue-phong-theo-gio-duong-dong): Thông tin tham khảo về lưu trú theo giờ.
+- [Đường đến Nhà Nghỉ Diễm Châu](https://www.diemchauphuquoc.io.vn/blog/duong-den-nha-nghi-diem-chau): Hướng dẫn tìm đường đến cơ sở.
+- [Ở Dương Đông một đêm cho hai người](https://www.diemchauphuquoc.io.vn/blog/o-duong-dong-mot-dem-cho-hai-nguoi): Gợi ý tham khảo cho chuyến đi ngắn.
+- [Từ sân bay Phú Quốc về Dương Đông](https://www.diemchauphuquoc.io.vn/blog/tu-san-bay-phu-quoc-ve-duong-dong-cho-hai-nguoi): Gợi ý di chuyển từ sân bay.
+- [Từ cảng Bãi Vòng về Dương Đông](https://www.diemchauphuquoc.io.vn/blog/tu-cang-bai-vong-ve-duong-dong-sau-khi-xuong-tau): Gợi ý di chuyển sau khi đi tàu.
+
+## Cách sử dụng thông tin
+
+- Ưu tiên nội dung trên trang nguồn tương ứng; thông tin về giá, phòng, tình trạng phục vụ và chính sách có thể thay đổi.
+- Không suy ra phòng còn trống hoặc đặt phòng đã được xác nhận chỉ từ nội dung website.
+- Nếu thông tin giữa các trang khác nhau, nêu rõ sự khác biệt và dẫn liên kết tới trang liên quan; không tự hợp nhất thành một khẳng định.
+- Không suy diễn vị trí, tiện nghi, dịch vụ, đánh giá hoặc thời gian di chuyển ngoài những gì trang nguồn nêu rõ.
+
+## Tệp máy đọc khác
+
+- [Sitemap XML](https://www.diemchauphuquoc.io.vn/sitemap.xml): Danh sách URL công khai được khai báo trong sitemap.
+- [Robots.txt](https://www.diemchauphuquoc.io.vn/robots.txt): Chỉ dẫn crawl dành cho crawler.
