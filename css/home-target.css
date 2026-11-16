@@ -2,7 +2,6 @@
 .refreshed-home{background:#fcf9f8}
 .refreshed-home #pwa-install-container,.refreshed-home #chatbot-launcher{display:none!important}
 .refreshed-home .home-hero picture img{object-position:center 48%}
-.home-hero-illustration{position:absolute;z-index:11;right:20px;bottom:120px;color:#fff;background:#01243599;border:1px solid #ffffff45;border-radius:30px;padding:4px 9px;font-size:11px;font-weight:700}
 .refreshed-home .home-hero .bg-gradient-to-r{background:linear-gradient(90deg,rgba(1,36,53,.92) 0%,rgba(1,36,53,.75) 44%,rgba(1,36,53,.43) 100%)}
 .refreshed-home .home-hero .bg-gradient-to-t{background:linear-gradient(0deg,rgba(1,36,53,.54),transparent 45%)}
 .refreshed-home .home-hero-copy{max-width:650px}
@@ -100,5 +99,4 @@
  .refreshed-home .home-final-cta{padding:65px 16px!important}
  .refreshed-home .home-final-cta h2{font-size:25px}
  .refreshed-home .home-final-cta p{font-size:13px}
- .home-hero-illustration{right:16px;top:170px;bottom:auto;font-size:10px}
 }
