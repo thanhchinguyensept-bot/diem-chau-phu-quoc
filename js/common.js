@@ -344,7 +344,7 @@ function initPWA() {
     });
   }
 
-  // 2. Tạo UI Nút bấm Cài đặt ứng dụng (Gắn nổi góc dưới bên phải hoặc thanh header)
+  // 2. Tạo UI Nút bấm Cài đặt ứng dụng, đặt phía trên nút chatbot
   injectPWAInstallUI();
 
   // 3. Bắt sự kiện beforeinstallprompt (Chrome / Android / Edge)
@@ -367,23 +367,21 @@ function injectPWAInstallUI() {
 
   const container = document.createElement('div');
   container.id = 'pwa-install-container';
-  container.className = 'fixed bottom-5 right-5 z-50 transition-all duration-300 transform translate-y-24 opacity-0 pointer-events-none';
+  container.className = 'transition-all duration-300 transform translate-y-24 opacity-0 pointer-events-none';
+  container.style.cssText = 'position:fixed;bottom:6rem;right:1.25rem;z-index:98;';
   container.innerHTML = `
-    <div class="flex items-center gap-3 bg-[#012435] border border-[#fdcd74]/40 text-white p-3 pr-4 rounded-2xl shadow-2xl backdrop-blur-md">
-      <div class="w-10 h-10 rounded-xl bg-[#fdcd74] flex items-center justify-center text-[#785601] font-bold shadow-sm">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <div class="flex items-center gap-2 bg-[#012435] border border-[#fdcd74]/40 text-white p-2 pr-2.5 rounded-xl shadow-xl backdrop-blur-md">
+      <div class="w-8 h-8 rounded-lg bg-[#fdcd74] flex items-center justify-center text-[#785601] font-bold shadow-sm shrink-0">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
         </svg>
       </div>
-      <div class="flex flex-col text-left">
-        <span class="text-xs text-[#fdcd74] font-semibold uppercase tracking-wider">Cài Đặt App</span>
-        <span class="text-sm font-bold text-white leading-tight">Diem Chau Phu Quoc</span>
-      </div>
-      <div class="flex items-center gap-2 ml-2">
-        <button id="pwa-install-btn" class="px-3.5 py-1.5 bg-[#fdcd74] hover:bg-amber-300 text-[#785601] text-xs font-bold rounded-lg shadow transition-all active:scale-95 cursor-pointer">
-          Cài đặt
+      <span class="text-xs font-semibold text-white whitespace-nowrap">Cài app Diễm Châu</span>
+      <div class="flex items-center gap-1">
+        <button id="pwa-install-btn" class="px-2.5 py-1.5 bg-[#fdcd74] hover:bg-amber-300 text-[#785601] text-xs font-bold rounded-lg shadow transition-all active:scale-95 cursor-pointer">
+          Cài
         </button>
-        <button id="pwa-dismiss-btn" class="p-1 hover:bg-white/10 rounded-full text-gray-400 hover:text-white transition-colors cursor-pointer" title="Đóng">
+        <button id="pwa-dismiss-btn" class="p-1 hover:bg-white/10 rounded-full text-gray-400 hover:text-white transition-colors cursor-pointer shrink-0" title="Đóng" aria-label="Đóng lời mời cài ứng dụng">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
           </svg>
