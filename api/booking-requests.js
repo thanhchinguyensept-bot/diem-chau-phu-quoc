@@ -2,8 +2,9 @@ const crypto = require('crypto');
 
 const redisUrl = () => process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
 const redisToken = () => process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
-const KEY = 'diemchau:booking-requests:v1';
+const KEY = process.env.VERCEL_ENV === 'production' ? 'diemchau:booking-requests:v2' : 'diemchau:booking-requests:preview:v2';
 const prices = {1:80000,2:100000,3:100000,4:140000,5:140000,6:180000};
+const RETENTION_MS = 90 * 24 * 60 * 60 * 1000;
 const dateOK = (value) => /^\d{4}-\d{2}-\d{2}$/.test(value || '') && !Number.isNaN(Date.parse(`${value}T00:00:00Z`)) && new Date(`${value}T00:00:00Z`).toISOString().slice(0,10) === value;
 const todayVN = () => {
   const parts = Object.fromEntries(new Intl.DateTimeFormat('en-US',{timeZone:'Asia/Ho_Chi_Minh',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date()).map(p=>[p.type,p.value]));
@@ -32,9 +33,12 @@ module.exports = async (req,res) => {
   if (!redisUrl() || !redisToken()) return fail(res,503,'Hệ thống nhận yêu cầu chưa được cấu hình.');
   if (req.method === 'GET') {
     const key = (req.headers.authorization || '').replace(/^Bearer\s+/i,'');
-    if (!sameSecret(key,process.env.BOOKING_ADMIN_KEY)) return fail(res,401,'Không có quyền xem yêu cầu.');
+    const adminSecret = process.env.VERCEL_ENV === 'production' ? process.env.BOOKING_ADMIN_KEY : (process.env.BOOKING_PREVIEW_ADMIN_KEY || process.env.BOOKING_ADMIN_KEY);
+    if (!sameSecret(key,adminSecret)) return fail(res,401,'Không có quyền xem yêu cầu.');
     try {
-      const rows = await command(['LRANGE',KEY,0,199]);
+      const cutoff = Date.now() - RETENTION_MS;
+      await command(['ZREMRANGEBYSCORE',KEY,'-inf',cutoff]);
+      const rows = await command(['ZREVRANGE',KEY,0,199]);
       return res.status(200).json({success:true,requests:(rows || []).map(row => {try{return JSON.parse(row)}catch{return null}}).filter(Boolean)});
     } catch {return fail(res,503,'Chưa đọc được danh sách yêu cầu.');}
   }
@@ -44,7 +48,8 @@ module.exports = async (req,res) => {
   const name = String(b.name || '').trim(); const phone = String(b.phone || '').replace(/\D/g,'');
   const mode = b.mode; const room = String(b.room || ''); const inDate = String(b.checkInDate || ''); const outDate = String(b.checkOutDate || '');
   const time = String(b.checkInTime || ''); const guests = Number(b.guests); const note = String(b.note || '').trim(); const contactMethod = b.contactMethod;
-  if (name.length<2 || name.length>100 || !/^0\d{9}$/.test(phone) || !['auto','101','102','103','104'].includes(room) || !['hourly','overnight'].includes(mode) || ![1,2].includes(guests) || !['phone','zalo'].includes(contactMethod) || note.length>500 || !dateOK(inDate) || inDate<todayVN()) return fail(res,400,'Thông tin yêu cầu chưa hợp lệ.');
+  const zaloPhone = String(b.zaloPhone || '').replace(/\D/g,'');
+  if (name.length<2 || name.length>100 || !/^0\d{9}$/.test(phone) || (zaloPhone && !/^0\d{9}$/.test(zaloPhone)) || !['auto','101','102','103','104'].includes(room) || !['hourly','overnight'].includes(mode) || !Number.isInteger(guests) || guests<1 || guests>4 || !['phone','zalo'].includes(contactMethod) || note.length>500 || !dateOK(inDate) || inDate<todayVN()) return fail(res,400,'Thông tin yêu cầu chưa hợp lệ.');
   let amount, nights=null, hours=null;
   if (mode==='hourly') {
     hours=Number(b.hours);
@@ -58,12 +63,16 @@ module.exports = async (req,res) => {
   try {
     const ip = String(req.headers['x-forwarded-for'] || req.socket?.remoteAddress || 'unknown').split(',')[0].trim();
     const hash = crypto.createHash('sha256').update(ip).digest('hex').slice(0,24);
-    const allowed = await command(['SET',`diemchau:booking-rate:${hash}`,'1','EX',30,'NX']);
+    const rateScope = process.env.VERCEL_ENV === 'production' ? 'production' : 'preview';
+    const allowed = await command(['SET',`diemchau:booking-rate:${rateScope}:${hash}`,'1','EX',30,'NX']);
     if (allowed !== 'OK') return fail(res,429,'Vui lòng đợi một chút trước khi gửi yêu cầu tiếp theo.');
     const id = `DC-${Date.now().toString(36).toUpperCase()}-${crypto.randomBytes(2).toString('hex').toUpperCase()}`;
-    const record = {id,createdAt:new Date().toISOString(),status:'pending',name,phone,contactMethod,guests,note,room,mode,hours,nights,checkInDate:inDate,checkInTime:mode==='hourly'?time:'12:00',checkOutDate:mode==='overnight'?outDate:null,amount};
-    await command(['LPUSH',KEY,JSON.stringify(record)]);
-    try {await command(['LTRIM',KEY,0,499]);} catch (_) { /* The request was already stored. */ }
+    const record = {id,createdAt:new Date().toISOString(),status:'pending',name,phone,zaloPhone:zaloPhone||null,contactMethod,guests,note,room,mode,hours,nights,checkInDate:inDate,checkInTime:mode==='hourly'?time:'12:00',checkOutDate:mode==='overnight'?outDate:null,amount};
+    const serialized = JSON.stringify(record);
+    await command(['ZADD',KEY,Date.now(),serialized]);
+    await command(['ZREMRANGEBYSCORE',KEY,'-inf',Date.now()-RETENTION_MS]);
+    await command(['ZREMRANGEBYRANK',KEY,0,-501]);
+    await command(['EXPIRE',KEY,Math.ceil(RETENTION_MS/1000)]);
     return res.status(201).json({success:true,id});
   } catch {return fail(res,503,'Hệ thống tạm thời chưa nhận được yêu cầu.');}
 };

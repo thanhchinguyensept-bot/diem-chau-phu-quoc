@@ -777,7 +777,15 @@ Cấp PIN Mới
 </div>
 </div>
 <section class="admin-tab-pane hidden flex flex-col gap-space-lg" id="tab-requests" aria-labelledby="request-list-title">
-<div class="bg-surface-container-lowest rounded-2xl p-space-lg shadow-sm"><h2 id="request-list-title" class="font-headline-md text-headline-md text-primary">Yêu cầu đặt phòng từ website</h2><p>Giao diện quản lý yêu cầu đã được chuẩn bị. Phần nhận và lưu yêu cầu trực tuyến sẽ được kết nối sau. Hiện khách liên hệ đặt phòng trực tiếp qua điện thoại hoặc Zalo.</p></div>
+<div class="bg-surface-container-lowest rounded-2xl p-space-lg shadow-sm flex flex-col gap-space-md">
+  <div><h2 id="request-list-title" class="font-headline-md text-headline-md text-primary">Yêu cầu đặt phòng từ website</h2><p class="text-text-muted">Yêu cầu mới sẽ tự làm mới trong khi trang quản trị đang mở. Gửi yêu cầu chưa đồng nghĩa xác nhận còn phòng.</p></div>
+  <div class="grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_auto] gap-space-sm items-end">
+    <div><label for="booking-admin-key" class="block font-label-sm text-label-sm text-primary font-semibold mb-1">Khóa quản trị yêu cầu</label><input id="booking-admin-key" type="password" autocomplete="off" spellcheck="false" placeholder="Nhập khóa được cấu hình trên hệ thống" class="w-full h-11 px-3 rounded-xl border border-outline-variant/60 bg-surface-container-low text-primary text-sm outline-none focus:border-secondary"></div>
+    <button id="load-booking-requests" type="button" class="px-4 py-2.5 rounded-xl bg-primary text-on-primary font-label-sm text-label-sm font-bold">Lưu trong phiên &amp; tải</button>
+  </div>
+  <p id="booking-admin-status" role="status" aria-live="polite" class="text-sm text-text-muted">Nhập khóa riêng để xem và nhận thông báo yêu cầu.</p>
+  <div id="booking-request-list" class="grid grid-cols-1 xl:grid-cols-2 gap-space-md"></div>
+</div>
 </section>
 <!-- TAB 5: THỐNG KÊ DOANH THU & LỢI NHUẬN (EXPANDED) -->
 <div class="admin-tab-pane hidden flex flex-col gap-space-lg" id="tab-revenue">
@@ -2751,4 +2759,4 @@ function old_finishCleaning(roomNumber) {
   </div>
 </div>
 
-</main></div></body></html>
+</main></div><script src="/js/admin-booking-requests.js?v=2" defer></script></body></html>
