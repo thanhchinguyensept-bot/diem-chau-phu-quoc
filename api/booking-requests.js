@@ -1,4 +1,5 @@
 const crypto = require('crypto');
+const {verifyAdminSession} = require('../lib/admin-auth');
 
 const redisUrl = () => process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
 const redisToken = () => process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
@@ -14,10 +15,6 @@ const timeVN = () => {
   const parts = Object.fromEntries(new Intl.DateTimeFormat('en-US',{timeZone:'Asia/Ho_Chi_Minh',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(new Date()).map(p=>[p.type,p.value]));
   return `${parts.hour}:${parts.minute}`;
 };
-const sameSecret = (candidate, secret) => {
-  const a = Buffer.from(candidate || ''); const b = Buffer.from(secret || '');
-  return !!secret && a.length === b.length && crypto.timingSafeEqual(a,b);
-};
 async function command(parts) {
   const response = await fetch(redisUrl(), {method:'POST',headers:{'Authorization':`Bearer ${redisToken()}`,'Content-Type':'application/json'},body:JSON.stringify(parts)});
   if (!response.ok) throw new Error('Redis HTTP error');
@@ -32,9 +29,7 @@ module.exports = async (req,res) => {
   if (process.env.BOOKING_REQUESTS_ENABLED !== 'true') return fail(res,503,'Yêu cầu đặt phòng trực tuyến chưa được mở. Vui lòng gọi hoặc nhắn Zalo.');
   if (!redisUrl() || !redisToken()) return fail(res,503,'Hệ thống nhận yêu cầu chưa được cấu hình.');
   if (req.method === 'GET') {
-    const key = (req.headers.authorization || '').replace(/^Bearer\s+/i,'');
-    const adminSecret = process.env.VERCEL_ENV === 'production' ? process.env.BOOKING_ADMIN_KEY : (process.env.BOOKING_PREVIEW_ADMIN_KEY || process.env.BOOKING_ADMIN_KEY);
-    if (!sameSecret(key,adminSecret)) return fail(res,401,'Không có quyền xem yêu cầu.');
+    if (!verifyAdminSession(req)) return fail(res,401,'Cần đăng nhập quản trị để xem yêu cầu.');
     try {
       const cutoff = Date.now() - RETENTION_MS;
       await command(['ZREMRANGEBYSCORE',KEY,'-inf',cutoff]);

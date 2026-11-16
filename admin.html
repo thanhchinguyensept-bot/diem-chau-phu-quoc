@@ -38,23 +38,25 @@
       </span>
 <h2 class="font-headline-md text-headline-md text-primary font-bold">Xác Thực Quản Trị Cấp Cao</h2>
 <p class="font-body-sm text-body-sm text-text-muted mt-1 px-4 text-center">
-        Nhập mã PIN 4 số của chủ quản để truy cập dữ liệu kinh doanh và điều khiển phòng
+        Nhập mã PIN 6 số của chủ quản để mở phiên quản trị an toàn
       </p>
 </div>
-<!-- PIN Visual Display (4 Boxes) -->
+<!-- PIN Visual Display (6 Boxes) -->
 <div class="my-6 w-full flex flex-col items-center">
-<div class="flex items-center justify-center gap-3.5" id="pin-display-group">
-<div class="pin-box w-12 h-14 rounded-2xl bg-surface-container border-2 border-outline-variant flex items-center justify-center font-code-ticket text-2xl font-bold text-primary transition-all"></div>
-<div class="pin-box w-12 h-14 rounded-2xl bg-surface-container border-2 border-outline-variant flex items-center justify-center font-code-ticket text-2xl font-bold text-primary transition-all"></div>
-<div class="pin-box w-12 h-14 rounded-2xl bg-surface-container border-2 border-outline-variant flex items-center justify-center font-code-ticket text-2xl font-bold text-primary transition-all"></div>
-<div class="pin-box w-12 h-14 rounded-2xl bg-surface-container border-2 border-outline-variant flex items-center justify-center font-code-ticket text-2xl font-bold text-primary transition-all"></div>
+<div class="flex items-center justify-center gap-2.5" id="pin-display-group">
+<div class="pin-box w-10 h-12 rounded-xl bg-surface-container border-2 border-outline-variant flex items-center justify-center font-code-ticket text-xl font-bold text-primary transition-all"></div>
+<div class="pin-box w-10 h-12 rounded-xl bg-surface-container border-2 border-outline-variant flex items-center justify-center font-code-ticket text-xl font-bold text-primary transition-all"></div>
+<div class="pin-box w-10 h-12 rounded-xl bg-surface-container border-2 border-outline-variant flex items-center justify-center font-code-ticket text-xl font-bold text-primary transition-all"></div>
+<div class="pin-box w-10 h-12 rounded-xl bg-surface-container border-2 border-outline-variant flex items-center justify-center font-code-ticket text-xl font-bold text-primary transition-all"></div>
+<div class="pin-box w-10 h-12 rounded-xl bg-surface-container border-2 border-outline-variant flex items-center justify-center font-code-ticket text-xl font-bold text-primary transition-all"></div>
+<div class="pin-box w-10 h-12 rounded-xl bg-surface-container border-2 border-outline-variant flex items-center justify-center font-code-ticket text-xl font-bold text-primary transition-all"></div>
 </div>
 <!-- Real hidden input for physical keyboard entry -->
-<input autocomplete="off" autofocus="" class="opacity-0 absolute -z-10" id="hidden-pin-input" inputmode="numeric" maxlength="4" type="password"/>
+<input autocomplete="off" autofocus="" class="opacity-0 absolute -z-10" id="hidden-pin-input" inputmode="numeric" maxlength="6" type="password"/>
 <!-- Status / Feedback Notice -->
 <div class="mt-3.5 text-center text-label-sm font-label-sm font-medium text-text-muted min-h-[22px] flex items-center gap-1.5 justify-center" id="pin-status-message">
 <span class="material-symbols-outlined text-[16px] text-secondary">vpn_key</span>
-<span>Gợi ý mã bảo vệ mặc định: <strong class="text-primary font-mono font-bold bg-surface-container px-1.5 py-0.5 rounded">7633</strong></span>
+<span>Phiên đăng nhập được xác thực an toàn ở máy chủ.</span>
 </div>
 </div>
 <!-- Virtual Keypad (0-9, Backspace, Confirm) -->
@@ -103,7 +105,7 @@
           </span>
 </div>
 <p class="font-body-sm text-body-sm text-on-primary-container mt-0.5">
-          Mã PIN quản trị đang bảo vệ: <span class="font-code-ticket tracking-widest text-secondary-fixed font-bold bg-primary-container px-2 py-0.5 rounded" id="banner-pin-display">7633</span> (Thời hạn phiên: 58 phút còn lại)
+          Phiên quản trị đã xác thực ở máy chủ. Mã PIN không hiển thị trên trang.
         </p>
 </div>
 </div>
@@ -779,11 +781,7 @@ Cấp PIN Mới
 <section class="admin-tab-pane hidden flex flex-col gap-space-lg" id="tab-requests" aria-labelledby="request-list-title">
 <div class="bg-surface-container-lowest rounded-2xl p-space-lg shadow-sm flex flex-col gap-space-md">
   <div><h2 id="request-list-title" class="font-headline-md text-headline-md text-primary">Yêu cầu đặt phòng từ website</h2><p class="text-text-muted">Yêu cầu mới sẽ tự làm mới trong khi trang quản trị đang mở. Gửi yêu cầu chưa đồng nghĩa xác nhận còn phòng.</p></div>
-  <div class="grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_auto] gap-space-sm items-end">
-    <div><label for="booking-admin-key" class="block font-label-sm text-label-sm text-primary font-semibold mb-1">Khóa quản trị yêu cầu</label><input id="booking-admin-key" type="password" autocomplete="off" spellcheck="false" placeholder="Nhập khóa được cấu hình trên hệ thống" class="w-full h-11 px-3 rounded-xl border border-outline-variant/60 bg-surface-container-low text-primary text-sm outline-none focus:border-secondary"></div>
-    <button id="load-booking-requests" type="button" class="px-4 py-2.5 rounded-xl bg-primary text-on-primary font-label-sm text-label-sm font-bold">Lưu trong phiên &amp; tải</button>
-  </div>
-  <p id="booking-admin-status" role="status" aria-live="polite" class="text-sm text-text-muted">Nhập khóa riêng để xem và nhận thông báo yêu cầu.</p>
+  <p id="booking-admin-status" role="status" aria-live="polite" class="text-sm text-text-muted">Đăng nhập quản trị để tự động tải và nhận thông báo yêu cầu.</p>
   <div id="booking-request-list" class="grid grid-cols-1 xl:grid-cols-2 gap-space-md"></div>
 </div>
 </section>
@@ -1294,7 +1292,7 @@ Cấp PIN Mới
   </div>
 </div>
 
-<!-- MODAL BẢO MẬT & ĐỔI MÃ PIN QUẢN TRỊ VIÊN (4 SỐ: 7633) -->
+<!-- MODAL BẢO MẬT & ĐỔI MÃ PIN QUẢN TRỊ VIÊN -->
 <div class="fixed inset-0 z-50 bg-primary/80 backdrop-blur-sm hidden flex items-center justify-center p-space-md" id="pin-modal">
 <div class="bg-surface-container-lowest rounded-3xl max-w-md w-full p-space-lg shadow-2xl relative flex flex-col gap-space-md">
 <div class="flex items-center justify-between">
@@ -1312,20 +1310,14 @@ Cấp PIN Mới
 </button>
 </div>
 <div class="p-space-md bg-surface-container-low rounded-2xl flex flex-col items-center">
-<span class="font-label-sm text-label-sm text-text-muted mb-2">Mã PIN Hiện Tại Đang Sử Dụng</span>
-<div class="flex items-center gap-3">
-<input class="w-12 h-14 bg-surface-container-lowest text-center font-code-ticket text-headline-lg font-bold text-primary rounded-xl shadow-inner focus:outline-none focus:ring-2 focus:ring-primary" maxlength="1" readonly="" type="password" value="7"/>
-<input class="w-12 h-14 bg-surface-container-lowest text-center font-code-ticket text-headline-lg font-bold text-primary rounded-xl shadow-inner focus:outline-none focus:ring-2 focus:ring-primary" maxlength="1" readonly="" type="password" value="6"/>
-<input class="w-12 h-14 bg-surface-container-lowest text-center font-code-ticket text-headline-lg font-bold text-primary rounded-xl shadow-inner focus:outline-none focus:ring-2 focus:ring-primary" maxlength="1" readonly="" type="password" value="3"/>
-<input class="w-12 h-14 bg-surface-container-lowest text-center font-code-ticket text-headline-lg font-bold text-primary rounded-xl shadow-inner focus:outline-none focus:ring-2 focus:ring-primary" maxlength="1" readonly="" type="password" value="3"/>
-</div>
+<span class="font-label-sm text-label-sm text-text-muted mb-2">Mã PIN mới sẽ được lưu an toàn ở máy chủ</span>
 <span class="mt-3 inline-flex items-center gap-1 text-on-tertiary-container font-label-sm text-label-sm font-semibold">
 <span class="material-symbols-outlined text-[16px]">verified</span> Mã hợp lệ: Quyền Quản Trị Đã Cấp
         </span>
 </div>
 <div class="flex flex-col gap-2">
 <label class="font-label-sm text-label-sm text-on-surface-variant font-semibold">Cập nhật mã PIN mới:</label>
-<input class="h-12 px-space-md bg-surface-container-low rounded-xl text-primary font-mono text-center font-bold tracking-widest focus:outline-none focus:bg-surface-container" id="new-pin-input-field" maxlength="4" placeholder="Nhập 4 số PIN mới (VD: 8899)" type="text"/>
+<input class="h-12 px-space-md bg-surface-container-low rounded-xl text-primary font-mono text-center font-bold tracking-widest focus:outline-none focus:bg-surface-container" id="new-pin-input-field" inputmode="numeric" maxlength="6" placeholder="Nhập 6 số PIN mới" type="password"/>
 </div>
 <div class="flex items-center gap-space-sm pt-2">
 <button class="w-full py-3 bg-secondary-container hover:bg-secondary-fixed-dim text-on-secondary-fixed font-label-md text-label-md font-semibold rounded-xl transition-all flex items-center justify-center gap-2" id="btn-save-pin" type="button">
@@ -1336,8 +1328,7 @@ Cấp PIN Mới
 </div>
 </div>
 <script>
-  // Quản lý Mã PIN Hệ Thống
-  let currentAdminPin = "1920";
+  // Xác thực PIN ở máy chủ; trình duyệt chỉ giữ phiên cookie HttpOnly.
   let enteredPin = "";
 
   // Logic Khóa Toàn Màn Hình & Xác Thực PIN Gate
@@ -1362,10 +1353,10 @@ Cấp PIN Mới
   }
 
   function handlePinKey(num) {
-    if (enteredPin.length < 4) {
+    if (enteredPin.length < 6) {
       enteredPin += num;
       updatePinBoxes();
-      if (enteredPin.length === 4) {
+      if (enteredPin.length === 6) {
         setTimeout(validateCurrentPin, 150);
       }
     }
@@ -1382,40 +1373,55 @@ Cấp PIN Mới
   function resetPinStatus() {
     pinStatusMessage.innerHTML = `
       <span class="material-symbols-outlined text-[16px] text-secondary">vpn_key</span>
-      <span>Gợi ý mã bảo vệ mặc định: <strong class="text-primary font-mono font-bold bg-surface-container px-1.5 py-0.5 rounded">7633</strong></span>
+      <span>Nhập mã PIN 6 số để xác thực với máy chủ.</span>
     `;
   }
 
-  function validateCurrentPin() {
-    if (enteredPin === currentAdminPin) {
+  function hideSecurityGate() {
+    enteredPin = "";
+    updatePinBoxes();
+    pinDisplayGroup.classList.remove('animate-shake');
+    securityGate.classList.add('opacity-0', 'pointer-events-none');
+    setTimeout(() => {
+      securityGate.classList.add('hidden');
+      securityGate.classList.remove('opacity-0');
+      document.dispatchEvent(new Event('admin-session-authenticated'));
+    }, 300);
+  }
+
+  async function validateCurrentPin() {
+    if (enteredPin.length !== 6) return;
+    const pin = enteredPin;
+    pinStatusMessage.textContent = 'Đang xác thực phiên quản trị…';
+    try {
+      const response = await fetch('/api/admin-session', {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({pin})
+      });
+      const data = await response.json();
+      if (!response.ok || !data.success) {
+        const message = response.status === 429 ? 'Đăng nhập tạm khóa 15 phút do thử quá nhiều lần.' : (response.status === 401 ? 'Mã PIN không chính xác. Vui lòng thử lại.' : (data.message || 'Chưa xác thực được. Vui lòng thử lại.'));
+        throw new Error(message);
+      }
       pinStatusMessage.innerHTML = `
         <span class="inline-flex items-center gap-1.5 text-on-tertiary-container font-semibold">
           <span class="material-symbols-outlined text-[18px]">verified</span>
-          Xác thực thành công! Đang giải mã dữ liệu...
+          Đăng nhập thành công. Đang tải yêu cầu đặt phòng...
         </span>
       `;
-      pinDisplayGroup.classList.remove('animate-shake');
-      
-      // Mở khóa phiên và ẩn gate
-      setTimeout(() => {
-        securityGate.classList.add('opacity-0', 'pointer-events-none');
-        setTimeout(() => {
-          securityGate.classList.add('hidden');
-          securityGate.classList.remove('opacity-0');
-        }, 300);
-      }, 600);
-    } else {
-      // Rung lắc & báo lỗi
+      hideSecurityGate();
+    } catch (error) {
       pinStatusMessage.innerHTML = `
         <span class="inline-flex items-center gap-1.5 text-status-danger font-semibold">
           <span class="material-symbols-outlined text-[18px]">error</span>
-          Mã PIN không chính xác! Vui lòng thử lại.
+          ${error.message || 'Chưa đăng nhập được. Vui lòng thử lại.'}
         </span>
       `;
       pinDisplayGroup.classList.remove('animate-shake');
       void pinDisplayGroup.offsetWidth; // trigger reflow
       pinDisplayGroup.classList.add('animate-shake');
-      
       setTimeout(() => {
         enteredPin = "";
         updatePinBoxes();
@@ -1423,16 +1429,27 @@ Cấp PIN Mới
     }
   }
 
+  async function checkAdminSession() {
+    try {
+      const response = await fetch('/api/admin-session', {credentials:'same-origin',cache:'no-store'});
+      if (response.ok) hideSecurityGate();
+    } catch (_) {}
+  }
+
   // Khóa nhanh màn hình
   function lockAdminSession() {
+    fetch('/api/admin-session', {method:'DELETE',credentials:'same-origin',cache:'no-store'}).catch(() => {});
     enteredPin = "";
     updatePinBoxes();
     resetPinStatus();
     securityGate.classList.remove('hidden', 'pointer-events-none', 'opacity-0');
+    document.dispatchEvent(new Event('admin-session-locked'));
     if (hiddenPinInput) {
       hiddenPinInput.focus();
     }
   }
+  window.addEventListener('admin-session-expired', lockAdminSession);
+  checkAdminSession();
 
   // Lắng nghe bàn phím thật
   window.addEventListener('keydown', (e) => {
@@ -1442,7 +1459,7 @@ Cấp PIN Mới
       } else if (e.key === 'Backspace') {
         handlePinDelete();
       } else if (e.key === 'Enter') {
-        if (enteredPin.length === 4) {
+        if (enteredPin.length === 6) {
           validateCurrentPin();
         }
       }
@@ -2093,7 +2110,6 @@ function old_finishCleaning(roomNumber) {
   const btnClosePin = document.getElementById('btn-close-pin-modal');
   const btnSavePin = document.getElementById('btn-save-pin');
   const newPinField = document.getElementById('new-pin-input-field');
-  const bannerPinDisplay = document.getElementById('banner-pin-display');
 
   if (btnOpenPin && pinModal) {
     btnOpenPin.addEventListener('click', () => pinModal.classList.remove('hidden'));
@@ -2102,16 +2118,21 @@ function old_finishCleaning(roomNumber) {
     btnClosePin.addEventListener('click', () => pinModal.classList.add('hidden'));
   }
   if (btnSavePin && pinModal) {
-    btnSavePin.addEventListener('click', () => {
+    btnSavePin.addEventListener('click', async () => {
       const val = newPinField ? newPinField.value.trim() : "";
-      if (val.length === 4 && /^\d+$/.test(val)) {
-        currentAdminPin = val;
-        if (bannerPinDisplay) bannerPinDisplay.textContent = val;
-        alert('Mã PIN bảo mật mới (' + val + ') đã được lưu thành công trên hệ thống.');
+      if (!/^\d{6}$/.test(val)) { alert('Vui lòng nhập chính xác 6 chữ số!'); return; }
+      btnSavePin.disabled = true;
+      try {
+        const response = await fetch('/api/admin-session', {method:'PUT',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({newPin:val})});
+        const data = await response.json();
+        if (!response.ok || !data.success) throw new Error(data.message || 'Chưa lưu được mã PIN mới.');
+        if (newPinField) newPinField.value = '';
         pinModal.classList.add('hidden');
-        resetPinStatus();
-      } else {
-        alert('Vui lòng nhập chính xác 4 chữ số!');
+        alert('Mã PIN mới đã được lưu an toàn ở máy chủ.');
+      } catch (error) {
+        alert(error.message || 'Chưa lưu được mã PIN mới.');
+      } finally {
+        btnSavePin.disabled = false;
       }
     });
   }
@@ -2759,4 +2780,4 @@ function old_finishCleaning(roomNumber) {
   </div>
 </div>
 
-</main></div><script src="/js/admin-booking-requests.js?v=2" defer></script></body></html>
+</main></div><script src="/js/admin-booking-requests.js?v=3" defer></script></body></html>

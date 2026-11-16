@@ -1,13 +1,10 @@
 (() => {
-  const loadButton = document.getElementById('load-booking-requests');
-  if (!loadButton) return;
-
-  const keyInput = document.getElementById('booking-admin-key');
   const status = document.getElementById('booking-admin-status');
   const list = document.getElementById('booking-request-list');
   const navButton = document.getElementById('nav-tab-requests');
-  const storageKey = 'diemchau.booking-admin-key';
-  let adminKey = '';
+  if (!status || !list) return;
+
+  let authorized = false;
   let knownIds = null;
   const unreadIds = new Set();
 
@@ -68,24 +65,19 @@
   };
 
   const loadRequests = async ({silent = false} = {}) => {
-    if (!adminKey || document.visibilityState === 'hidden') return;
+    if (!authorized || document.visibilityState === 'hidden') return;
     const gate = document.getElementById('admin-security-gate');
     if (gate && !gate.classList.contains('hidden')) return;
-    if (!silent) {
-      loadButton.disabled = true;
-      setStatus('Đang tải yêu cầu…');
-    }
+    if (!silent) setStatus('Đang tải yêu cầu…');
     try {
-      const response = await fetch('/api/booking-requests', {
-        headers: {Authorization: `Bearer ${adminKey}`},
-        cache: 'no-store'
-      });
+      const response = await fetch('/api/booking-requests', {credentials:'same-origin',cache:'no-store'});
       const data = await response.json();
       if (response.status === 401) {
-        adminKey = '';
-        try { sessionStorage.removeItem(storageKey); } catch (_) {}
-        keyInput.value = '';
-        throw new Error('Khóa quản trị không đúng. Nhập lại khóa để tiếp tục.');
+        authorized = false;
+        list.replaceChildren();
+        setStatus('Phiên quản trị đã hết hạn. Đăng nhập lại để xem yêu cầu.');
+        window.dispatchEvent(new Event('admin-session-expired'));
+        return;
       }
       if (!response.ok || !data.success) throw new Error(data.message || 'Chưa tải được yêu cầu.');
 
@@ -96,28 +88,42 @@
       knownIds = currentIds;
       updateBadge();
       render(rows);
-
       if (newRows.length) setStatus(`Có ${newRows.length} yêu cầu đặt phòng mới. Danh sách tự làm mới mỗi 20 giây.`);
       else setStatus(rows.length ? `${rows.length} yêu cầu gần đây, mới nhất ở trên. Danh sách tự làm mới mỗi 20 giây.` : 'Chưa có yêu cầu nào. Danh sách sẽ tự làm mới mỗi 20 giây.');
     } catch (error) {
       setStatus(error.message || 'Chưa tải được yêu cầu.');
-    } finally {
-      if (!silent) loadButton.disabled = false;
     }
   };
 
-  loadButton.addEventListener('click', () => {
-    const value = keyInput.value.trim();
-    if (!value) { setStatus('Vui lòng nhập khóa quản trị yêu cầu.'); keyInput.focus(); return; }
-    adminKey = value;
-    try { sessionStorage.setItem(storageKey, adminKey); } catch (_) {}
+  const resumeSession = async () => {
+    try {
+      const response = await fetch('/api/admin-session', {credentials:'same-origin',cache:'no-store'});
+      if (!response.ok) {
+        authorized = false;
+        setStatus('Đăng nhập quản trị để tự động tải và nhận thông báo yêu cầu.');
+        return;
+      }
+      authorized = true;
+      await loadRequests();
+    } catch {
+      setStatus('Chưa kết nối được mục yêu cầu đặt phòng.');
+    }
+  };
+
+  document.addEventListener('admin-session-authenticated', () => {
+    authorized = true;
     knownIds = null;
     unreadIds.clear();
     updateBadge();
     loadRequests();
   });
-  keyInput.addEventListener('keydown', (event) => {
-    if (event.key === 'Enter') { event.preventDefault(); loadButton.click(); }
+  document.addEventListener('admin-session-locked', () => {
+    authorized = false;
+    knownIds = null;
+    unreadIds.clear();
+    updateBadge();
+    list.replaceChildren();
+    setStatus('Đăng nhập quản trị để tự động tải và nhận thông báo yêu cầu.');
   });
   navButton?.addEventListener('click', () => {
     unreadIds.clear();
@@ -128,12 +134,6 @@
     if (!document.hidden) loadRequests({silent:true});
   });
 
-  try {
-    adminKey = sessionStorage.getItem(storageKey) || '';
-    if (adminKey) {
-      keyInput.value = adminKey;
-      loadRequests();
-    }
-  } catch (_) {}
+  resumeSession();
   window.setInterval(() => loadRequests({silent:true}), 20000);
 })();
