@@ -4,8 +4,6 @@ html,body{max-width:100%;overflow-x:clip}
 .booking-mobile-nav[hidden]{display:none!important}
 .room-card{outline-offset:2px}
 .room-card:focus-visible,#room-opt-auto:focus-visible{outline:3px solid #d4a853}
-.booking-trust-top{background:#092737;color:#e6edf0;font-size:11px}.booking-trust-top>div{max-width:1280px;margin:auto;padding:7px 32px}
-.booking-wordmark{display:block;color:#fff;font-family:Georgia,serif;font-weight:700;letter-spacing:.06em;font-size:18px;line-height:1.05;white-space:nowrap;margin-left:8px}.booking-wordmark small{display:block;color:#f4ca77;font:600 8px 'Be Vietnam Pro',sans-serif;letter-spacing:.12em;margin-top:4px}
 .booking-integrated-notice{display:flex;align-items:center;gap:13px;background:#fff8e8;border:1px solid #f0dfba;border-radius:11px;padding:12px 15px;margin:-3px 0 24px}.booking-integrated-notice .notice-symbol{display:grid;place-items:center;flex:none;width:35px;height:35px;border-radius:8px;background:#f7e9c5;color:#9b7023;font-weight:800}.booking-integrated-notice strong{font-size:10px;color:#986e21;letter-spacing:.1em}.booking-integrated-notice p{font-size:11px;line-height:1.5;margin:2px 0 0;color:#3f5058}
 @media(max-width:1023px){
   .booking-nav-toggle{display:grid;place-items:center;width:38px;height:38px;margin-left:auto;border:1px solid #ffffff64;border-radius:9px;color:#fff;font-size:21px;line-height:1}
@@ -14,12 +12,8 @@ html,body{max-width:100%;overflow-x:clip}
   .booking-mobile-nav a[aria-current]{color:#ffd276;font-weight:700}
 }
 @media(max-width:639px){
-  .booking-trust-top{display:none}
-  header.sticky{background:#fff!important;color:#143447!important;box-shadow:0 2px 12px #0c253518}
+  header.sticky{background:#203847!important;color:#fff!important;box-shadow:0 2px 12px #0c253518}
   header.sticky>div{height:64px}
-  header.sticky .booking-wordmark{color:#143447;font-size:13px;margin-left:4px}
-  header.sticky .booking-wordmark small{font-size:6px;letter-spacing:.03em;color:#9b7322}
-  header.sticky img{filter:brightness(0) saturate(100%) invert(15%) sepia(29%) saturate(1100%) hue-rotate(155deg) brightness(87%)}
   header.sticky .booking-nav-toggle{color:#fff;background:#12394b;border:0;border-radius:50%;width:34px;height:34px;font-size:19px}
   .booking-mobile-nav:not([hidden]){top:64px}
   main{padding-top:0!important;padding-bottom:112px!important}
