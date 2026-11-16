@@ -7,6 +7,11 @@
 .refreshed-home .home-hero .bg-gradient-to-t{background:linear-gradient(0deg,rgba(1,36,53,.54),transparent 45%)}
 .refreshed-home .home-hero-copy{max-width:650px}
 .refreshed-home .hero-main{font-size:clamp(38px,4vw,52px)}
+@media(min-width:1024px){
+ .refreshed-home .home-hero-copy{width:100%;max-width:1100px}
+ .refreshed-home .home-hero-copy h1{width:100%;max-width:none}
+ .refreshed-home .hero-main{font-size:clamp(38px,3.8vw,48px);white-space:nowrap}
+}
 .refreshed-home .home-hero-description{font-size:17px;line-height:1.65;max-width:600px}
 .refreshed-home .home-hero-buttons a{min-width:195px}
 .refreshed-home #quick-booking{max-width:1200px}
