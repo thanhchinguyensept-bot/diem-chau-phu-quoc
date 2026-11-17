@@ -2223,7 +2223,7 @@ function old_finishCleaning(roomNumber) {
   // --- BLOG MANAGEMENT: server-backed blog content ---
   let adminBlogPosts = [];
   const blogPlaceholderImage = '/images/blog/phu-quoc-toan-canh-duong-dong-640.jpg';
-  const blogEditor = document.getElementById('blog-content-input');
+  const getBlogEditor = () => document.getElementById('blog-content-input');
 
   async function loadBlogPosts() {
     const grid = document.getElementById('blog-posts-grid');
@@ -2290,7 +2290,7 @@ function old_finishCleaning(roomNumber) {
     document.getElementById('blog-original-url').value = '';
     document.getElementById('blog-robots-input').value = 'index, follow';
     document.getElementById('blog-status-input').value = 'draft';
-    blogEditor.innerHTML = '';
+    getBlogEditor().innerHTML = '';
     document.getElementById('blog-modal').classList.remove('hidden');
     document.getElementById('blog-title-input').focus();
   }
@@ -2312,15 +2312,15 @@ function old_finishCleaning(roomNumber) {
     document.getElementById('blog-status-input').value = post.status || 'published';
     document.getElementById('blog-desc-input').value = post.description || '';
     document.getElementById('blog-keywords-input').value = post.keywords || '';
-    blogEditor.innerHTML = '<p>Đang tải nội dung…</p>';
+    getBlogEditor().innerHTML = '<p>Đang tải nội dung…</p>';
     modal.classList.remove('hidden');
     if (post.source === 'managed') {
       try {
         const response = await fetch(`/api/blog-posts?admin=1&slug=${encodeURIComponent(post.slug)}`,{credentials:'same-origin',cache:'no-store'});
         const data = await response.json();
         if (!response.ok || !data.success) throw new Error(data.message || 'Chưa tải được nội dung bài.');
-        if (document.getElementById('blog-edit-id').value === post.slug) blogEditor.innerHTML = data.post.content || '<p></p>';
-      } catch (error) { blogEditor.textContent = error.message; }
+        if (document.getElementById('blog-edit-id').value === post.slug) getBlogEditor().innerHTML = data.post.content || '<p></p>';
+      } catch (error) { getBlogEditor().textContent = error.message; }
     } else if (post.originalUrl) {
       try {
         const response = await fetch(`${post.originalUrl}.html`,{cache:'no-store'});
@@ -2328,8 +2328,8 @@ function old_finishCleaning(roomNumber) {
           const source = new DOMParser().parseFromString(await response.text(),'text/html');
           if (source.querySelector('meta[name="robots"]')?.content.includes('noindex')) document.getElementById('blog-robots-input').value = 'noindex';
           const content = source.querySelector('#post-content') || source.querySelector('article');
-          if (content && document.getElementById('blog-edit-id').value === post.slug) blogEditor.innerHTML = content.innerHTML;
-        } else blogEditor.innerHTML = '<p></p>';
+          if (content && document.getElementById('blog-edit-id').value === post.slug) getBlogEditor().innerHTML = content.innerHTML;
+        } else getBlogEditor().innerHTML = '<p></p>';
       } catch (_) {}
     }
   }
@@ -2350,31 +2350,33 @@ function old_finishCleaning(roomNumber) {
 
   function insertEditorImage(data, alt='') {
     const image = document.createElement('img'); image.src = data; image.alt = alt; image.style.maxWidth = '100%';
+    const editor = getBlogEditor();
     const selection = window.getSelection();
-    if (selection?.rangeCount && blogEditor.contains(selection.anchorNode)) selection.getRangeAt(0).insertNode(image);
-    else blogEditor.append(image);
-    blogEditor.focus();
+    if (selection?.rangeCount && editor.contains(selection.anchorNode)) selection.getRangeAt(0).insertNode(image);
+    else editor.append(image);
+    editor.focus();
   }
 
-  document.getElementById('blog-image-input')?.addEventListener('change',async event => {
+  async function handleBlogImageInput(event) {
     try { for (const file of event.target.files || []) insertEditorImage(await imageToDataURL(file),file.name.replace(/\.[^.]+$/,'')); }
     catch (error) { showToastNotification(error.message,4000); }
     event.target.value = '';
-  });
-  blogEditor?.addEventListener('paste',async event => {
+  }
+
+  async function handleBlogImagePaste(event) {
     const imageFiles = Array.from(event.clipboardData?.items || []).filter(item => item.kind === 'file' && item.type.startsWith('image/')).map(item => item.getAsFile()).filter(Boolean);
     if (!imageFiles.length) return;
     event.preventDefault();
     try { for (const file of imageFiles) insertEditorImage(await imageToDataURL(file)); }
     catch (error) { showToastNotification(error.message,4000); }
-  });
+  }
 
   async function handleSaveBlogPost(event) {
     event.preventDefault();
     const button = document.querySelector('#blog-form button[type="submit"]');
     const title = document.getElementById('blog-title-input').value.trim();
-    const textContent = blogEditor.innerText.trim();
-    const content = blogEditor.innerHTML.trim();
+    const textContent = getBlogEditor().innerText.trim();
+    const content = getBlogEditor().innerHTML.trim();
     if (!title || !textContent) { showToastNotification('Hãy nhập tiêu đề và nội dung bài viết.',3500); return; }
     if (new Blob([content]).size > 800_000) { showToastNotification('Nội dung vượt giới hạn 800 KB. Hãy giảm dung lượng ảnh.',4500); return; }
     button.disabled = true; button.textContent = 'Đang lưu…';
@@ -2398,8 +2400,13 @@ function old_finishCleaning(roomNumber) {
     } catch (error) { showToastNotification(error.message,4500); }
   }
 
-  document.getElementById('blog-form')?.addEventListener('submit',handleSaveBlogPost);
-  document.addEventListener('DOMContentLoaded',() => { if (!document.getElementById('admin-security-gate')?.classList.contains('hidden')) return; loadBlogPosts(); });
+  document.addEventListener('DOMContentLoaded',() => {
+    document.getElementById('blog-form')?.addEventListener('submit',handleSaveBlogPost);
+    document.getElementById('blog-image-input')?.addEventListener('change',handleBlogImageInput);
+    getBlogEditor()?.addEventListener('paste',handleBlogImagePaste);
+    if (!document.getElementById('admin-security-gate')?.classList.contains('hidden')) return;
+    loadBlogPosts();
+  });
   document.addEventListener('admin-session-authenticated',loadBlogPosts);
 
   // ==========================================
