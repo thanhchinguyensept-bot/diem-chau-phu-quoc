@@ -8,11 +8,22 @@
     const emptyState = document.getElementById('blog-empty-state');
     const resultCount = document.getElementById('blog-result-count');
     if (!grid || !featured || !filters || !search) return;
+    let cmsStatus = document.getElementById('blog-cms-status');
+    if (!cmsStatus) {
+      cmsStatus = document.createElement('p');
+      cmsStatus.id = 'blog-cms-status';
+      cmsStatus.className = 'hidden text-sm text-text-muted mb-4';
+      cmsStatus.setAttribute('role','status');
+      cmsStatus.setAttribute('aria-live','polite');
+      grid.before(cmsStatus);
+    }
 
     try {
       const response = await fetch('/api/blog-posts', {cache:'no-store'});
-      if (response.ok) {
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      {
         const data = await response.json();
+        if (!Array.isArray(data.posts)) throw new Error('Blog API returned an invalid response');
         for (const slug of data.hiddenSlugs || []) {
           const hiddenPath = `/blog/${encodeURIComponent(slug)}`;
           Array.from(grid.querySelectorAll('a.blog-card-link')).find(link => new URL(link.href, location.origin).pathname.replace(/\/$/,'') === hiddenPath)?.closest('.blog-card')?.remove();
@@ -48,7 +59,13 @@
           image.alt = post.title;
         }
       }
-    } catch (_) {}
+      cmsStatus.classList.add('hidden');
+      cmsStatus.textContent = '';
+    } catch (error) {
+      console.warn('Could not load Admin blog posts:',error);
+      cmsStatus.textContent = 'Chưa tải được bài mới từ hệ thống. Các bài viết hiện có vẫn được hiển thị.';
+      cmsStatus.classList.remove('hidden');
+    }
 
     const cards = Array.from(grid.querySelectorAll(':scope > .blog-card'));
     if (!cards.length) return;

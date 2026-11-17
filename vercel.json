@@ -4,6 +4,9 @@
   "functions": {
     "api/blog-post.js": {
       "includeFiles": "blog/**/*.html"
+    },
+    "api/sitemap.js": {
+      "includeFiles": "sitemap.xml"
     }
   },
   "headers": [
@@ -155,6 +158,10 @@
     }
   ],
   "rewrites": [
+    {
+      "source": "/sitemap.xml",
+      "destination": "/api/sitemap"
+    },
     {
       "source": "/blog/:slug",
       "destination": "/api/blog-post?slug=:slug"

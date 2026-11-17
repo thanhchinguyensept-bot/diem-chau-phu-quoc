@@ -81,7 +81,7 @@ module.exports = async (req,res) => {
         const detail = visible.find(post => post.slug === slugify(req.query.slug));
         return detail ? res.status(200).json({success:true,post:{...detail,content:detail.content.replaceAll('__DC_BLOG_COVER__',detail.image || '')}}) : fail(res,404,'Không tìm thấy bản quản lý bài viết.');
       }
-      return res.status(200).json({success:true,posts:visible.map(({content,...post}) => post),hiddenSlugs:authenticated ? [] : posts.filter(post => post.status !== 'published').map(post => post.slug)});
+      return res.status(200).json({success:true,posts:visible.map(({content,image,...post}) => ({...post,image:image?.startsWith('data:') ? `/api/blog-image?slug=${encodeURIComponent(post.slug)}` : image})),hiddenSlugs:authenticated ? [] : posts.filter(post => post.status !== 'published').map(post => post.slug)});
     }
     const body = bodyOf(req);
     const slug = slugify(req.query?.slug || body.slug || body.title);
@@ -109,13 +109,14 @@ module.exports = async (req,res) => {
     if (title.length < 3) return fail(res,400,'Tiêu đề cần có ít nhất 3 ký tự.');
     if (content.length < 1) return fail(res,400,'Hãy nhập nội dung bài viết.');
     content = content.replace(/<\/?h1\b/gi, tag => tag.toLowerCase().startsWith('</') ? '</h2' : '<h2');
-    if (/^data:/i.test(image)) content = content.replace(`src="${image.replace(/&/g,'&amp;').replace(/"/g,'&quot;')}"`,`src="__DC_BLOG_COVER__"`);
+    if (/^data:/i.test(image)) content = content.replaceAll(`src="${image.replace(/&/g,'&amp;').replace(/"/g,'&quot;')}"`,`src="__DC_BLOG_COVER__"`);
     if (Buffer.byteLength(JSON.stringify({title,description,content,image,category,keywords}), 'utf8') > MAX_POST_BYTES) return fail(res,413,'Bài viết quá lớn. Hãy giảm dung lượng ảnh hoặc nội dung dưới 850 KB.');
     const now = new Date().toISOString();
     const existing = posts.find(post => post.slug === slug);
+    if (!existing && posts.length >= MAX_POSTS) return fail(res,413,`Kho bài đã đạt giới hạn ${MAX_POSTS} bài. Hãy gỡ một bản quản lý không còn dùng rồi thử lại.`);
     const plainSummary = content.replace(/__DC_BLOG_COVER__/g,'ảnh').replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').trim().slice(0,155);
     const post = {slug,title,description:description || plainSummary || title,content,category,keywords,status,image,robots,originalUrl:originalUrl || existing?.originalUrl || '',createdAt:existing?.createdAt || now,updatedAt:now};
-    const next = [post,...posts.filter(item => item.slug !== slug)].slice(0,MAX_POSTS);
+    const next = [post,...posts.filter(item => item.slug !== slug)];
     const serialized = JSON.stringify(next);
     if (Buffer.byteLength(serialized,'utf8') > MAX_STORE_BYTES) return fail(res,413,'Kho bài viết đã gần giới hạn 3 MB. Hãy giảm dung lượng ảnh hoặc gỡ bài không dùng.');
     await command(['SET',KEY,serialized]);
