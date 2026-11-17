@@ -17,7 +17,7 @@ module.exports = async (req,res) => {
   res.setHeader('Cache-Control','public, s-maxage=300, stale-while-revalidate=3600');
   if (req.method !== 'GET') return res.status(405).send('Method not allowed.');
   let xml;
-  try { xml = await fs.readFile(path.join(process.cwd(),'sitemap.xml'),'utf8'); }
+  try { xml = await fs.readFile(path.join(process.cwd(),'sitemap-static.xml'),'utf8'); }
   catch { xml = '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"></urlset>'; }
   if (!redisUrl() || !redisToken()) return res.status(200).send(xml);
   try {

@@ -6,7 +6,7 @@
       "includeFiles": "blog/**/*.html"
     },
     "api/sitemap.js": {
-      "includeFiles": "sitemap.xml"
+      "includeFiles": "sitemap-static.xml"
     }
   },
   "headers": [
