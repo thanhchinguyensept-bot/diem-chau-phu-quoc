@@ -2278,7 +2278,9 @@ function old_finishCleaning(roomNumber) {
       const controls = document.createElement('div'); controls.className = 'flex items-center gap-1';
       const edit = document.createElement('button'); edit.type = 'button'; edit.title = 'Chỉnh sửa bài viết'; edit.className = 'p-1.5 text-text-muted hover:text-primary'; edit.textContent = '✎'; edit.addEventListener('click',() => openEditBlogModal(post.slug));
       const remove = document.createElement('button'); remove.type = 'button'; remove.title = 'Xóa bản quản lý'; remove.className = 'p-1.5 text-text-muted hover:text-status-danger'; remove.textContent = '⌫'; remove.addEventListener('click',() => deleteBlogPost(post.slug));
-      controls.append(edit,remove); bottom.append(link,controls); card.append(top,bottom); grid.append(card);
+      controls.append(edit);
+      if (post.source === 'managed') controls.append(remove);
+      bottom.append(link,controls); card.append(top,bottom); grid.append(card);
     });
   }
 
@@ -2775,7 +2777,7 @@ function old_finishCleaning(roomNumber) {
         <input id="blog-keywords-input" type="text" placeholder="nhà nghỉ phú quốc, check in tự động, du lịch riêng tư..." class="w-full h-11 px-3 rounded-lg border border-outline-variant/60 bg-surface-container-low text-primary text-sm outline-none focus:border-secondary">
       </div>
       <div>
-        <label class="block font-label-sm text-label-sm text-primary font-bold mb-1">Mô Tả Tóm Tắt (Meta Description): <span class="text-status-danger">*</span></label>
+        <label class="block font-label-sm text-label-sm text-primary font-bold mb-1">Mô Tả Tóm Tắt (Meta Description):</label>
         <textarea id="blog-desc-input" rows="3" placeholder="Tóm tắt 1–2 câu cho trang Blog và kết quả tìm kiếm..." class="w-full p-3 rounded-lg border border-outline-variant/60 bg-surface-container-low text-primary text-sm outline-none focus:border-secondary"></textarea>
       </div>
       <div>
@@ -2795,8 +2797,8 @@ function old_finishCleaning(roomNumber) {
           Hủy Bỏ
         </button>
         <button type="submit" class="px-5 py-2 rounded-xl bg-primary hover:bg-primary-container text-on-primary font-label-sm text-label-sm font-bold transition-all cursor-pointer shadow-sm flex items-center gap-1.5">
-          <span class="material-symbols-outlined text-[18px]">publish</span>
-          Lưu &amp; Xuất Bản
+          <span class="material-symbols-outlined text-[18px]">save</span>
+          Lưu Bài Viết
         </button>
       </div>
     </form>
