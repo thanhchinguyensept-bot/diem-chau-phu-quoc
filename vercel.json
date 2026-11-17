@@ -1,6 +1,11 @@
 {
   "version": 2,
   "cleanUrls": true,
+  "functions": {
+    "api/blog-post.js": {
+      "includeFiles": "blog/**/*.html"
+    }
+  },
   "headers": [
     {
       "source": "/(.*)",
@@ -147,6 +152,12 @@
       ],
       "destination": "/blog/huong-dan-smart-pass",
       "permanent": true
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/blog/:slug",
+      "destination": "/api/blog-post?slug=:slug"
     }
   ]
 }

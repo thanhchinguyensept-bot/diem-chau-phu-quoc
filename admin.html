@@ -716,7 +716,7 @@ Cấp PIN Mới
 <h2 class="font-headline-md text-headline-md text-primary">Dữ Liệu Khách Hàng Thường Xuyên (CRM)</h2>
 <p class="font-body-sm text-body-sm text-text-muted">Quản lý lịch sử ghé thăm, ghi chú sở thích và hạn mức điểm thưởng riêng tư</p>
 </div>
-<button id="btn-create-blog" onclick="openCreateBlogModal()" type="button" class="bg-primary hover:bg-primary-container text-on-primary px-space-md py-2.5 rounded-xl font-label-md text-label-md flex items-center gap-2 self-start transition-all cursor-pointer shadow-sm">
+<button type="button" class="bg-primary hover:bg-primary-container text-on-primary px-space-md py-2.5 rounded-xl font-label-md text-label-md flex items-center gap-2 self-start transition-all cursor-pointer shadow-sm">
 <span class="material-symbols-outlined text-[18px]">person_add</span>
         Thêm Khách Thủ Công
       </button>
@@ -1039,13 +1039,13 @@ Cấp PIN Mới
 <h2 class="font-headline-md text-headline-md text-primary">Cẩm Nang Du Lịch Phú Quốc &amp; Bài Viết SEO</h2>
 <p class="font-body-sm text-body-sm text-text-muted">Tối ưu hóa thứ hạng tìm kiếm cho từ khóa: "Nhà nghỉ thông minh tự check-in Phú Quốc"</p>
 </div>
-<button class="bg-primary hover:bg-primary-container text-on-primary px-space-md py-2.5 rounded-xl font-label-md text-label-md flex items-center gap-2 self-start transition-all">
+<button id="btn-create-blog" onclick="openCreateBlogModal()" type="button" class="bg-primary hover:bg-primary-container text-on-primary px-space-md py-2.5 rounded-xl font-label-md text-label-md flex items-center gap-2 self-start transition-all cursor-pointer">
 <span class="material-symbols-outlined text-[18px]">post_add</span>
         Tạo Bài Viết Mới
       </button>
 </div>
 <!-- Danh sách bài Blog SEO -->
-<div id="blog-posts-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-space-md">
+<div id="blog-posts-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-space-md" aria-live="polite">
 <!-- Bài 1 -->
 <div class="bg-surface-container-lowest rounded-2xl p-space-md shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
 <div>
@@ -2220,185 +2220,187 @@ function old_finishCleaning(roomNumber) {
     totalEl.textContent = formatMoney(current);
   }
 
-  // --- BLOG MANAGEMENT ---
-  const defaultPosts = [
-    {
-      id: 'post-1',
-      title: 'Kinh Nghiệm Check-in Tự Động Không Gặp Lễ Tân Tại Phú Quốc',
-      desc: 'Hướng dẫn quy trình 7 bước nhận phòng trong 60 giây qua Smart Pass bảo mật tuyệt đối...',
-      cat: 'Trải Nghiệm Tự Động',
-      status: 'published',
-      date: '12/03/2025',
-      reads: '1.840 Lượt đọc',
-      img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAaChHCEl4XtK99cdmbTpmyjL-20fPkC-IVaKWN01LOJc7EWOtXTgCTh32ABIK1tRX0_CKtVGFBvW83dfuOTRK6BxJWR7XmaFK0Fsa07UeK4hFgfb45iosoBQM_LUSgmfG9ky0YZOMlHF0Z3GepPeNOBC0aca0asFAn-IXc5dvXHkvdXiUrs2j7G6d66E5uIvVMJrj7uqsWVv7fJ3xUUUnT8Ta0mU8k4V7dOx7pVKhNj78paL7Iz36O'
-    },
-    {
-      id: 'post-2',
-      title: 'Top 5 Quán Cà Phê Ngắm Hoàng Hôn Gần Nhà Nghỉ Diễm Châu',
-      desc: 'Gợi ý lộ trình thư giãn riêng tư dành cho các cặp đôi ghé đảo ngọc trong 48 giờ...',
-      cat: 'Cẩm Nang Du Lịch',
-      status: 'published',
-      date: '08/03/2025',
-      reads: '920 Lượt đọc',
-      img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBnzyOfM_q2toM1q6ZdXbvVAOnzCOeSy7Pk1wtpfWPFe7NZV9MdT0Sc8FLj0VmtAQkO495aGBLQdsR6zd2213Iu4Vmear97_U419ApZKdcpIBlWUsChM7amTlrnVkAV48tP7nijnsfFFwjYXHMlZ5moZDuyrLRZsVwYGtILhYV25vs4k4vbIfcJNfSMESaifNzC4vM_AfWCpIjgyApz-HaY_L81-L5fWjuLioj2_bvWo-unZ9q4hGnk'
-    },
-    {
-      id: 'post-3',
-      title: 'Tại Sao Du Lịch Khép Kín & Tự Động Hóa Trở Thành Xu Hướng 2025?',
-      desc: 'Sự riêng tư tuyệt đối và trải nghiệm không tương tác trực tiếp giúp du khách tái tạo năng lượng hoàn hảo...',
-      cat: 'Trải Nghiệm Tự Động',
-      status: 'draft',
-      date: 'Lưu nháp: Hôm nay',
-      reads: 'Đang biên tập',
-      img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDVsaS4_MVyegAkUoAN0UkeSGFanSYOYMFPokCBsSPJRg76-3fSrFK1fE1F2ih6361hk3a7rNC_P9c1-J5tEADXicoiQGUn4pWSkyVy2sgxeX3b3kQMw2k-cExbBR1oWl3J76SwCA8w_XbrkAUV9F4N5XUegOaTG51-NOJAtbdq9Kk2fukCTjakSDU3yZC0jxwWVFizLYZjc4xclR6YQdrxqRwI3lWfriVYaIZkBhlSNsJoAi_kEZgm'
+  // --- BLOG MANAGEMENT: server-backed blog content ---
+  let adminBlogPosts = [];
+  const blogPlaceholderImage = '/images/blog/phu-quoc-toan-canh-duong-dong-640.jpg';
+  const blogEditor = document.getElementById('blog-content-input');
+
+  async function loadBlogPosts() {
+    const grid = document.getElementById('blog-posts-grid');
+    if (!grid) return;
+    grid.innerHTML = '<p class="text-text-muted">Đang tải bài viết từ website…</p>';
+    try {
+      const [indexResponse, postsResponse] = await Promise.all([
+        fetch('/blog.html', {cache:'no-store'}),
+        fetch('/api/blog-posts?admin=1', {credentials:'same-origin',cache:'no-store'})
+      ]);
+      if (!indexResponse.ok || !postsResponse.ok) throw new Error(postsResponse.status === 401 ? 'Phiên quản trị đã hết hạn. Hãy đăng nhập lại.' : 'Chưa tải được dữ liệu Blog.');
+      const indexDocument = new DOMParser().parseFromString(await indexResponse.text(), 'text/html');
+      const apiData = await postsResponse.json();
+      const stored = apiData.posts || [];
+      const bySlug = new Map(stored.map(post => [post.slug, post]));
+      const live = Array.from(indexDocument.querySelectorAll('#blog-post-grid a.blog-card-link')).map(link => {
+        const url = new URL(link.getAttribute('href'), location.origin).pathname.replace(/\/$/, '');
+        const slug = url.split('/').pop();
+        const image = link.querySelector('img');
+        return {slug,url,title:link.querySelector('h2')?.textContent.trim() || slug,description:link.querySelector('div p:last-child')?.textContent.trim() || '',category:link.querySelector('div p:first-child')?.textContent.trim() || 'Cẩm Nang Du Lịch',image:image?.getAttribute('src') || blogPlaceholderImage,status:'published',source:'live'};
+      });
+      const merged = live.map(post => ({...post,...(bySlug.get(post.slug) || {}),originalUrl:post.url,source:bySlug.has(post.slug) ? 'managed' : 'live'}));
+      for (const post of stored) if (!merged.some(item => item.slug === post.slug)) merged.unshift({...post,url:`/blog/${post.slug}`,source:'managed'});
+      adminBlogPosts = merged;
+      renderBlogGrid();
+    } catch (error) {
+      grid.textContent = error.message;
+      if (error.message.includes('hết hạn')) window.dispatchEvent(new Event('admin-session-expired'));
     }
-  ];
-
-  function getStoredBlogPosts() {
-    try {
-      const stored = localStorage.getItem('diemchau_admin_posts');
-      if (stored) return JSON.parse(stored);
-    } catch(e){}
-    return defaultPosts;
-  }
-
-  function saveStoredBlogPosts(posts) {
-    try {
-      localStorage.setItem('diemchau_admin_posts', JSON.stringify(posts));
-    } catch(e){}
   }
 
   function renderBlogGrid() {
     const grid = document.getElementById('blog-posts-grid');
     if (!grid) return;
-    const posts = getStoredBlogPosts();
-    grid.innerHTML = '';
-
-    posts.forEach(p => {
-      const isPublished = p.status === 'published';
-      const card = document.createElement('div');
-      card.id = p.id;
+    grid.replaceChildren();
+    adminBlogPosts.forEach(post => {
+      const card = document.createElement('article');
       card.className = 'bg-surface-container-lowest rounded-2xl p-space-md shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow';
-      card.innerHTML = `
-        <div>
-          <div class="w-full h-40 rounded-xl overflow-hidden mb-space-sm">
-            <img class="w-full h-full object-cover" src="${p.img || defaultPosts[0].img}" alt="${p.title}">
-          </div>
-          <div class="flex items-center gap-2 mb-2">
-            <span class="inline-block ${isPublished ? 'bg-tertiary-container text-on-tertiary-container' : 'bg-surface-container text-on-surface-variant'} text-label-sm font-label-sm px-2 py-0.5 rounded font-semibold">
-              ${isPublished ? 'Đã Xuất Bản' : 'Bản Nháp (Draft)'}
-            </span>
-            <span class="text-text-muted font-label-sm text-label-sm">${p.reads || 'Vừa cập nhật'}</span>
-          </div>
-          <h4 class="font-headline-sm text-headline-sm text-primary line-clamp-2">${p.title}</h4>
-          <p class="font-body-sm text-body-sm text-text-muted line-clamp-2 mt-1">${p.desc}</p>
-        </div>
-        <div class="flex items-center justify-between mt-space-md pt-space-xs border-t border-surface-container">
-          <span class="font-label-sm text-label-sm text-text-muted">${p.date}</span>
-          <div class="flex items-center gap-1">
-            <button onclick="openEditBlogModal('${p.id}')" type="button" title="Chỉnh sửa bài viết" class="p-1.5 text-text-muted hover:text-primary cursor-pointer transition-colors"><span class="material-symbols-outlined text-[18px]">edit</span></button>
-            <button onclick="deleteBlogPost('${p.id}')" type="button" title="Xóa bài viết" class="p-1.5 text-text-muted hover:text-status-danger cursor-pointer transition-colors"><span class="material-symbols-outlined text-[18px]">delete</span></button>
-          </div>
-        </div>
-      `;
-      grid.appendChild(card);
+      const imageWrap = document.createElement('div');
+      imageWrap.className = 'w-full h-40 rounded-xl overflow-hidden mb-space-sm bg-surface-container';
+      const image = document.createElement('img');
+      image.className = 'w-full h-full object-cover'; image.src = post.image || blogPlaceholderImage; image.alt = post.title; image.loading = 'lazy';
+      imageWrap.append(image);
+      const status = document.createElement('span');
+      status.className = `inline-block ${post.status === 'published' ? 'bg-tertiary-container text-on-tertiary-container' : 'bg-surface-container text-on-surface-variant'} text-label-sm px-2 py-0.5 rounded font-semibold`;
+      status.textContent = post.status === 'published' ? 'Đã xuất bản' : 'Bản nháp';
+      const title = document.createElement('h3'); title.className = 'font-headline-sm text-headline-sm text-primary line-clamp-2'; title.textContent = post.title;
+      const desc = document.createElement('p'); desc.className = 'font-body-sm text-text-muted line-clamp-2 mt-1'; desc.textContent = post.description || '';
+      const top = document.createElement('div'); top.append(imageWrap,status,title,desc);
+      const bottom = document.createElement('div'); bottom.className = 'flex items-center justify-between mt-space-md pt-space-xs border-t border-surface-container';
+      const link = document.createElement('a'); link.className = 'text-sm text-primary underline'; link.href = post.url || `/blog/${post.slug}`; link.target = '_blank'; link.rel = 'noopener'; link.textContent = 'Mở bài';
+      const controls = document.createElement('div'); controls.className = 'flex items-center gap-1';
+      const edit = document.createElement('button'); edit.type = 'button'; edit.title = 'Chỉnh sửa bài viết'; edit.className = 'p-1.5 text-text-muted hover:text-primary'; edit.textContent = '✎'; edit.addEventListener('click',() => openEditBlogModal(post.slug));
+      const remove = document.createElement('button'); remove.type = 'button'; remove.title = 'Xóa bản quản lý'; remove.className = 'p-1.5 text-text-muted hover:text-status-danger'; remove.textContent = '⌫'; remove.addEventListener('click',() => deleteBlogPost(post.slug));
+      controls.append(edit,remove); bottom.append(link,controls); card.append(top,bottom); grid.append(card);
     });
   }
 
   function openCreateBlogModal() {
-    const modal = document.getElementById('blog-modal');
-    if (!modal) return;
+    document.getElementById('blog-form').reset();
     document.getElementById('blog-modal-title').textContent = 'Tạo Bài Viết SEO Mới';
     document.getElementById('blog-modal-icon').textContent = 'post_add';
     document.getElementById('blog-edit-id').value = '';
-    document.getElementById('blog-form').reset();
-    modal.classList.remove('hidden');
+    document.getElementById('blog-original-url').value = '';
+    document.getElementById('blog-robots-input').value = 'index, follow';
+    document.getElementById('blog-status-input').value = 'draft';
+    blogEditor.innerHTML = '';
+    document.getElementById('blog-modal').classList.remove('hidden');
+    document.getElementById('blog-title-input').focus();
   }
 
-  function openEditBlogModal(postId) {
-    const posts = getStoredBlogPosts();
-    const p = posts.find(item => item.id === postId);
-    if (!p) return;
-
+  async function openEditBlogModal(slug) {
+    const post = adminBlogPosts.find(item => item.slug === slug);
+    if (!post) return;
     const modal = document.getElementById('blog-modal');
-    if (!modal) return;
-
-    document.getElementById('blog-modal-title').textContent = 'Chỉnh Sửa Bài Viết SEO';
+    document.getElementById('blog-modal-title').textContent = 'Chỉnh Sửa Bài Viết';
     document.getElementById('blog-modal-icon').textContent = 'edit_note';
-    document.getElementById('blog-edit-id').value = p.id;
-    document.getElementById('blog-title-input').value = p.title;
-    document.getElementById('blog-cat-input').value = p.cat;
-    document.getElementById('blog-status-input').value = p.status;
-    document.getElementById('blog-desc-input').value = p.desc;
-    document.getElementById('blog-keywords-input').value = p.keywords || 'nhà nghỉ phú quốc, du lịch tự động';
-
+    document.getElementById('blog-edit-id').value = post.slug;
+    document.getElementById('blog-original-url').value = post.originalUrl || post.url || '';
+    document.getElementById('blog-robots-input').value = post.robots || 'index, follow';
+    document.getElementById('blog-title-input').value = post.title || '';
+    document.getElementById('blog-cat-input').value = post.category || 'Cẩm Nang Du Lịch';
+    if (post.category && !Array.from(document.getElementById('blog-cat-input').options).some(option => option.value === post.category)) {
+      const option = document.createElement('option'); option.value = post.category; option.textContent = post.category; document.getElementById('blog-cat-input').append(option);
+    }
+    document.getElementById('blog-status-input').value = post.status || 'published';
+    document.getElementById('blog-desc-input').value = post.description || '';
+    document.getElementById('blog-keywords-input').value = post.keywords || '';
+    blogEditor.innerHTML = '<p>Đang tải nội dung…</p>';
     modal.classList.remove('hidden');
-  }
-
-  function closeBlogModal() {
-    const modal = document.getElementById('blog-modal');
-    if (modal) modal.classList.add('hidden');
-  }
-
-  function handleSaveBlogPost(e) {
-    e.preventDefault();
-    const editId = document.getElementById('blog-edit-id').value;
-    const title = document.getElementById('blog-title-input').value.trim();
-    const cat = document.getElementById('blog-cat-input').value;
-    const status = document.getElementById('blog-status-input').value;
-    const desc = document.getElementById('blog-desc-input').value.trim();
-    const keywords = document.getElementById('blog-keywords-input').value.trim();
-
-    let posts = getStoredBlogPosts();
-
-    if (editId) {
-      // Edit existing post
-      const idx = posts.findIndex(item => item.id === editId);
-      if (idx !== -1) {
-        posts[idx].title = title;
-        posts[idx].cat = cat;
-        posts[idx].status = status;
-        posts[idx].desc = desc;
-        posts[idx].keywords = keywords;
-        posts[idx].date = 'Vừa sửa: Hôm nay';
-        showToastNotification(`✏️ Đã cập nhật bài viết [${title}] thành công!`, 3500, 'success');
-      }
-    } else {
-      // Create new post
-      const newPost = {
-        id: 'post-' + Date.now(),
-        title: title,
-        desc: desc,
-        cat: cat,
-        status: status,
-        keywords: keywords,
-        date: 'Vừa đăng: Hôm nay',
-        reads: '0 Lượt đọc',
-        img: defaultPosts[Math.floor(Math.random() * defaultPosts.length)].img
-      };
-      posts.unshift(newPost);
-      showToastNotification(`🚀 Đã xuất bản bài viết SEO [${title}] thành công!`, 3500, 'success');
-    }
-
-    saveStoredBlogPosts(posts);
-    renderBlogGrid();
-    closeBlogModal();
-  }
-
-  function deleteBlogPost(postId) {
-    if (confirm('Bạn có chắc muốn xóa bài viết này khỏi hệ thống?')) {
-      let posts = getStoredBlogPosts();
-      posts = posts.filter(item => item.id !== postId);
-      saveStoredBlogPosts(posts);
-      renderBlogGrid();
-      showToastNotification('🗑️ Đã xóa bài viết thành công!', 3000);
+    if (post.source === 'managed') {
+      try {
+        const response = await fetch(`/api/blog-posts?admin=1&slug=${encodeURIComponent(post.slug)}`,{credentials:'same-origin',cache:'no-store'});
+        const data = await response.json();
+        if (!response.ok || !data.success) throw new Error(data.message || 'Chưa tải được nội dung bài.');
+        if (document.getElementById('blog-edit-id').value === post.slug) blogEditor.innerHTML = data.post.content || '<p></p>';
+      } catch (error) { blogEditor.textContent = error.message; }
+    } else if (post.originalUrl) {
+      try {
+        const response = await fetch(`${post.originalUrl}.html`,{cache:'no-store'});
+        if (response.ok) {
+          const source = new DOMParser().parseFromString(await response.text(),'text/html');
+          if (source.querySelector('meta[name="robots"]')?.content.includes('noindex')) document.getElementById('blog-robots-input').value = 'noindex';
+          const content = source.querySelector('#post-content') || source.querySelector('article');
+          if (content && document.getElementById('blog-edit-id').value === post.slug) blogEditor.innerHTML = content.innerHTML;
+        } else blogEditor.innerHTML = '<p></p>';
+      } catch (_) {}
     }
   }
 
-  // Initialize blog grid on DOMContentLoaded
-  document.addEventListener('DOMContentLoaded', () => {
-    renderBlogGrid();
+  function closeBlogModal() { document.getElementById('blog-modal')?.classList.add('hidden'); }
+
+  async function imageToDataURL(file) {
+    if (!file.type.startsWith('image/')) throw new Error('Tệp được chọn không phải ảnh.');
+    if (file.size > 12 * 1024 * 1024) throw new Error('Ảnh gốc vượt quá 12 MB.');
+    const bitmap = await createImageBitmap(file);
+    const scale = Math.min(1, 1400 / Math.max(bitmap.width, bitmap.height));
+    const canvas = document.createElement('canvas'); canvas.width = Math.round(bitmap.width * scale); canvas.height = Math.round(bitmap.height * scale);
+    canvas.getContext('2d').drawImage(bitmap,0,0,canvas.width,canvas.height); bitmap.close();
+    const data = canvas.toDataURL('image/jpeg',0.78);
+    if (data.length > 650_000) throw new Error('Ảnh sau nén vẫn quá lớn. Hãy chọn ảnh nhỏ hơn.');
+    return data;
+  }
+
+  function insertEditorImage(data, alt='') {
+    const image = document.createElement('img'); image.src = data; image.alt = alt; image.style.maxWidth = '100%';
+    const selection = window.getSelection();
+    if (selection?.rangeCount && blogEditor.contains(selection.anchorNode)) selection.getRangeAt(0).insertNode(image);
+    else blogEditor.append(image);
+    blogEditor.focus();
+  }
+
+  document.getElementById('blog-image-input')?.addEventListener('change',async event => {
+    try { for (const file of event.target.files || []) insertEditorImage(await imageToDataURL(file),file.name.replace(/\.[^.]+$/,'')); }
+    catch (error) { showToastNotification(error.message,4000); }
+    event.target.value = '';
   });
+  blogEditor?.addEventListener('paste',async event => {
+    const imageFiles = Array.from(event.clipboardData?.items || []).filter(item => item.kind === 'file' && item.type.startsWith('image/')).map(item => item.getAsFile()).filter(Boolean);
+    if (!imageFiles.length) return;
+    event.preventDefault();
+    try { for (const file of imageFiles) insertEditorImage(await imageToDataURL(file)); }
+    catch (error) { showToastNotification(error.message,4000); }
+  });
+
+  async function handleSaveBlogPost(event) {
+    event.preventDefault();
+    const button = document.querySelector('#blog-form button[type="submit"]');
+    const title = document.getElementById('blog-title-input').value.trim();
+    const textContent = blogEditor.innerText.trim();
+    const content = blogEditor.innerHTML.trim();
+    if (!title || !textContent) { showToastNotification('Hãy nhập tiêu đề và nội dung bài viết.',3500); return; }
+    if (new Blob([content]).size > 800_000) { showToastNotification('Nội dung vượt giới hạn 800 KB. Hãy giảm dung lượng ảnh.',4500); return; }
+    button.disabled = true; button.textContent = 'Đang lưu…';
+    try {
+      const response = await fetch('/api/blog-posts',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({slug:document.getElementById('blog-edit-id').value || undefined,title,description:document.getElementById('blog-desc-input').value.trim(),category:document.getElementById('blog-cat-input').value,keywords:document.getElementById('blog-keywords-input').value.trim(),status:document.getElementById('blog-status-input').value,content,originalUrl:document.getElementById('blog-original-url').value,robots:document.getElementById('blog-robots-input').value})});
+      const result = await response.json();
+      if (!response.ok || !result.success) { if (response.status === 401) window.dispatchEvent(new Event('admin-session-expired')); throw new Error(result.message || 'Lưu bài viết thất bại.'); }
+      closeBlogModal(); await loadBlogPosts();
+      showToastNotification(result.post.status === 'published' ? `Đã lưu bài “${title}” và cập nhật Blog.` : `Đã lưu bản nháp “${title}”.`,3500,'success');
+    } catch (error) { showToastNotification(error.message,5000); }
+    finally { button.disabled = false; button.innerHTML = '<span class="material-symbols-outlined text-[18px]">publish</span>Lưu bài viết'; }
+  }
+
+  async function deleteBlogPost(slug) {
+    const post = adminBlogPosts.find(item => item.slug === slug);
+    if (!post || !confirm('Gỡ bản chỉnh sửa bài viết này? Bài gốc sẽ trở lại nếu có.')) return;
+    try {
+      const response = await fetch(`/api/blog-posts?slug=${encodeURIComponent(slug)}`,{method:'DELETE',credentials:'same-origin'});
+      const result = await response.json(); if (!response.ok || !result.success) throw new Error(result.message || 'Chưa xóa được.');
+      await loadBlogPosts(); showToastNotification('Đã gỡ bản chỉnh sửa bài viết.',3000,'success');
+    } catch (error) { showToastNotification(error.message,4500); }
+  }
+
+  document.getElementById('blog-form')?.addEventListener('submit',handleSaveBlogPost);
+  document.addEventListener('DOMContentLoaded',() => { if (!document.getElementById('admin-security-gate')?.classList.contains('hidden')) return; loadBlogPosts(); });
+  document.addEventListener('admin-session-authenticated',loadBlogPosts);
 
   // ==========================================
   // TAB 8: QUẢN TRỊ CHATBOT AI DIỄM CHÂU
@@ -2725,7 +2727,7 @@ function old_finishCleaning(roomNumber) {
 
 <!-- Modal Soạn Thảo / Chỉnh Sửa Bài Viết Blog SEO -->
 <div id="blog-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
-  <div class="bg-surface-container-lowest rounded-2xl max-w-xl w-full overflow-hidden shadow-2xl border border-outline-variant/30 animate-scale-in">
+  <div class="bg-surface-container-lowest rounded-2xl max-w-4xl w-full max-h-[92vh] overflow-y-auto shadow-2xl border border-outline-variant/30 animate-scale-in">
     <div class="bg-primary p-space-md text-on-primary flex items-center justify-between">
       <div class="flex items-center gap-2">
         <span class="material-symbols-outlined text-secondary-container text-[24px]" id="blog-modal-icon">post_add</span>
@@ -2735,8 +2737,10 @@ function old_finishCleaning(roomNumber) {
         <span class="material-symbols-outlined text-[18px]">close</span>
       </button>
     </div>
-    <form id="blog-form" onsubmit="handleSaveBlogPost(event)" class="p-space-lg flex flex-col gap-space-md">
+    <form id="blog-form" class="p-space-lg flex flex-col gap-space-md">
       <input type="hidden" id="blog-edit-id" value="">
+      <input type="hidden" id="blog-original-url" value="">
+      <input type="hidden" id="blog-robots-input" value="index, follow">
       <div>
         <label class="block font-label-sm text-label-sm text-primary font-bold mb-1">Tiêu Đề Bài Viết Chuẩn SEO: <span class="text-status-danger">*</span></label>
         <input id="blog-title-input" type="text" required placeholder="Ví dụ: Top 7 Quán Ăn Đêm Gần Diễm Châu Phú Quốc..." class="w-full h-11 px-3 rounded-lg border border-outline-variant/60 bg-surface-container-low text-primary text-sm outline-none focus:border-secondary">
@@ -2765,7 +2769,19 @@ function old_finishCleaning(roomNumber) {
       </div>
       <div>
         <label class="block font-label-sm text-label-sm text-primary font-bold mb-1">Mô Tả Tóm Tắt (Meta Description): <span class="text-status-danger">*</span></label>
-        <textarea id="blog-desc-input" rows="3" required placeholder="Tóm tắt ngắn gọn 1-2 câu chứa từ khóa để xuất hiện trên kết quả tìm kiếm Google..." class="w-full p-3 rounded-lg border border-outline-variant/60 bg-surface-container-low text-primary text-sm outline-none focus:border-secondary"></textarea>
+        <textarea id="blog-desc-input" rows="3" placeholder="Tóm tắt 1–2 câu cho trang Blog và kết quả tìm kiếm..." class="w-full p-3 rounded-lg border border-outline-variant/60 bg-surface-container-low text-primary text-sm outline-none focus:border-secondary"></textarea>
+      </div>
+      <div>
+        <div class="flex items-center justify-between gap-2 mb-1">
+          <label for="blog-content-input" class="block font-label-sm text-label-sm text-primary font-bold">Nội dung bài viết: <span class="text-status-danger">*</span></label>
+          <label class="px-3 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-primary text-sm font-semibold cursor-pointer">
+            <span class="material-symbols-outlined align-middle text-[18px]">add_photo_alternate</span> Thêm ảnh
+            <input id="blog-image-input" type="file" accept="image/png,image/jpeg,image/webp" multiple class="sr-only">
+          </label>
+        </div>
+        <p class="text-xs text-text-muted mb-2">Dán nội dung đã định dạng trực tiếp vào khung. Có thể dán ảnh từ clipboard hoặc bấm “Thêm ảnh”. Ảnh sẽ được nén trước khi lưu.</p>
+        <div id="blog-content-input" contenteditable="true" role="textbox" aria-multiline="true" aria-label="Nội dung bài viết" data-placeholder="Dán toàn bộ bài viết vào đây…" class="min-h-[320px] max-h-[55vh] overflow-y-auto p-4 rounded-lg border border-outline-variant/60 bg-white text-primary text-sm leading-7 outline-none focus:border-secondary [&_img]:max-w-full [&_img]:h-auto [&_p]:mb-3 [&_h2]:text-xl [&_h2]:font-bold [&_h3]:text-lg [&_h3]:font-bold [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:list-decimal [&_ol]:pl-6"></div>
+        <p class="text-xs text-text-muted mt-1">Giới hạn tổng nội dung và ảnh: 800 KB sau nén.</p>
       </div>
       <div class="flex items-center justify-end gap-2 pt-2 border-t border-outline-variant/30">
         <button onclick="closeBlogModal()" type="button" class="px-4 py-2 rounded-xl bg-surface-container hover:bg-surface-container-high text-primary font-label-sm text-label-sm font-bold transition-all cursor-pointer">

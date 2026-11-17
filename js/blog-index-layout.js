@@ -1,5 +1,5 @@
 (() => {
-  function initBlogIndex() {
+  async function initBlogIndex() {
     const grid = document.getElementById('blog-post-grid');
     const featured = document.getElementById('blog-featured-card');
     const filters = document.getElementById('blog-category-filters');
@@ -8,6 +8,47 @@
     const emptyState = document.getElementById('blog-empty-state');
     const resultCount = document.getElementById('blog-result-count');
     if (!grid || !featured || !filters || !search) return;
+
+    try {
+      const response = await fetch('/api/blog-posts', {cache:'no-store'});
+      if (response.ok) {
+        const data = await response.json();
+        for (const slug of data.hiddenSlugs || []) {
+          const hiddenPath = `/blog/${encodeURIComponent(slug)}`;
+          Array.from(grid.querySelectorAll('a.blog-card-link')).find(link => new URL(link.href, location.origin).pathname.replace(/\/$/,'') === hiddenPath)?.closest('.blog-card')?.remove();
+        }
+        for (const post of data.posts || []) {
+          const path = `/blog/${encodeURIComponent(post.slug)}`;
+          const existing = Array.from(grid.querySelectorAll('a.blog-card-link')).find(link => new URL(link.href, location.origin).pathname.replace(/\/$/,'') === path);
+          let card = existing?.closest('.blog-card');
+          if (!card) {
+            card = document.createElement('article');
+            card.className = 'blog-card rounded-2xl bg-surface-container-lowest shadow-sm';
+            const link = document.createElement('a'); link.className = 'blog-card-link'; link.href = path;
+            const image = document.createElement('img'); image.className = 'blog-card-cover'; image.loading = 'lazy'; image.src = '/images/blog/phu-quoc-toan-canh-duong-dong-640.jpg';
+            const body = document.createElement('div'); body.className = 'p-6';
+            const category = document.createElement('p'); category.className = 'text-secondary text-sm font-semibold mb-2';
+            const heading = document.createElement('h2'); heading.className = 'text-xl text-primary font-bold mb-3';
+            const description = document.createElement('p');
+            body.append(category,heading,description); link.append(image,body); card.append(link); grid.prepend(card);
+          }
+          const link = card.querySelector('a.blog-card-link');
+          const image = link.querySelector('img');
+          const body = link.querySelector('div');
+          const heading = link.querySelector('h2');
+          const paragraphs = body.querySelectorAll('p');
+          link.href = path;
+          heading.textContent = post.title;
+          heading.id = `blog-title-${post.slug}`;
+          link.setAttribute('aria-labelledby', heading.id);
+          paragraphs[0].textContent = post.category || 'Cẩm Nang Du Lịch';
+          if (paragraphs[1]) paragraphs[1].textContent = post.description || '';
+          else { const description = document.createElement('p'); description.textContent = post.description || ''; body.append(description); }
+          if (post.image) image.src = post.image;
+          image.alt = post.title;
+        }
+      }
+    } catch (_) {}
 
     const cards = Array.from(grid.querySelectorAll(':scope > .blog-card'));
     if (!cards.length) return;
