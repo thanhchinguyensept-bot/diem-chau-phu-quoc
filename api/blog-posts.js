@@ -29,12 +29,12 @@ function slugify(value) {
 
 function cleanHTML(input) {
   let html = String(input || '');
-  html = html.replace(/<!--[\s\S]*?-->/g, '').replace(/<(script|style|iframe|object|embed|form|svg|math|video|audio)[^>]*>[\s\S]*?<\/\1\s*>/gi, '');
-  const allowed = new Set(['p','div','br','hr','h1','h2','h3','h4','h5','h6','ul','ol','li','blockquote','strong','b','em','i','u','s','a','img','figure','figcaption','table','thead','tbody','tr','th','td','sup','sub']);
+  html = html.replace(/<!--[\s\S]*?-->/g, '').replace(/<(script|style|iframe|object|embed|form|svg|math|audio)[^>]*>[\s\S]*?<\/\1\s*>/gi, '');
+  const allowed = new Set(['p','div','br','hr','h1','h2','h3','h4','h5','h6','ul','ol','li','blockquote','strong','b','em','i','u','s','a','img','video','source','figure','figcaption','table','thead','tbody','tr','th','td','sup','sub']);
   html = html.replace(/<(\/?)([a-z0-9-]+)\b([^>]*)>/gi, (tag, slash, rawName, rawAttrs) => {
     const name = rawName.toLowerCase();
     if (!allowed.has(name)) return '';
-    if (slash) return `</${name}>`;
+    if (slash) return name === 'source' ? '' : `</${name}>`;
     const attrs = [];
     const pattern = /([a-zA-Z_:][-a-zA-Z0-9_:.]*)\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+))/g;
     let match;
@@ -44,11 +44,16 @@ function cleanHTML(input) {
       if (key.startsWith('on') || key === 'style' || key === 'srcset' || key === 'class' || key === 'id') continue;
       if (name === 'a' && key === 'href' && /^(https?:\/\/|\/|#|mailto:)/i.test(value)) attrs.push(`href="${escapeAttr(value)}"`);
       if (name === 'img' && key === 'src' && (/^(https?:\/\/|\/)/i.test(value) || /^data:image\/(?:png|jpeg|webp);base64,/i.test(value))) attrs.push(`src="${escapeAttr(value)}"`);
+      if ((name === 'video' || name === 'source') && key === 'src' && /^\/videos\/[a-z0-9._-]+\.mp4$/i.test(value)) attrs.push(`src="${escapeAttr(value)}"`);
+      if (name === 'source' && key === 'type' && value.toLowerCase() === 'video/mp4') attrs.push('type="video/mp4"');
+      if (name === 'video' && ['controls','playsinline'].includes(key)) attrs.push(key);
+      if (name === 'video' && key === 'preload' && ['none','metadata'].includes(value.toLowerCase())) attrs.push(`preload="${value.toLowerCase()}"`);
+      if (name === 'video' && key === 'aria-label' && value.length <= 120) attrs.push(`aria-label="${escapeAttr(value)}"`);
       if ((name === 'img' && key === 'alt') || (name === 'td' && ['colspan','rowspan'].includes(key)) || (name === 'th' && ['colspan','rowspan','scope'].includes(key))) attrs.push(`${key}="${escapeAttr(value)}"`);
     }
     if (name === 'a') attrs.push('rel="noopener noreferrer"');
     if (name === 'img') { attrs.push('loading="lazy"'); attrs.push('decoding="async"'); }
-    return `<${name}${attrs.length ? ' ' + attrs.join(' ') : ''}${['br','hr','img'].includes(name) ? '>' : '>'}`;
+    return `<${name}${attrs.length ? ' ' + attrs.join(' ') : ''}>`;
   });
   return html.trim();
 }
