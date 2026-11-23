@@ -2162,6 +2162,27 @@ function old_finishCleaning(roomNumber) {
   let adminBlogPosts = [];
   const blogPlaceholderImage = '/images/blog/phu-quoc-toan-canh-duong-dong-640.jpg';
   const getBlogEditor = () => document.getElementById('blog-content-input');
+  function resetBlogHTMLMode() {
+    const source = document.getElementById('blog-html-input');
+    source.value = '';
+    source.hidden = true;
+    getBlogEditor().hidden = false;
+    document.getElementById('btn-blog-html').disabled = false;
+    document.getElementById('blog-image-input').disabled = false;
+  }
+
+  function editBlogHTML() {
+    const editor = getBlogEditor();
+    if (editor.textContent.trim() === 'Đang tải nội dung…') return;
+    const source = document.getElementById('blog-html-input');
+    source.value = editor.innerHTML;
+    source.hidden = false;
+    editor.hidden = true;
+    document.getElementById('btn-blog-html').disabled = true;
+    document.getElementById('blog-image-input').disabled = true;
+    source.focus();
+  }
+
   function updateBlogSubmitLabel() {
     const button = document.querySelector('#blog-form button[type="submit"]');
     const status = document.getElementById('blog-status-input')?.value;
@@ -2233,6 +2254,7 @@ function old_finishCleaning(roomNumber) {
 
   function openCreateBlogModal() {
     document.getElementById('blog-form').reset();
+    resetBlogHTMLMode();
     document.getElementById('blog-modal-title').textContent = 'Tạo Bài Viết SEO Mới';
     document.getElementById('blog-modal-icon').textContent = 'post_add';
     document.getElementById('blog-edit-id').value = '';
@@ -2248,6 +2270,7 @@ function old_finishCleaning(roomNumber) {
   async function openEditBlogModal(slug) {
     const post = adminBlogPosts.find(item => item.slug === slug);
     if (!post) return;
+    resetBlogHTMLMode();
     const modal = document.getElementById('blog-modal');
     document.getElementById('blog-modal-title').textContent = 'Chỉnh Sửa Bài Viết';
     document.getElementById('blog-modal-icon').textContent = 'edit_note';
@@ -2326,8 +2349,9 @@ function old_finishCleaning(roomNumber) {
     event.preventDefault();
     const button = document.querySelector('#blog-form button[type="submit"]');
     const title = document.getElementById('blog-title-input').value.trim();
-    const textContent = getBlogEditor().innerText.trim();
-    const content = getBlogEditor().innerHTML.trim();
+    const source = document.getElementById('blog-html-input');
+    const content = (source.hidden ? getBlogEditor().innerHTML : source.value).trim();
+    const textContent = source.hidden ? getBlogEditor().innerText.trim() : content.replace(/<[^>]*>/g,' ').trim();
     if (!title || !textContent) { showToastNotification('Hãy nhập tiêu đề và nội dung bài viết.',3500); return; }
     if (new Blob([content]).size > 800_000) { showToastNotification('Nội dung vượt giới hạn 800 KB. Hãy giảm dung lượng ảnh.',4500); return; }
     button.disabled = true; button.textContent = 'Đang lưu…';
@@ -2739,6 +2763,9 @@ function old_finishCleaning(roomNumber) {
             <input id="blog-image-input" type="file" accept="image/png,image/jpeg,image/webp" multiple class="sr-only">
           </label>
         </div>
+        <button id="btn-blog-html" onclick="editBlogHTML()" type="button" class="px-3 py-1.5 mb-2 rounded-lg bg-surface-container text-primary text-sm font-semibold">Chỉnh HTML</button>
+        <p class="text-xs text-text-muted mb-2">Chọn “Chỉnh HTML” để nhập mã bài có liên kết và video. Nội dung được lọc khi lưu; mở lại bài để xem bản đã định dạng.</p>
+        <textarea id="blog-html-input" aria-label="Mã HTML bài viết" hidden rows="16" spellcheck="false" class="w-full p-4 rounded-lg border border-outline-variant/60 bg-white text-primary text-sm font-mono"></textarea>
         <p class="text-xs text-text-muted mb-2">Dán nội dung đã định dạng trực tiếp vào khung. Có thể dán ảnh từ clipboard hoặc bấm “Thêm ảnh”. Ảnh sẽ được nén trước khi lưu.</p>
         <div id="blog-content-input" contenteditable="true" role="textbox" aria-multiline="true" aria-label="Nội dung bài viết" data-placeholder="Dán toàn bộ bài viết vào đây…" class="min-h-[320px] max-h-[55vh] overflow-y-auto p-4 rounded-lg border border-outline-variant/60 bg-white text-primary text-sm leading-7 outline-none focus:border-secondary [&_img]:max-w-full [&_img]:h-auto [&_p]:mb-3 [&_h2]:text-xl [&_h2]:font-bold [&_h3]:text-lg [&_h3]:font-bold [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:list-decimal [&_ol]:pl-6"></div>
         <p class="text-xs text-text-muted mt-1">Giới hạn tổng nội dung và ảnh: 800 KB sau nén.</p>

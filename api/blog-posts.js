@@ -46,11 +46,11 @@ function cleanHTML(input) {
       if (name === 'img' && key === 'src' && (/^(https?:\/\/|\/)/i.test(value) || /^data:image\/(?:png|jpeg|webp);base64,/i.test(value))) attrs.push(`src="${escapeAttr(value)}"`);
       if ((name === 'video' || name === 'source') && key === 'src' && /^\/videos\/[a-z0-9._-]+\.mp4$/i.test(value)) attrs.push(`src="${escapeAttr(value)}"`);
       if (name === 'source' && key === 'type' && value.toLowerCase() === 'video/mp4') attrs.push('type="video/mp4"');
-      if (name === 'video' && ['controls','playsinline'].includes(key)) attrs.push(key);
       if (name === 'video' && key === 'preload' && ['none','metadata'].includes(value.toLowerCase())) attrs.push(`preload="${value.toLowerCase()}"`);
       if (name === 'video' && key === 'aria-label' && value.length <= 120) attrs.push(`aria-label="${escapeAttr(value)}"`);
       if ((name === 'img' && key === 'alt') || (name === 'td' && ['colspan','rowspan'].includes(key)) || (name === 'th' && ['colspan','rowspan','scope'].includes(key))) attrs.push(`${key}="${escapeAttr(value)}"`);
     }
+    if (name === 'video') attrs.push('controls', 'playsinline');
     if (name === 'a') attrs.push('rel="noopener noreferrer"');
     if (name === 'img') { attrs.push('loading="lazy"'); attrs.push('decoding="async"'); }
     return `<${name}${attrs.length ? ' ' + attrs.join(' ') : ''}>`;
