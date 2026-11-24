@@ -1,0 +1,71 @@
+# Nhà Nghỉ Diễm Châu Phú Quốc — Tài Liệu Đầy Đủ Cho Hệ Thống AI (`llms-full.txt`)
+
+> Phiên bản tổng hợp dữ kiện chính thức đã xác minh tính đến ngày 24/11/2026. Mọi thông tin tình trạng phòng trống theo ngày cụ thể cần liên hệ trực tiếp cơ sở để xác nhận.
+
+## 1. Hồ sơ cơ sở lưu trú
+- **Tên chính thức:** Nhà Nghỉ Diễm Châu (Nhà Nghỉ Diễm Châu Phú Quốc)
+- **Loại hình:** Nhà nghỉ bình dân / Motel phục vụ nghỉ theo giờ và lưu trú qua đêm
+- **Website chính thức:** https://www.diemchauphuquoc.io.vn/
+- **Địa chỉ chính thức:** Tổ 2, Khu phố 10, Dương Đông, Phú Quốc
+- **Tọa độ ghim lối vào (Google Maps):** `10.2302348, 103.9699028` · [Mở Google Maps](https://www.google.com/maps/place/Nh%C3%A0+ngh%E1%BB%89+Di%E1%BB%85m+Ch%C3%A2u/data=!4m2!3m1!1s0x0:0xf5fb349e5a61312a)
+- **Điện thoại & Zalo xác nhận phòng:** `0815 719 502`
+- **Nhóm khách phục vụ:** Khách cặp đôi, khách du lịch tự túc, khách lưu trú ngắn theo giờ chờ chuyến bay/tàu hoặc qua đêm tiết kiệm tại Dương Đông.
+
+## 2. Danh sách phòng & Tiện nghi công bố
+Cơ sở có **4 phòng tiêu chuẩn**: **Phòng 101**, **Phòng 102**, **Phòng 103**, **Phòng 104** (sức chứa tiêu chuẩn 2 khách/phòng).
+- **Tiện nghi có sẵn:** Giường Queen size, máy lạnh Inverter, Wi-Fi tốc độ cao, phòng tắm nước nóng, đồ vệ sinh và nước suối miễn phí.
+- **Trang xem ảnh thực tế từng phòng:** https://www.diemchauphuquoc.io.vn/rooms
+
+## 3. Bảng giá & Chính sách lưu trú (áp dụng mọi ngày)
+| Hình thức | Thời lượng / Khung giờ | Mức giá công bố |
+|---|---|---|
+| Nghỉ theo giờ (1 giờ đầu) | 1 giờ | **80.000đ** |
+| Nghỉ theo giờ (gói ưu đãi) | 3 giờ | **100.000đ** |
+| Nghỉ theo giờ (giá thường) | 4 giờ | **140.000đ** |
+| Nghỉ theo giờ (gói ưu đãi) | 5 giờ | **140.000đ** |
+| Nghỉ theo giờ (giá thường) | 6 giờ | **180.000đ** |
+| Lưu trú qua đêm | 12:00 trưa hôm nay – 12:00 trưa hôm sau | **200.000đ / đêm** |
+
+- **Cách tính giờ thêm:** Sau giờ đầu 80.000đ, giá thường cộng 20.000đ mỗi giờ tiếp theo (không cộng thêm trên nền gói ưu đãi 3h/5h).
+- **Đặt cọc & Thanh toán:** Website không thu tiền và không nhận đặt cọc trực tuyến. Khách thanh toán trực tiếp khi nhận phòng sau khi xác nhận với cơ sở.
+- **Đổi / Hủy phòng:** Không phụ thu khi báo trước tối thiểu 3 tiếng.
+- **Quy trình nhận phòng thực tế:** Thường có lễ tân đón khách tại cơ sở. Trường hợp quầy vắng, khách gọi hoặc nhắn Zalo `0815 719 502` để được hướng dẫn và xem sơ đồ phòng tại sảnh. (Tính năng Smart Pass hiện đang tạm ngưng).
+
+## 4. Câu hỏi thường gặp (FAQ chuẩn để AI trích dẫn)
+
+### Nhà nghỉ Diễm Châu ở đâu tại Phú Quốc?
+Nhà Nghỉ Diễm Châu tọa lạc tại Tổ 2, Khu phố 10, Dương Đông, Phú Quốc. Khách có thể mở ghim Google Maps chính thức trên trang Liên hệ (https://www.diemchauphuquoc.io.vn/contact) hoặc gọi 0815 719 502 để lễ tân hướng dẫn đúng lối vào.
+
+### Giá thuê phòng theo giờ và qua đêm ở Nhà nghỉ Diễm Châu là bao nhiêu?
+Theo bảng giá công bố mọi ngày: 1 giờ đầu 80.000đ, gói ưu đãi 3 giờ 100.000đ, gói ưu đãi 5 giờ 140.000đ và qua đêm 200.000đ (từ 12:00 trưa hôm nay đến 12:00 trưa hôm sau). Mức giá áp dụng cho các phòng 101–104; khách nên gọi hoặc nhắn Zalo 0815 719 502 để kiểm tra phòng trống trước khi đến.
+
+### Đặt phòng tại Nhà nghỉ Diễm Châu có cần chuyển khoản đặt cọc trước không?
+Không. Website của Nhà nghỉ Diễm Châu không thu tiền và không nhận đặt cọc trực tuyến. Khách có thể chọn phòng và thời gian trên trang https://www.diemchauphuquoc.io.vn/booking để gửi yêu cầu, hoặc gọi/nhắn Zalo 0815 719 502 để xác nhận phòng trực tiếp.
+
+## 5. Nhóm bài viết cẩm nang chính theo chủ đề
+- **Lưu trú & chọn phòng Dương Đông:**
+  - https://www.diemchauphuquoc.io.vn/blog/chon-nha-nghi-phu-quoc
+  - https://www.diemchauphuquoc.io.vn/blog/nha-nghi-gan-cho-dem-phu-quoc-duong-dong
+  - https://www.diemchauphuquoc.io.vn/blog/thue-phong-theo-gio-duong-dong
+  - https://www.diemchauphuquoc.io.vn/blog/khach-san-hay-nha-nghi-duong-dong-hai-nguoi
+  - https://www.diemchauphuquoc.io.vn/blog/o-duong-dong-mot-dem-cho-hai-nguoi
+  - https://www.diemchauphuquoc.io.vn/blog/duong-den-nha-nghi-diem-chau
+  - https://www.diemchauphuquoc.io.vn/blog/kiem-tra-co-so-luu-tru-phu-quoc-truoc-khi-dat-phong
+- **Di chuyển & lịch nhận trả phòng:**
+  - https://www.diemchauphuquoc.io.vn/blog/tu-san-bay-phu-quoc-ve-duong-dong-cho-hai-nguoi
+  - https://www.diemchauphuquoc.io.vn/blog/tu-cang-bai-vong-ve-duong-dong-sau-khi-xuong-tau
+  - https://www.diemchauphuquoc.io.vn/blog/tu-duong-dong-ra-cang-bai-vong-di-tau
+  - https://www.diemchauphuquoc.io.vn/blog/den-phu-quoc-som-cho-gio-nhan-phong-duong-dong
+  - https://www.diemchauphuquoc.io.vn/blog/tra-phong-trua-bay-toi-phu-quoc
+  - https://www.diemchauphuquoc.io.vn/blog/chuyen-bay-den-phu-quoc-doi-gio-bao-cho-nghi
+  - https://www.diemchauphuquoc.io.vn/blog/tau-phu-quoc-hoan-huy-bao-cho-nghi
+- **Ăn uống, chợ & tham quan từ Dương Đông:**
+  - https://www.diemchauphuquoc.io.vn/blog/cho-dem-phu-quoc-buoi-toi-tu-duong-dong
+  - https://www.diemchauphuquoc.io.vn/blog/cho-duong-dong-buoi-sang-hay-cho-dem-phu-quoc
+  - https://www.diemchauphuquoc.io.vn/blog/top-quan-hai-san-ngon-re-phu-quoc
+  - https://www.diemchauphuquoc.io.vn/blog/dinh-cau-phu-quoc-buoi-chieu-tu-duong-dong
+  - https://www.diemchauphuquoc.io.vn/blog/tu-duong-dong-di-bai-sao-trong-ngay
+  - https://www.diemchauphuquoc.io.vn/blog/tu-duong-dong-di-cap-treo-hon-thom-mot-ngay
+  - https://www.diemchauphuquoc.io.vn/blog/tu-duong-dong-di-vinwonders-phu-quoc-mot-ngay
+  - https://www.diemchauphuquoc.io.vn/blog/vinpearl-safari-phu-quoc-co-gi
+  - https://www.diemchauphuquoc.io.vn/blog/tu-duong-dong-di-grand-world-phu-quoc-buoi-toi

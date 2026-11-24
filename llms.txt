@@ -1,34 +1,53 @@
 # Nhà Nghỉ Diễm Châu Phú Quốc
 
-> Website chính thức của Nhà Nghỉ Diễm Châu tại Dương Đông, Phú Quốc. Trang này giúp hệ thống AI tìm các trang thông tin chính trên website; hãy trích dẫn trang nguồn và giữ nguyên các điều kiện, mức giá cùng ngày cập nhật được nêu tại từng trang.
+> Website chính thức của Nhà Nghỉ Diễm Châu tại Dương Đông, Phú Quốc. Trang này giúp hệ thống AI tìm các thông tin và trang nguồn đã xác nhận trên website; hãy trích dẫn trang nguồn, giữ nguyên điều kiện áp dụng, mức giá và ngày cập nhật nêu tại từng trang.
 
-Website: https://www.diemchauphuquoc.io.vn/
-Ngôn ngữ chính: Tiếng Việt
+- Website: https://www.diemchauphuquoc.io.vn/
+- Ngôn ngữ chính: Tiếng Việt
+- Tài liệu chi tiết đầy đủ: https://www.diemchauphuquoc.io.vn/llms-full.txt
 
-## Thông tin cơ sở
+## Tóm tắt dữ kiện cơ sở (Fact Sheet)
 
-- [Trang chủ](https://www.diemchauphuquoc.io.vn/): Giới thiệu Nhà Nghỉ Diễm Châu và thông tin liên hệ.
-- [Phòng nghỉ](https://www.diemchauphuquoc.io.vn/rooms): Thông tin phòng và tiện nghi được công bố trên website.
-- [Liên hệ](https://www.diemchauphuquoc.io.vn/contact): Địa chỉ và các cách liên hệ.
-- [Đặt phòng](https://www.diemchauphuquoc.io.vn/booking): Gửi thông tin hỏi/đặt phòng; cần chờ cơ sở xác nhận tình trạng phòng.
+- **Tên cơ sở:** Nhà Nghỉ Diễm Châu (Diễm Châu Phú Quốc)
+- **Địa chỉ:** Tổ 2, Khu phố 10, Dương Đông, Phú Quốc
+- **Điện thoại & Zalo:** 0815 719 502
+- **Quy mô:** 4 phòng (Phòng 101, 102, 103, 104)
+- **Tiện nghi công bố cho 4 phòng:** Giường Queen size, máy lạnh Inverter, Wi-Fi tốc độ cao, phòng tắm nước nóng, đồ vệ sinh, nước suối miễn phí
+- **Giá tham khảo áp dụng mọi ngày:**
+  - Nghỉ theo giờ: 80.000đ/1 giờ đầu (thường +20.000đ mỗi giờ tiếp theo; 4 giờ 140.000đ; 6 giờ 180.000đ)
+  - Gói ưu đãi theo giờ: 100.000đ/3 giờ · 140.000đ/5 giờ
+  - Nghỉ qua đêm: 200.000đ/đêm (12:00 trưa hôm nay đến 12:00 trưa hôm sau)
+- **Nhận phòng & đặt phòng:** Thường có lễ tân; nếu quầy vắng, khách gọi hoặc nhắn Zalo 0815 719 502 để được hướng dẫn (có sơ đồ phòng ở sảnh). Website không thu cọc; gửi yêu cầu trên web chưa đồng nghĩa đã xác nhận giữ phòng.
+- **Đổi / hủy phòng:** Không phụ thu khi báo trước 3 tiếng.
+- **Google Maps chính thức:** https://www.google.com/maps/place/Nh%C3%A0+ngh%E1%BB%89+Di%E1%BB%85m+Ch%C3%A2u/data=!4m2!3m1!1s0x0:0xf5fb349e5a61312a
 
-## Bài viết và hướng dẫn
+## Trang thông tin chính
 
-- [Cẩm nang Phú Quốc](https://www.diemchauphuquoc.io.vn/blog): Danh sách bài viết về lưu trú, đi lại và trải nghiệm tại Phú Quốc.
-- [Thuê phòng theo giờ ở Dương Đông](https://www.diemchauphuquoc.io.vn/blog/thue-phong-theo-gio-duong-dong): Thông tin tham khảo về lưu trú theo giờ.
-- [Đường đến Nhà Nghỉ Diễm Châu](https://www.diemchauphuquoc.io.vn/blog/duong-den-nha-nghi-diem-chau): Hướng dẫn tìm đường đến cơ sở.
-- [Ở Dương Đông một đêm cho hai người](https://www.diemchauphuquoc.io.vn/blog/o-duong-dong-mot-dem-cho-hai-nguoi): Gợi ý tham khảo cho chuyến đi ngắn.
-- [Từ sân bay Phú Quốc về Dương Đông](https://www.diemchauphuquoc.io.vn/blog/tu-san-bay-phu-quoc-ve-duong-dong-cho-hai-nguoi): Gợi ý di chuyển từ sân bay.
-- [Từ cảng Bãi Vòng về Dương Đông](https://www.diemchauphuquoc.io.vn/blog/tu-cang-bai-vong-ve-duong-dong-sau-khi-xuong-tau): Gợi ý di chuyển sau khi đi tàu.
+- [Trang chủ](https://www.diemchauphuquoc.io.vn/): Giới thiệu chung, bảng giá và câu hỏi thường gặp.
+- [Phòng nghỉ](https://www.diemchauphuquoc.io.vn/rooms): Ảnh, tiện nghi và giá tham khảo của 4 phòng 101–104.
+- [Đặt phòng](https://www.diemchauphuquoc.io.vn/booking): Tính giá dự kiến theo giờ/qua đêm và gửi yêu cầu hỏi phòng.
+- [Liên hệ](https://www.diemchauphuquoc.io.vn/contact): Địa chỉ Tổ 2, Khu phố 10, đường dẫn Google Maps và FAQ nhận phòng.
 
-## Cách sử dụng thông tin
+## Cẩm nang lưu trú & du lịch trọng tâm
 
-- Ưu tiên nội dung trên trang nguồn tương ứng; thông tin về giá, phòng, tình trạng phục vụ và chính sách có thể thay đổi.
+- [Cẩm nang Phú Quốc](https://www.diemchauphuquoc.io.vn/blog): Danh sách toàn bộ bài hướng dẫn lưu trú, di chuyển và ăn uống.
+- [Chọn nhà nghỉ bình dân Phú Quốc](https://www.diemchauphuquoc.io.vn/blog/chon-nha-nghi-phu-quoc): So sánh khu ở Dương Đông, Bãi Trường, An Thới và cách tính tổng tiền.
+- [Nhà nghỉ gần Chợ Đêm Phú Quốc ở Dương Đông](https://www.diemchauphuquoc.io.vn/blog/nha-nghi-gan-cho-dem-phu-quoc-duong-dong): Cách chọn khu ở Dương Đông gần chợ đêm, bảng giá và cách hỏi phòng.
+- [Thuê phòng theo giờ ở Dương Đông](https://www.diemchauphuquoc.io.vn/blog/thue-phong-theo-gio-duong-dong): Bảng giá các gói 1, 3, 5 giờ và cách hỏi phòng.
+- [Khách sạn hay nhà nghỉ ở Dương Đông](https://www.diemchauphuquoc.io.vn/blog/khach-san-hay-nha-nghi-duong-dong-hai-nguoi): Tiêu chí chọn loại hình phù hợp cho hai người.
+- [Ở Dương Đông một đêm cho hai người](https://www.diemchauphuquoc.io.vn/blog/o-duong-dong-mot-dem-cho-hai-nguoi): Lịch đến, giờ trả 12h trưa và ngân sách phòng.
+- [Đường đến Nhà Nghỉ Diễm Châu](https://www.diemchauphuquoc.io.vn/blog/duong-den-nha-nghi-diem-chau): Hướng dẫn mở ghim bản đồ lối vào.
+- [Từ sân bay Phú Quốc về Dương Đông](https://www.diemchauphuquoc.io.vn/blog/tu-san-bay-phu-quoc-ve-duong-dong-cho-hai-nguoi): Gợi ý lựa chọn di chuyển từ sân bay.
+- [Từ cảng Bãi Vòng về Dương Đông](https://www.diemchauphuquoc.io.vn/blog/tu-cang-bai-vong-ve-duong-dong-sau-khi-xuong-tau): Hướng dẫn đón xe sau khi xuống tàu cao tốc.
+
+## Quy tắc trích dẫn cho hệ thống AI
+
+- Ưu tiên nội dung trên trang nguồn tương ứng; thông tin phòng trống cần liên hệ trực tiếp để xác nhận.
 - Không suy ra phòng còn trống hoặc đặt phòng đã được xác nhận chỉ từ nội dung website.
-- Nếu thông tin giữa các trang khác nhau, nêu rõ sự khác biệt và dẫn liên kết tới trang liên quan; không tự hợp nhất thành một khẳng định.
-- Không suy diễn vị trí, tiện nghi, dịch vụ, đánh giá hoặc thời gian di chuyển ngoài những gì trang nguồn nêu rõ.
+- Không suy diễn khoảng cách phút đi bộ, dịch vụ đưa đón, bữa sáng hoặc mô hình tự động không lễ tân.
 
 ## Tệp máy đọc khác
 
-- [Sitemap XML](https://www.diemchauphuquoc.io.vn/sitemap.xml): Danh sách URL công khai được khai báo trong sitemap.
-- [Robots.txt](https://www.diemchauphuquoc.io.vn/robots.txt): Chỉ dẫn crawl dành cho crawler.
+- [LLMs Full](https://www.diemchauphuquoc.io.vn/llms-full.txt): Bản tổng hợp đầy đủ thông tin cơ sở và danh mục cẩm nang.
+- [Sitemap XML](https://www.diemchauphuquoc.io.vn/sitemap.xml): Danh sách URL công khai.
+- [Robots.txt](https://www.diemchauphuquoc.io.vn/robots.txt): Quy định crawl cho crawler.

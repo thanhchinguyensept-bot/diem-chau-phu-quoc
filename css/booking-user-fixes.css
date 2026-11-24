@@ -4,9 +4,9 @@ html,body{max-width:100%;overflow-x:clip}
 .booking-mobile-nav[hidden]{display:none!important}
 .room-card{outline-offset:2px}
 .room-card:focus-visible,#room-opt-auto:focus-visible{outline:3px solid #d4a853}
-.booking-integrated-notice{display:flex;align-items:center;gap:13px;background:#fff8e8;border:1px solid #f0dfba;border-radius:11px;padding:12px 15px;margin:-3px 0 24px}.booking-integrated-notice .notice-symbol{display:grid;place-items:center;flex:none;width:35px;height:35px;border-radius:8px;background:#f7e9c5;color:#9b7023;font-weight:800}.booking-integrated-notice strong{font-size:10px;color:#986e21;letter-spacing:.1em}.booking-integrated-notice p{font-size:11px;line-height:1.5;margin:2px 0 0;color:#3f5058}
+.booking-integrated-notice{display:flex;align-items:center;gap:13px;background:#fff8e8;border:1px solid #f0dfba;border-radius:11px;padding:12px 15px;margin:-3px 0 24px}.booking-integrated-notice .notice-symbol{display:grid;place-items:center;flex:none;width:35px;height:35px;border-radius:8px;background:#f7e9c5;color:#7a5812;font-weight:800}.booking-integrated-notice strong{font-size:10px;color:#7a5812;letter-spacing:.1em}.booking-integrated-notice p{font-size:11px;line-height:1.5;margin:2px 0 0;color:#3f5058}
 @media(max-width:1023px){
-  .booking-nav-toggle{display:grid;place-items:center;width:38px;height:38px;margin-left:auto;border:1px solid #ffffff64;border-radius:9px;color:#fff;font-size:21px;line-height:1}
+  .booking-nav-toggle{display:grid;place-items:center;width:44px;height:44px;margin-left:auto;border:1px solid #ffffff64;border-radius:9px;color:#fff;font-size:21px;line-height:1}
   .booking-mobile-nav:not([hidden]){display:grid;position:absolute;top:80px;left:0;right:0;padding:10px 16px;background:#11344a;box-shadow:0 12px 22px #0c253540;z-index:45}
   .booking-mobile-nav a{display:block;color:#fff;padding:10px 5px;border-bottom:1px solid #ffffff22;text-decoration:none;font-size:13px}
   .booking-mobile-nav a[aria-current]{color:#ffd276;font-weight:700}
@@ -14,7 +14,7 @@ html,body{max-width:100%;overflow-x:clip}
 @media(max-width:639px){
   header.sticky{background:#203847!important;color:#fff!important;box-shadow:0 2px 12px #0c253518}
   header.sticky>div{height:64px}
-  header.sticky .booking-nav-toggle{color:#fff;background:#12394b;border:0;border-radius:50%;width:34px;height:34px;font-size:19px}
+  header.sticky .booking-nav-toggle{color:#fff;background:#12394b;border:0;border-radius:50%;width:44px;height:44px;font-size:19px}
   .booking-mobile-nav:not([hidden]){top:64px}
   main{padding-top:0!important;padding-bottom:112px!important}
   main>div:first-child{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;margin:0!important}
@@ -47,7 +47,7 @@ html,body{max-width:100%;overflow-x:clip}
   #room-opt-auto .uppercase{font-size:7px;padding:2px 4px}
   #room-opt-auto #radio-auto{font-size:17px}
   #room-opt-auto+div{gap:7px}
-  .room-card{flex-direction:row!important;min-height:82px;max-height:96px}
+  .room-card{flex-direction:row!important;min-height:102px}
   .room-card>div:first-child{width:100px;height:auto!important;min-height:82px;flex:none}
   .room-card>div:first-child img{width:100%;height:100%;object-fit:cover}
   .room-card>div:nth-child(2){min-width:0;flex:1;padding:7px!important;gap:3px!important}
@@ -55,7 +55,7 @@ html,body{max-width:100%;overflow-x:clip}
   .room-card [data-room-display-price]{font-size:10px!important;white-space:nowrap}
   .room-card p{font-size:9px!important;line-height:1.25;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
   .room-card .flex.items-center.gap-1\.5.flex-wrap{display:none}
-  .room-card .room-action-btn{width:auto!important;align-self:flex-end;padding:3px 8px!important;font-size:8px!important;line-height:1.2}
+  .room-card .room-action-btn{width:auto!important;align-self:flex-end;min-height:44px;padding:8px 14px!important;font-size:11px!important;line-height:1.2;display:inline-flex;align-items:center;justify-content:center}
   #booking-contact-form{gap:10px}
   #booking-contact-form>.grid{gap:8px}
   #booking-contact-form label{font-size:9px}
